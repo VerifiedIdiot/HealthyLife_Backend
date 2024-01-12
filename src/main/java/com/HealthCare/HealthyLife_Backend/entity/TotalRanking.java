@@ -32,7 +32,7 @@ public class TotalRanking {
     private Long points;
 
     @Column(nullable = true)
-    private Integer rank;
+    private Integer ranking;
 
     public RankingDto toDto() {
         return RankingDto.builder()
@@ -40,7 +40,7 @@ public class TotalRanking {
                 .nickName(this.getNickName())
                 .gender(this.getGender())
                 .points(this.getPoints())
-                .rank(this.getRank())
+                .ranking(this.getRanking())
                 .build();
     }
 

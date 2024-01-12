@@ -18,7 +18,7 @@ public class RankingDto {
     private String nickName;
     private String gender;
     private Long points;
-    private Integer rank;
+    private Integer ranking;
     private Integer season; // 시즌 정보는 SeasonRanking에만 해당됩니다.
     private LocalDate seasonEndDate; // 시즌 종료 날짜는 SeasonRanking에만 해당됩니다.
 
@@ -32,7 +32,7 @@ public class RankingDto {
                 .nickName(this.getNickName())
                 .gender(this.getGender())
                 .points(this.getPoints())
-                .rank(this.getRank())
+                .ranking(this.getRanking())
                 .build();
 
     }
@@ -45,7 +45,7 @@ public class RankingDto {
                 .nickName(this.getNickName())
                 .gender(this.getGender())
                 .points(this.getPoints())
-                .rank(this.getRank())
+                .ranking(this.getRanking())
                 .season(this.getSeason())
                 .seasonEndDate(this.getSeasonEndDate())
                 .build();

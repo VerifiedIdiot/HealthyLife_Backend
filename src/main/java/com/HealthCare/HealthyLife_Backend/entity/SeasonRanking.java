@@ -34,7 +34,7 @@ public class SeasonRanking {
     private Long points;
 
     @Column(nullable = true)
-    private Integer rank; // 시즌 종료 시의 랭킹 순위
+    private Integer ranking; // 시즌 종료 시의 랭킹 순위
 
     @Column(name = "season_end_date", nullable = false)
     private LocalDate seasonEndDate; // 시즌 종료 날짜
@@ -45,7 +45,7 @@ public class SeasonRanking {
                 .nickName(this.getNickName())
                 .gender(this.getGender())
                 .points(this.getPoints())
-                .rank(this.getRank())
+                .ranking(this.getRanking())
                 .season(this.getSeason())
                 .seasonEndDate(this.getSeasonEndDate())
                 .build();
