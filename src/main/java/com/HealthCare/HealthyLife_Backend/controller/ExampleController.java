@@ -35,7 +35,10 @@ public class ExampleController implements CrudControllerInterface<RankingDto, Lo
     }
 
     @Override
-    public ResponseEntity<RankingDto> create(RankingDto dto) {
+    public ResponseEntity<RankingDto> insert(RankingDto dto) {
         return null;
     }
+
+
+
 }
