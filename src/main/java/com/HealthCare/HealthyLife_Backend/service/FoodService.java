@@ -6,6 +6,7 @@ import com.HealthCare.HealthyLife_Backend.repository.FoodRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
@@ -23,10 +24,11 @@ public class FoodService {
     private String excelPath;
 
     @Transactional
-    public void saveFoodData() {
+    public void saveFoodData(MultipartFile file) {
         try {
-            List<FoodDto> foodDtoList = FoodDto.readFromExcel(excelPath);
+            List<FoodDto> foodDtoList = FoodDto.readFromExcel(file.getInputStream().toString());
             List<Food> foodEntities = new ArrayList<>();
+            System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+foodDtoList);
 
             for (FoodDto foodDto : foodDtoList) {
                 foodEntities.add(foodDto.toFoodEntity());
@@ -36,7 +38,9 @@ public class FoodService {
         } catch (IOException e) {
             // 예외 처리 로직을 여기에 추가
             e.printStackTrace();
+            // 혹은 로그에 기록하거나, 사용자에게 메시지를 전달하는 등의 처리를 수행할 수 있습니다.
         }
     }
 }
+
 
