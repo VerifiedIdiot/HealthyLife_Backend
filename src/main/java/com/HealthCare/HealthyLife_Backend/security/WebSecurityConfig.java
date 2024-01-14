@@ -1,6 +1,6 @@
 package com.HealthCare.HealthyLife_Backend.security;
 
-import com.ljw.jwttest.jwt.TokenProvider;
+import com.HealthCare.HealthyLife_Backend.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

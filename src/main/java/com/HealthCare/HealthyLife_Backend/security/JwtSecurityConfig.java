@@ -1,7 +1,8 @@
 package com.HealthCare.HealthyLife_Backend.security;
 
-import com.ljw.jwttest.jwt.JwtFilter;
-import com.ljw.jwttest.jwt.TokenProvider;
+
+import com.HealthCare.HealthyLife_Backend.jwt.JwtFilter;
+import com.HealthCare.HealthyLife_Backend.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
