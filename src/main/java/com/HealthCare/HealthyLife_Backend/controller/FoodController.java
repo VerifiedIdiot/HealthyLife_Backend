@@ -28,8 +28,8 @@ public class FoodController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadFoodData(@RequestParam("file") MultipartFile file) {
-        foodService.saveFoodData(file);
+    public ResponseEntity<String> uploadFoodData() {
+        foodService.saveFoodData();
         return ResponseEntity.ok("Food data uploaded and processed successfully!");
     }
 }
