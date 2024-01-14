@@ -1,6 +1,6 @@
 package com.HealthCare.HealthyLife_Backend.jwt;
 
-import com.ljw.jwttest.dto.TokenDto;
+import com.HealthCare.HealthyLife_Backend.dto.TokenDto;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
