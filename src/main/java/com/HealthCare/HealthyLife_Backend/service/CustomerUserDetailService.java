@@ -17,7 +17,7 @@ import java.util.Collections;
 @Service
 @RequiredArgsConstructor
 public class CustomerUserDetailService implements UserDetailsService {
-    private MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
     @Override
     // 로그인 시 이메일을 통해 DB에서 회원 정보를 가져온다. createUserDetails() 메서드를 통해 UserDetails 타입으로 변환한다.

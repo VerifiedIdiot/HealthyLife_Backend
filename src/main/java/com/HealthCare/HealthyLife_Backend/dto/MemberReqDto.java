@@ -31,7 +31,7 @@ public class MemberReqDto {
     public Member toEntity(PasswordEncoder passwordEncoder) {
         return Member.builder()
                 .email(email)
-                .password(password)
+                .password(passwordEncoder.encode(password))
                 .name(name)
                 .alias(alias)
                 .gender(gender)
