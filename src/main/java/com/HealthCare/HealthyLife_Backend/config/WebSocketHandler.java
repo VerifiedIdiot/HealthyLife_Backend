@@ -1,6 +1,7 @@
 package com.HealthCare.HealthyLife_Backend.config;
 
 import com.HealthCare.HealthyLife_Backend.dto.ChatMessageDto;
+import com.HealthCare.HealthyLife_Backend.enums.MessageType;
 import com.HealthCare.HealthyLife_Backend.service.ChatService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -39,10 +40,10 @@ public class WebSocketHandler extends TextWebSocketHandler {
         // 세션과 채팅방 ID를 매핑
         sessionRoomIdMap.put(session, chatMessage.getRoomId());
 
-        if (chatMessage.getType() == ChatMessageDto.MessageType.ENTER) {
+        if (chatMessage.getType() == MessageType.ENTER) {
             // 메시지 타입이 ENTER이면 채팅방에 입장한 세션 추가
             chatService.addSessionAndHandleEnter(roomId, session, chatMessage);
-        } else if (chatMessage.getType() == ChatMessageDto.MessageType.CLOSE) {
+        } else if (chatMessage.getType() == MessageType.CLOSE) {
             // 메시지 타입이 CLOSE이면 채팅방에서 세션 제거하고 퇴장 처리
             chatService.removeSessionAndHandleExit(roomId, session, chatMessage);
         } else {
@@ -63,7 +64,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
         if (roomId != null) {
             // 채팅 메시지 객체 생성 및 타입 설정 (CLOSE)
             ChatMessageDto chatMessage = new ChatMessageDto();
-            chatMessage.setType(ChatMessageDto.MessageType.CLOSE);
+            chatMessage.setType(MessageType.CLOSE);
 
             // 채팅방에서 세션 제거하고 퇴장 처리
             chatService.removeSessionAndHandleExit(roomId, session, chatMessage);
