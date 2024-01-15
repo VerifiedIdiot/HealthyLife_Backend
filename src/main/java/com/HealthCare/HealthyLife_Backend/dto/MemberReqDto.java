@@ -6,6 +6,7 @@ import lombok.*;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -24,7 +25,7 @@ public class MemberReqDto {
     private String addr;
     private String image;
     private String isPayment;
-    private LocalDateTime birth;
+    private LocalDate birth;
     private LocalDateTime regDate;
 
     // MemberReqDto -> Member MemberReqDto를 Member Entity로 변환
@@ -39,6 +40,8 @@ public class MemberReqDto {
                 .addr(addr)
                 .image(image)
                 .isPayment(true)
+                .birth(birth)
+                .regDate(regDate)  // 기본값 설정
                 .isAuthDelete(false)
                 .authority(Authority.ROLE_USER)
                 .build();
