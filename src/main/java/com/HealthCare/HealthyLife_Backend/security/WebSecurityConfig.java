@@ -41,7 +41,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                 .and()
                 .authorizeRequests()
                 //antMatchers: 특정 경로에 대한 접근 권한을 설정
-                .antMatchers().permitAll() //포스트맨 권한
+                .antMatchers("/auth/**").permitAll() //포스트맨 권한
                 .antMatchers("/swagger-ui.html", "/v2/api-docs", "/swagger-resources/**", "/webjars/**").permitAll() //스웨거 권한
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .anyRequest().authenticated() // 나머지 요청에 대해서는 인증된 사용자만 허용합니다.
