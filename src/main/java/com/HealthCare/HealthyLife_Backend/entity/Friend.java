@@ -3,8 +3,7 @@ package com.HealthCare.HealthyLife_Backend.entity;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
@@ -15,6 +14,9 @@ import javax.persistence.Table;
 @ToString
 @Table(name = "Friend")
 public class Friend {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
 
 

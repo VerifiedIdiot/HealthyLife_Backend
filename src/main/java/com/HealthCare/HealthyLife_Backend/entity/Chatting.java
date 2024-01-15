@@ -20,6 +20,8 @@ public class Chatting {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @Enumerated(EnumType.STRING)
     private MessageType type;
     private String message; //메세지
     private LocalDateTime messageTime; //메세지 생성 시간
