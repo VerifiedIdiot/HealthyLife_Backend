@@ -23,55 +23,59 @@ import java.util.List;
 
 public class FoodDto {
     private long num;
-    private String foodCd;
-    private String samplingRegionName;
-    private String samplingMonthName;
-    private String samplingRegionCd;
-    private String samplingMonthCd;
-    private String groupName;
-    private String descKor;
-    private String researchYear;
-    private String makerName;
-    private String subRefName;
+    private String name;
+    private String brand;
+    private String class1;
+    private String class2;
     private String servingSize;
     private String servingUnit;
-    private int nutrCont1;
-    private int nutrCont2;
-    private int nutrCont3;
-    private int nutrCont4;
-    private int nutrCont5;
-    private int nutrCont6;
-    private int nutrCont7;
-    private int nutrCont8;
-    private int nutrCont9;
+    private String kcal;
+    private String protein;
+    private String province;
+    private String carbohydrate;
+    private String sugar;
+    private String dietaryFiber;
+    private String calcium;
+    private String iron;
+    private String salt;
+    private String zinc;
+    private String vitaB1;
+    private String vitaB2;
+    private String vitaB12;
+    private String vitaC;
+    private String cholesterol;
+    private String saturatedFat;
+    private String transFat;
+    private String issuer;
 
     // builder를 통해서 반복된 getter setter 사용 방지 , @Query 어노테이션이랑 호환 안됨
     public Food toFoodEntity() {
         return Food.builder()
                 .num(this.num)
-                .foodCd(this.foodCd)
-                .samplingRegionName(this.samplingRegionName)
-                .samplingMonthName(this.samplingMonthName)
-                .samplingRegionCd(this.samplingRegionCd)
-                .samplingMonthCd(this.samplingMonthCd)
-                .groupName(this.groupName)
-                .descKor(this.descKor)
-                .researchYear(this.researchYear)
-                .makerName(this.makerName)
-                .subRefName(this.subRefName)
+                .name(this.name)
+                .brand(this.brand)
+                .class1(this.class1)
+                .class2(this.class2)
                 .servingSize(this.servingSize)
                 .servingUnit(this.servingUnit)
-                .nutrCont1(this.nutrCont1)
-                .nutrCont2(this.nutrCont2)
-                .nutrCont3(this.nutrCont3)
-                .nutrCont4(this.nutrCont4)
-                .nutrCont5(this.nutrCont5)
-                .nutrCont6(this.nutrCont6)
-                .nutrCont7(this.nutrCont7)
-                .nutrCont8(this.nutrCont8)
-                .nutrCont9(this.nutrCont9)
+                .kcal(this.kcal)
+                .protein(this.protein)
+                .province(this.province)
+                .carbohydrate(this.carbohydrate)
+                .sugar(this.sugar)
+                .dietaryFiber(this.dietaryFiber)
+                .calcium(this.calcium)
+                .iron(this.iron)
+                .salt(this.salt)
+                .zinc(this.zinc)
+                .vitaB1(this.vitaB1)
+                .vitaB2(this.vitaB2)
+                .vitaB12(this.vitaB12)
+                .vitaC(this.vitaC)
+                .cholesterol(this.cholesterol)
+                .saturatedFat(this.saturatedFat)
+                .transFat(this.transFat)
+                .issuer(this.issuer)
                 .build();
     }
-
-
 }

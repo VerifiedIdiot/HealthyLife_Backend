@@ -19,35 +19,17 @@ public class Food {
 
     private long num;
 
-    @Column(name = "food_cd")
-    private String foodCd;
+    @Column(name = "name")
+    private String name;
 
-    @Column(name = "sampling_region_name")
-    private String samplingRegionName;
+    @Column(name = "brand")
+    private String brand;
 
-    @Column(name = "sampling_month_name")
-    private String samplingMonthName;
+    @Column(name = "class1")
+    private String class1;
 
-    @Column(name = "sampling_region_cd")
-    private String samplingRegionCd;
-
-    @Column(name = "sampling_month_cd")
-    private String samplingMonthCd;
-
-    @Column(name = "group_name")
-    private String groupName;
-
-    @Column(name = "desc_kor")
-    private String descKor;
-
-    @Column(name = "research_year")
-    private String researchYear;
-
-    @Column(name = "maker_name")
-    private String makerName;
-
-    @Column(name = "sub_ref_name")
-    private String subRefName;
+    @Column(name = "class2")
+    private String class2;
 
     @Column(name = "serving_size")
     private String servingSize;
@@ -55,31 +37,58 @@ public class Food {
     @Column(name = "serving_unit")
     private String servingUnit;
 
-    @Column(name = "nutr_cont_1")
-    private int nutrCont1;
+    @Column(name = "kcal")
+    private String kcal;
 
-    @Column(name = "nutr_cont_2")
-    private int nutrCont2;
+    @Column(name = "protein")
+    private String protein;
 
-    @Column(name = "nutr_cont_3")
-    private int nutrCont3;
+    @Column(name = "province")
+    private String province;
 
-    @Column(name = "nutr_cont_4")
-    private int nutrCont4;
+    @Column(name = "carbohydrate")
+    private String carbohydrate;
 
-    @Column(name = "nutr_cont_5")
-    private int nutrCont5;
+    @Column(name = "sugar")
+    private String sugar;
 
-    @Column(name = "nutr_cont_6")
-    private int nutrCont6;
+    @Column(name = "dietary_fiber")
+    private String dietaryFiber;
 
-    @Column(name = "nutr_cont_7")
-    private int nutrCont7;
+    @Column(name = "calcium")
+    private String calcium;
 
-    @Column(name = "nutr_cont_8")
-    private int nutrCont8;
+    @Column(name = "iron")
+    private String iron;
 
-    @Column(name = "nutr_cont_9")
-    private int nutrCont9;
+    @Column(name = "salt")
+    private String salt;
+
+    @Column(name = "zinc")
+    private String zinc;
+
+    @Column(name = "vita_b1")
+    private String vitaB1;
+
+    @Column(name = "vit_b2")
+    private String vitaB2;
+
+    @Column(name = "vita_b12")
+    private String vitaB12;
+
+    @Column(name = "vita_c")
+    private String vitaC;
+
+    @Column(name = "cholesterol")
+    private String cholesterol;
+
+    @Column(name = "saturated_fat")
+    private String saturatedFat;
+
+    @Column(name = "trans_fat")
+    private String transFat;
+
+    @Column(name = "issuer")
+    private String issuer;
 
 }
