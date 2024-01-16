@@ -16,5 +16,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         registry.addHandler(webSocketHandler, "/ws/chat").setAllowedOrigins("*"); // 여기에 나중에 도메인설정 해주기
+        registry.addHandler(webSocketHandler, "/ws/comment").setAllowedOrigins("*");
+
     }
 }

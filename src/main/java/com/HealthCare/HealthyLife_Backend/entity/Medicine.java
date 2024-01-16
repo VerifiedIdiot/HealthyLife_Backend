@@ -1,4 +1,4 @@
-package com.HealthCare.HealthyLife_Backend.entity;
-
-public class Medicine {
-}
+//package com.HealthCare.HealthyLife_Backend.entity;
+//
+//public class Medicine {
+//}
