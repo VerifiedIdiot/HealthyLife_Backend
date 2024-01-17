@@ -24,8 +24,9 @@ public class TotalRanking {
     @Column(name = "total_ranking_id")
     private Long id;
 
-    @OneToMany(mappedBy = "totalRanking") // mappedBy 속성을 사용하여 연관 관계의 주인을 지정
+    @OneToMany(mappedBy = "totalRanking" , cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST})
     private List<SeasonRanking> seasonRankings;
+
 
 
     @Column(nullable = false)
