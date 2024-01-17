@@ -1,10 +1,7 @@
 package com.HealthCare.HealthyLife_Backend.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-import org.apache.poi.xwpf.usermodel.IBody;
+import com.HealthCare.HealthyLife_Backend.dto.CalendarDto;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -15,21 +12,23 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @ToString
+@Builder
 public class Calendar {
     @Id
     @Column(name = "calendar_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "calendar_title",nullable = false)
-    private String calendarTitle; //제목
+    @Column(name = "title",nullable = false)
+    private String title; //제목
 
-    @Column(name = "calendar_detail",length = 1000)
-    private String calendarDetail; // 내용
+    @Column(name = "detail",length = 1000)
+    private String detail; // 내용
 
-    @Column(name = "calendar_write_date",nullable = false)
-    private LocalDate diaryWriteDate; //작성일자
+    @Column(name = "write_date",nullable = false)
+    private LocalDate writeDate; //작성일자
 
     @Column(name = "points")
     private Integer points; // 포인트
@@ -48,4 +47,14 @@ public class Calendar {
 
     @OneToMany(mappedBy = "calendar" , cascade = CascadeType.ALL)
     private List<SeasonRanking> seasonRankings;
+
+    public CalendarDto toCalendarDto() {
+        return CalendarDto.builder()
+                .id(this.getId())
+                .title(this.getTitle())
+                .detail(this.getDetail())
+                .writeDate(this.getWriteDate())
+                .points(this.getPoints())
+                .build();
+    }
 }
