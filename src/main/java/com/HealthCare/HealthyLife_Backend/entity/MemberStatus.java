@@ -23,4 +23,8 @@ public class MemberStatus {
     private LocalDateTime lastAccessTime; //최근접속시간 예) 5분전 접속
     private String status; //현재 상태 예) 내상태 접속중,접속아님,바쁨,말걸지마세요,이런거?
 
+    @OneToOne
+    private Member member;
+
+
 }

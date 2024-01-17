@@ -23,7 +23,22 @@ public class Chatting {
 
     @Enumerated(EnumType.STRING)
     private MessageType type;
+    @Column(name = "message",nullable = false)
     private String message; //메세지
+    @Column(name = "message_time",nullable = false)
     private LocalDateTime messageTime; //메세지 생성 시간
+
+    @PrePersist
+    protected void prePersist() {
+        messageTime = LocalDateTime.now();
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY) // 지연 전략
+    @JoinColumn(name = "member_id") // 외래키
+    private Member member; // 본인
+
+    @ManyToOne(fetch = FetchType.LAZY) // 지연 전략
+    @JoinColumn(name = "room_id") // 외래키
+    private ChatRoom chatRoom; // 채팅룸
 
 }

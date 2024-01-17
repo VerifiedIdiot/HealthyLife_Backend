@@ -50,6 +50,17 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<SeasonRanking> seasonRankings;
 
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "member", cascade = CascadeType.ALL)
+    private MemberStatus memberStatus;
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Friend> friends;
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Chatting> chattings;
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<ChatRoom> chatRooms;
+
+
+
     @PrePersist
     protected void prePersist() {
         regDate = LocalDateTime.now();
