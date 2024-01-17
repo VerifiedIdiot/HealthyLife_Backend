@@ -10,7 +10,6 @@ public class CommentMessageDto {
         COMMENT,
         INIT
     }
-
     private String postId;
     private String commentId;
     private String commentContent;

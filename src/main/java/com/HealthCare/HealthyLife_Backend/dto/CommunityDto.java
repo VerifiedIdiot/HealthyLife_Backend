@@ -23,5 +23,4 @@ public class CommunityDto {
     private String ipAddress;
     private String name;
     private String password;
-
 }

@@ -12,8 +12,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "comment") // 실제 데이터베이스 테이블 이름에 맞게 지정해야 합니다.
-@Getter
-@Setter
+@Getter @Setter
 @NoArgsConstructor
 @ToString
 public class Comment {
@@ -28,7 +27,6 @@ public class Comment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "communityId")
     private Community community;
-
     private LocalDateTime regDate;
 
     @PrePersist
