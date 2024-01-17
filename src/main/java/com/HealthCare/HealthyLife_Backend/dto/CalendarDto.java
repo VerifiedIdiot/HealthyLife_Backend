@@ -12,6 +12,7 @@ import java.time.LocalDate;
 @Builder
 public class CalendarDto {
     private Long id;
+    private Integer month;
     private String title; //제목
     private String detail; // 내용
     private LocalDate writeDate; //작성일자

@@ -23,6 +23,7 @@ public class CalendarService {
         for (Calendar calendar : calendars) {
             CalendarDto calendarDto = calendar.toCalendarDto();
         }
+
         return calendarDtos;
     }
 }

@@ -21,6 +21,9 @@ public class Calendar {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(name = "month")
+    private int month;
+
     @Column(name = "title", nullable = false)
     private String title; //제목
 
@@ -51,6 +54,7 @@ public class Calendar {
     public CalendarDto toCalendarDto() {
         return CalendarDto.builder()
                 .id(this.getId())
+                .month(this.getMonth())
                 .title(this.getTitle())
                 .detail(this.getDetail())
                 .writeDate(this.getWriteDate())
