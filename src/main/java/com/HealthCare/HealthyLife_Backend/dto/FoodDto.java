@@ -68,5 +68,5 @@ public class FoodDto {
                 .transFat(this.transFat)
                 .issuer(this.issuer)
                 .build();
-    }
+        }
 }

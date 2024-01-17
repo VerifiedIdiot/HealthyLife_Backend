@@ -45,7 +45,7 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private ExercisePurpose exercisePurpose; // 새로운 운동 목적 추가
 
-    @OneToMany(mappedBy = "Member", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Body> bodies;
     @OneToMany(mappedBy = "member")
     private List<SeasonRanking> seasonRankings;

@@ -1,5 +1,6 @@
 package com.HealthCare.HealthyLife_Backend.entity;
 
+import com.HealthCare.HealthyLife_Backend.dto.BodyDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -21,7 +22,7 @@ public class Body {
     @Column(name = "date")
     private LocalDate date;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
@@ -45,4 +46,17 @@ public class Body {
 
     @Column(name = "bmi")
     private String bmi;
+
+    public BodyDto toBodyDto() {
+        return BodyDto.builder()
+                .date(this.getDate())
+                .height(this.getHeight())
+                .weight(this.getWeight())
+                .muscle(this.getMuscle())
+                .fat(this.getFat())
+                .fatPercent(this.getFatPercent())
+                .bmr(this.getBmr())
+                .bmi(this.getBmi())
+                .build();
+    }
 }

@@ -1,5 +1,6 @@
 package com.HealthCare.HealthyLife_Backend.entity;
 
+import com.HealthCare.HealthyLife_Backend.dto.ExerciseDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -34,5 +35,16 @@ public class Exercise {
 
     @Column(name = "instructions")
     private String instructions;
+
+    public ExerciseDto toExerciseDto() {
+        return ExerciseDto.builder()
+                .name(this.getName())
+                .type(this.getType())
+                .muscle(this.getMuscle())
+                .equipment(this.getEquipment())
+                .difficulty(this.getDifficulty())
+                .instructions(this.getInstructions())
+                .build();
+    }
 
 }
