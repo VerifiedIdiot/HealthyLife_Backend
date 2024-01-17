@@ -15,7 +15,7 @@ public class MemberResDto {
     private long id;
     private String email;
     private String name;
-    private String alias;
+    private String nickName;
     private String gender;
     private String phone;
     private String addr;
@@ -28,7 +28,7 @@ public class MemberResDto {
         return MemberResDto.builder()
                 .email(member.getEmail())
                 .name(member.getName())
-                .alias(member.getAlias())
+                .nickName(member.getNickName())
                 .gender(member.getGender())
                 .phone(member.getPhone())
                 .addr(member.getAddr())

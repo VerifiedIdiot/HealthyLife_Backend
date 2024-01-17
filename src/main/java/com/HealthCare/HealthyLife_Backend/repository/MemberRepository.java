@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
     boolean existsByEmail(String email);
-    boolean existsByAlias(String alias);
+    boolean existsByNickName(String alias);
     boolean existsByPhone(String phone);
     boolean existsByPassword(String password);
 
