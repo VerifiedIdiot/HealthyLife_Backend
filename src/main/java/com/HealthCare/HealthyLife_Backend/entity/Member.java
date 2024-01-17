@@ -1,6 +1,7 @@
 package com.HealthCare.HealthyLife_Backend.entity;
 
 import com.HealthCare.HealthyLife_Backend.enums.Authority;
+import com.HealthCare.HealthyLife_Backend.enums.ExercisePurpose;
 import lombok.*;
 
 import javax.persistence.*;
@@ -18,14 +19,17 @@ import java.time.LocalDateTime;
 public class Member {
     @Id
     @Column(name = "member_id")
+    @OneToMany
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @OneToMany(fetch = FetchType.LAZY)
+    private SeasonRanking seasonRanking;
     @Column(name = "email", nullable = false, unique = true)
     private String email;
     private String password;
     @Column(name = "name", nullable = false)
     private String name;
-    @Column(name = "alias", nullable = false, unique = true)
+    @Column(name = "nickName", nullable = false, unique = true)
     private String nickName;
     @Column(name = "gender", nullable = false)
     private String gender;
@@ -34,14 +38,14 @@ public class Member {
     @Column(name = "addr", nullable = false)
     private String addr;
     private String image;
-    @Column(name = "isPayment", columnDefinition = "TINYINT(1)")
-    private boolean isPayment;
     @Column(name = "isAuthDelete", columnDefinition = "TINYINT(1)")
     private boolean isAuthDelete;
     private LocalDate birth;
     private LocalDateTime regDate;
     @Enumerated(EnumType.STRING)
     private Authority authority;
+    @Enumerated(EnumType.STRING)
+    private ExercisePurpose exercisePurpose; // 새로운 운동 목적 추가
 
     @PrePersist
     protected void prePersist() {
@@ -50,7 +54,7 @@ public class Member {
 
     @Builder
     public Member(String email, String password, String name, String nickName, String gender, String phone
-                 , String addr, String image, LocalDate birth, boolean isPayment, boolean isAuthDelete, Authority authority) {
+                 , String addr, String image, LocalDate birth, boolean isAuthDelete, Authority authority, ExercisePurpose exercisePurpose) {
         this.email = email;
         this.password = password;
         this.name = name;
@@ -61,8 +65,8 @@ public class Member {
         this.image = image;
         this.birth = birth;
         this.regDate = LocalDateTime.now();
-        this.isPayment = isPayment;
         this.isAuthDelete = isAuthDelete;
         this.authority = authority;
+        this.exercisePurpose = exercisePurpose; // 새로운 운동 목적 추가
     }
 }
