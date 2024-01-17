@@ -7,6 +7,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -19,11 +20,8 @@ import java.time.LocalDateTime;
 public class Member {
     @Id
     @Column(name = "member_id")
-    @OneToMany
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @OneToMany(fetch = FetchType.LAZY)
-    private SeasonRanking seasonRanking;
     @Column(name = "email", nullable = false, unique = true)
     private String email;
     private String password;
@@ -46,6 +44,11 @@ public class Member {
     private Authority authority;
     @Enumerated(EnumType.STRING)
     private ExercisePurpose exercisePurpose; // 새로운 운동 목적 추가
+
+    @OneToMany(mappedBy = "Member", cascade = CascadeType.ALL)
+    private List<Body> bodies;
+    @OneToMany(mappedBy = "member")
+    private List<SeasonRanking> seasonRankings;
 
     @PrePersist
     protected void prePersist() {

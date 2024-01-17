@@ -39,7 +39,6 @@ public class MemberReqDto {
                 .phone(phone)
                 .addr(addr)
                 .image(image)
-                .isPayment(true)
                 .birth(birth)
                 .regDate(regDate)  // 기본값 설정
                 .isAuthDelete(false)
