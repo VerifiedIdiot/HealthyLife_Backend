@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "Body") // 실제 데이터베이스 테이블 이름에 맞게 지정해야 합니다.
+@Table(name = "body_tb") // 실제 데이터베이스 테이블 이름에 맞게 지정해야 합니다.
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,6 +17,7 @@ public class Body {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "body_id")
     private Long id;
 
     @Column(name = "date")

@@ -9,7 +9,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "communityCategory")
+@Table(name = "community_category_tb")
 @Getter
 @Setter
 @ToString
@@ -17,6 +17,7 @@ import java.util.List;
 public class CommunityCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "category_id")
     private Long categoryId;
     private String categoryName;
     @ManyToOne(fetch = FetchType.LAZY)

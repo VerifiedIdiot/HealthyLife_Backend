@@ -16,7 +16,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-@Table(name = "member")
+@Table(name = "member_tb")
 public class Member {
     @Id
     @Column(name = "member_id")
