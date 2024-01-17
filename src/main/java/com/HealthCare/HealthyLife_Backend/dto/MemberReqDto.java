@@ -19,7 +19,7 @@ public class MemberReqDto {
     private String email;
     private String password;
     private String name;
-    private String alias;
+    private String nickName;
     private String gender;
     private String phone;
     private String addr;
@@ -34,7 +34,7 @@ public class MemberReqDto {
                 .email(email)
                 .password(passwordEncoder.encode(password))
                 .name(name)
-                .alias(alias)
+                .nickName(nickName)
                 .gender(gender)
                 .phone(phone)
                 .addr(addr)

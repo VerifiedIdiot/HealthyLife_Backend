@@ -34,7 +34,7 @@ public class AuthService {
                 isUnique = memberRepository.existsByEmail(info);
                 break;
             case  1 :
-                isUnique = memberRepository.existsByAlias(info);
+                isUnique = memberRepository.existsByNickName(info);
                 break;
             case  2 :
                 isUnique = memberRepository.existsByPhone(info);

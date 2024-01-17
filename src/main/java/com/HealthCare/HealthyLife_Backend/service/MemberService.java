@@ -41,7 +41,7 @@ public class MemberService {
                 member.setPassword(passwordEncoder.encode(memberReqDto.getPassword()));
             }
 
-            member.setAlias(memberReqDto.getAlias());
+            member.setNickName(memberReqDto.getNickName());
             member.setPhone(memberReqDto.getPhone());
             member.setAddr(memberReqDto.getAddr());
             member.setImage(memberReqDto.getImage());
@@ -66,7 +66,7 @@ public class MemberService {
         MemberResDto memberResDto = new MemberResDto();
         memberResDto.setEmail(member.getEmail());
         memberResDto.setName(member.getName());
-        memberResDto.setAlias(member.getAlias());
+        memberResDto.setNickName(member.getNickName());
         memberResDto.setGender(member.getGender());
         memberResDto.setPhone(member.getPhone());
         memberResDto.setAddr(member.getAddr());

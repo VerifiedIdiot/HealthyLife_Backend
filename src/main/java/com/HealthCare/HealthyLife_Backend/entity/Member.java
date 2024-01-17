@@ -26,7 +26,7 @@ public class Member {
     @Column(name = "name", nullable = false)
     private String name;
     @Column(name = "alias", nullable = false, unique = true)
-    private String alias;
+    private String nickName;
     @Column(name = "gender", nullable = false)
     private String gender;
     @Column(name = "phone", nullable = false, unique = true)
@@ -49,12 +49,12 @@ public class Member {
     }
 
     @Builder
-    public Member(String email, String password, String name, String alias, String gender, String phone
+    public Member(String email, String password, String name, String nickName, String gender, String phone
                  , String addr, String image, LocalDate birth, boolean isPayment, boolean isAuthDelete, Authority authority) {
         this.email = email;
         this.password = password;
         this.name = name;
-        this.alias = alias;
+        this.nickName = nickName;
         this.gender = gender;
         this.phone = phone;
         this.addr = addr;

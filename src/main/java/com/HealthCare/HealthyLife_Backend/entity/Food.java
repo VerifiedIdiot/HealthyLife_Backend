@@ -19,6 +19,9 @@ public class Food {
 
     private long num;
 
+    @Column(name = "image")
+    private String image;
+
     @Column(name = "name")
     private String name;
 

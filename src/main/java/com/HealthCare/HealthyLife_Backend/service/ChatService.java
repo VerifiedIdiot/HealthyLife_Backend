@@ -2,6 +2,8 @@ package com.HealthCare.HealthyLife_Backend.service;
 
 import com.HealthCare.HealthyLife_Backend.dto.ChatMessageDto;
 import com.HealthCare.HealthyLife_Backend.dto.ChatRoomResDto;
+import com.HealthCare.HealthyLife_Backend.entity.ChatRoom;
+import com.HealthCare.HealthyLife_Backend.repository.ChatRoomRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,11 +21,22 @@ import java.util.*;
 @Service
 public class ChatService {
     private final ObjectMapper objectMapper; // JSON 문자열로 변환하기 위한 객체
+    private final ChatRoomRepository chatRoomRepository;
     private Map<String, ChatRoomResDto> chatRooms; // 채팅방 정보를 담을 맵
 
     @PostConstruct // 의존성 주입 이후 초기화를 수행하는 메소드
     private void init() { // 채팅방 정보를 담을 맵을 초기화
         chatRooms = new LinkedHashMap<>(); // 채팅방 정보를 담을 맵
+        List<ChatRoom> chatRoomEntityList = chatRoomRepository.findAll();
+        for (ChatRoom chatRoomEntity : chatRoomEntityList) {
+            ChatRoomResDto chatRoom = ChatRoomResDto.builder()
+                    .roomId(chatRoomEntity.getRoomId())
+                    .name(chatRoomEntity.getName())
+                    .regDate(chatRoomEntity.getRegDate())
+                    .build();
+            chatRooms.put(chatRoomEntity.getRoomId(), chatRoom);
+        }
+
     }
 
     public List<ChatRoomResDto> findAllRoom() { // 채팅방 리스트 반환

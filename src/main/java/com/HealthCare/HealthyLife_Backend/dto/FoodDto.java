@@ -1,18 +1,8 @@
 package com.HealthCare.HealthyLife_Backend.dto;
 
 import com.HealthCare.HealthyLife_Backend.entity.Food;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
-import org.apache.poi.ss.usermodel.*;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 @Getter
 @Setter
@@ -23,6 +13,7 @@ import java.util.List;
 
 public class FoodDto {
     private long num;
+    private String image;
     private String name;
     private String brand;
     private String class1;
