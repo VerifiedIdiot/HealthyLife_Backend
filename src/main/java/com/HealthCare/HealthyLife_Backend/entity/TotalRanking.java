@@ -6,6 +6,7 @@ import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "total_ranking_tb")
@@ -18,15 +19,14 @@ import javax.persistence.*;
 public class TotalRanking {
 
     @Id
-    @Column(name = "total_ranking_id")
+
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "total_ranking_id")
     private Long id;
 
-    @Column(name = "nick_name", unique = true , nullable = false)
-    private String nickName;
+    @OneToMany(mappedBy = "totalRanking") // mappedBy 속성을 사용하여 연관 관계의 주인을 지정
+    private List<SeasonRanking> seasonRankings;
 
-    @Column(unique = true , nullable = false)
-    private String gender;
 
     @Column(nullable = false)
     private Long points;
@@ -37,8 +37,6 @@ public class TotalRanking {
     public RankingDto toDto() {
         return RankingDto.builder()
                 .id(this.getId())
-                .nickName(this.getNickName())
-                .gender(this.getGender())
                 .points(this.getPoints())
                 .ranking(this.getRanking())
                 .build();

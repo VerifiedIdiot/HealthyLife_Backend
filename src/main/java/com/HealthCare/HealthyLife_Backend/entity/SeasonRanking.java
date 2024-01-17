@@ -21,14 +21,17 @@ public class SeasonRanking {
     @Column(name = "season_ranking_id")
     private Long id;
 
-    @Column(name = "nick_name",nullable = false)
-    private String nickName;
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
 
-    @Column(nullable = false)
-    private String gender;
+    @ManyToOne
+    @JoinColumn(name = "calendar_id")
+    private Calendar calendar;
 
-    @Column(nullable = false)
-    private int season; // 해당 시즌
+    @ManyToOne
+    @JoinColumn(name = "total_ranking_id")
+    private TotalRanking totalRanking;
 
     @Column(nullable = false)
     private Long points;
@@ -36,18 +39,12 @@ public class SeasonRanking {
     @Column(nullable = true)
     private Integer ranking; // 시즌 종료 시의 랭킹 순위
 
-    @Column(name = "season_end_date", nullable = false)
-    private LocalDate seasonEndDate; // 시즌 종료 날짜
-
     public RankingDto toDto() {
         return RankingDto.builder()
                 .id(this.getId())
-                .nickName(this.getNickName())
-                .gender(this.getGender())
+                .member(this.getMember())
                 .points(this.getPoints())
                 .ranking(this.getRanking())
-                .season(this.getSeason())
-                .seasonEndDate(this.getSeasonEndDate())
                 .build();
     }
 }
