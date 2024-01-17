@@ -1,7 +1,6 @@
 package com.HealthCare.HealthyLife_Backend.dto;
 
 import com.HealthCare.HealthyLife_Backend.entity.Calendar;
-import com.HealthCare.HealthyLife_Backend.entity.SeasonRanking;
 import lombok.*;
 import java.time.LocalDate;
 

@@ -21,13 +21,13 @@ public class Calendar {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "title",nullable = false)
+    @Column(name = "title", nullable = false)
     private String title; //제목
 
-    @Column(name = "detail",length = 1000)
+    @Column(name = "detail", length = 1000)
     private String detail; // 내용
 
-    @Column(name = "write_date",nullable = false)
+    @Column(name = "write_date", nullable = false)
     private LocalDate writeDate; //작성일자
 
     @Column(name = "points")
@@ -45,7 +45,7 @@ public class Calendar {
     @JoinColumn(name = "food_id")
     private Food food;
 
-    @OneToMany(mappedBy = "calendar" , cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "calendar", cascade = CascadeType.ALL)
     private List<SeasonRanking> seasonRankings;
 
     public CalendarDto toCalendarDto() {
