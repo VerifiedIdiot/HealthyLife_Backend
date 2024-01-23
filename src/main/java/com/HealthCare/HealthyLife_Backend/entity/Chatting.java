@@ -19,17 +19,19 @@ import java.time.LocalDateTime;
 public class Chatting {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-
     @Column(name = "chatting_id")
     private Long id;
-
     @Enumerated(EnumType.STRING)
-    private MessageType type;
+    private MessageType type; // ?
     @Column(name = "message",nullable = false)
     private String message; //메세지
     @Column(name = "message_time",nullable = false)
     private LocalDateTime messageTime; //메세지 생성 시간
 
+    @Column(name = "message_status" )
+    private String messageStatus; //메세지 읽음,안읽음
+
+    //생성시간
     @PrePersist
     protected void prePersist() {
         messageTime = LocalDateTime.now();
