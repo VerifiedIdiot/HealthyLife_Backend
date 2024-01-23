@@ -11,11 +11,10 @@ import javax.persistence.*;
 @Getter
 @Setter
 @ToString
-@Table(name = "delete_member_tb")
+@Table(name = "DeleteMember")
 public class DeleteMember {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "delete_member_id")
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "email")

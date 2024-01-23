@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @ToString
-@Table(name = "friend_tb")
+@Table(name = "Friend")
 public class Friend {
     @Id
     @Column(name = "friend_id")

@@ -6,7 +6,7 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "exercise_tb") // 실제 데이터베이스 테이블 이름에 맞게 지정해야 합니다.
+@Table(name = "exercise") // 실제 데이터베이스 테이블 이름에 맞게 지정해야 합니다.
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,7 +16,6 @@ public class Exercise {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "exercise_id")
     private Long id;
 
     @Column(name = "name")
@@ -34,6 +33,8 @@ public class Exercise {
     @Column(name = "difficulty")
     private String difficulty;
 
+    @Column(name = "instructions")
+    private String instructions;
 
     public ExerciseDto toExerciseDto() {
         return ExerciseDto.builder()
@@ -42,6 +43,7 @@ public class Exercise {
                 .muscle(this.getMuscle())
                 .equipment(this.getEquipment())
                 .difficulty(this.getDifficulty())
+                .instructions(this.getInstructions())
                 .build();
     }
 

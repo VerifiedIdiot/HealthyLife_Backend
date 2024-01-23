@@ -13,10 +13,10 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
-@Table(name = "member_status_tb")
+@Table(name = "member_status")
 public class MemberStatus {
     @Id
-    @Column(name = "member_status_id")
+    @Column(name = "status_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String statusMessage; //상태 메세지

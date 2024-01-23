@@ -11,14 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "comment_tb") // 실제 데이터베이스 테이블 이름에 맞게 지정해야 합니다.
+@Table(name = "comment") // 실제 데이터베이스 테이블 이름에 맞게 지정해야 합니다.
 @Getter @Setter
 @NoArgsConstructor
 @ToString
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "comment_id")
     private Long commentId;
 
     @ManyToOne(fetch = FetchType.LAZY)

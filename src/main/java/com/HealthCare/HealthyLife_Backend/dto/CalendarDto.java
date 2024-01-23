@@ -1,6 +1,5 @@
 package com.HealthCare.HealthyLife_Backend.dto;
 
-import com.HealthCare.HealthyLife_Backend.entity.Calendar;
 import lombok.*;
 import java.time.LocalDate;
 
@@ -9,22 +8,9 @@ import java.time.LocalDate;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class CalendarDto {
-    private Long id;
-    private Integer month;
-    private String title; //제목
-    private String detail; // 내용
-    private LocalDate writeDate; //작성일자
-    private Integer points; //포인트
-
-    public Calendar toCalendarEntity() {
-        return Calendar.builder()
-                .id(this.getId())
-                .title(this.getTitle())
-                .detail(this.getDetail())
-                .writeDate(this.getWriteDate())
-                .points(this.getPoints())
-                .build();
-    }
+    private Long calendarId;
+    private String calendarTitle; //제목
+    private String calendarDetail; // 내용
+    private LocalDate calendarWriteDate; //작성일자
 }
