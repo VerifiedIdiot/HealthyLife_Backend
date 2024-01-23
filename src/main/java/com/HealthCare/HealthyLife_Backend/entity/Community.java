@@ -8,6 +8,8 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "community_tb") // 실제 데이터베이스 테이블 이름에 맞게 지정해야 합니다.
@@ -37,28 +39,29 @@ public class Community {
     }
 
     //    직렬화 시 해당 필드에 포함시키고 싶지 않을 때 선언하는 어노테이션 Response 데이터에서 해당 필드 제외
-    @JsonIgnore
-//  여러 커뮤니티가 사용자 한명에서 사용 될 수 있다 : ManyToOne
+
+    //  여러 커뮤니티가 사용자 한명에서 사용 될 수 있다 : ManyToOne
 //    LAZY-지연로딩 / Member를 조회하는 시점에 쿼리가 나감
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
-    private int viewCount;
-    private int pickCount;
+
+    @OneToMany(mappedBy = "community", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CommunityLikeIt> CommunityLikeIts = new ArrayList<>();
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "categoryId")
-    private CommunityCategory category; // 카테고리
-
+    @JoinColumn(name = "category_id")
+    private Category category; // 카테고리
+    private int viewCount;
     private String categoryName;
-
     private String email;
-    @Column(name = "ipAddress")
-    private String ipAddress;
-    private String name;
+    private String nickName;
     private String password;
 
+    // Board와 Comment는 1:N 관계, mappedBy는 연관관계의 주인이 아니다(난 FK가 아니에요)라는 의미
+    @OneToMany(mappedBy = "community", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments; // 댓글 목록
 }
-

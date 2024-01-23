@@ -6,21 +6,18 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
 public class CommunityDto {
-    private Long id;
-    private String email;
-    private Long categoryId;
-    private String categoryName;
+    private Long communityId;
     private String title;
-    private String content;
-    private String text;
+    private String content; // 사진
+    private String text; // 내용
     private LocalDateTime regDate;
+    private int likeItCount;
     private int viewCount;
-    private int pickCount;
-    private String ipAddress;
-    private String name;
+    private String categoryName;
+    private String email;
+    private String nickName;
     private String password;
+
+
 }

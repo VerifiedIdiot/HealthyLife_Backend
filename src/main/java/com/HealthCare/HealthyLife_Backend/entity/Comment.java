@@ -26,8 +26,12 @@ public class Comment {
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "communityId")
+    @JoinColumn(name = "community_id")
     private Community community;
+
+    @Column(length = 1000)
+    private String content;
+
     private LocalDateTime regDate;
 
     @PrePersist
@@ -35,19 +39,6 @@ public class Comment {
         regDate = LocalDateTime.now();
     }
 
-    @Column(length = 1000)
-    private String content;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Comment parentComment;
-
-    @OneToMany(mappedBy = "parentComment", fetch = FetchType.LAZY)
-    private List<Comment> childComments = new ArrayList<>();
-
-    @Column(name = "ipAddress")
-    private String ipAddress;
-    private String email;
-    private String Name;
-    private String password;}
+}
 
 

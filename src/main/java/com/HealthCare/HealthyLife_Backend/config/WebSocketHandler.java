@@ -1,10 +1,8 @@
 package com.HealthCare.HealthyLife_Backend.config;
 
 import com.HealthCare.HealthyLife_Backend.dto.ChatMessageDto;
-import com.HealthCare.HealthyLife_Backend.dto.CommentMessageDto;
 import com.HealthCare.HealthyLife_Backend.enums.MessageType;
 import com.HealthCare.HealthyLife_Backend.service.ChatService;
-import com.HealthCare.HealthyLife_Backend.service.CommentService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +42,6 @@ public class WebSocketHandler extends TextWebSocketHandler {
         log.warn("{}", payload); // 수신된 메시지를 로깅
 
         // CommentService를 통해 댓글 메시지 처리
-        CommentMessageDto commentMessage = objectMapper.readValue(payload, CommentMessageDto.class);
         // JSON 문자열을 ChatMessageDto 객체로 변환
         ChatMessageDto chatMessage = objectMapper.readValue(payload, ChatMessageDto.class);
 

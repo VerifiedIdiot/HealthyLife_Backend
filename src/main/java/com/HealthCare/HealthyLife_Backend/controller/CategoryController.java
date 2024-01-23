@@ -1,7 +1,7 @@
 package com.HealthCare.HealthyLife_Backend.controller;
 
 
-import com.HealthCare.HealthyLife_Backend.dto.CommunityCategoryDto;
+import com.HealthCare.HealthyLife_Backend.dto.CategoryDto;
 import com.HealthCare.HealthyLife_Backend.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,15 +19,15 @@ public class CategoryController {
 
     // 카테고리 등록
     @PostMapping("/new")
-    public ResponseEntity<Boolean> categoryRegister(@RequestBody CommunityCategoryDto communityCategoryDto) {
-        boolean isTrue = categoryService.saveCategory(communityCategoryDto);
+    public ResponseEntity<Boolean> categoryRegister(@RequestBody CategoryDto categoryDto) {
+        boolean isTrue = categoryService.saveCategory(categoryDto);
         return ResponseEntity.ok(true);
     }
 
     // 카테고리 수정
     @PutMapping("/modify/{id}")
-    public ResponseEntity<Boolean> categoryModify(@PathVariable Long id, @RequestBody CommunityCategoryDto communityCategoryDto) {
-        boolean isTrue = categoryService.modifyCategory(id, communityCategoryDto);
+    public ResponseEntity<Boolean> categoryModify(@PathVariable Long id, @RequestBody CategoryDto categoryDto) {
+        boolean isTrue = categoryService.modifyCategory(id, categoryDto);
         return ResponseEntity.ok(true);
     }
 
@@ -40,8 +40,8 @@ public class CategoryController {
 
     // 카테고리 목록 조회
     @GetMapping("/list")
-    public ResponseEntity<List<CommunityCategoryDto>> categoryList() {
-        List<CommunityCategoryDto> list = categoryService.getCategoryList();
+    public ResponseEntity<List<CategoryDto>> categoryList() {
+        List<CategoryDto> list = categoryService.getCategoryList();
         return ResponseEntity.ok(list);
     }
 }

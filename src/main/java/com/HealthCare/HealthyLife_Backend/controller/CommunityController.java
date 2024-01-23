@@ -25,8 +25,9 @@ public class CommunityController {
 
     // 게시글 작성
     @PostMapping("/new")
-    public ResponseEntity<Boolean> saveCommunity(@RequestBody CommunityDto communityDto, HttpServletRequest request) {
-        return ResponseEntity.ok(communityService.saveCommunity(communityDto, request));
+    public ResponseEntity<Boolean> saveCommunity(@RequestBody CommunityDto communityDto) {
+        boolean isTrue = communityService.saveCommunity(communityDto);
+        return ResponseEntity.ok(isTrue);
     }
 
     // 게시글 리스트 조회
@@ -64,8 +65,7 @@ public class CommunityController {
     // 카테고리별 게시글 목록 페이징
     @GetMapping("/list/page/category")
     public ResponseEntity<List<CommunityDto>> boardListByCategory(@RequestParam Long categoryId,
-                                                                  @RequestParam(defaultValue = "0") int page,
-                                                                  @RequestParam(defaultValue = "10") int size) {
+                                                                  @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
         List<CommunityDto> list = communityService.getCommunityListByCategory(categoryId, page, size);
         return ResponseEntity.ok(list);
     }
@@ -89,26 +89,6 @@ public class CommunityController {
         return ResponseEntity.ok(pageCnt);
     }
 
-    // 좋아요/싫어요
-    @PostMapping("/pick/{id}/{isPick}")
-    public ResponseEntity<String> pick(@PathVariable Long id, @PathVariable boolean isPick, HttpServletRequest request, Principal principal) {
-        String email = principal != null ? principal.getName() : null;
-        String visitorIp = request.getRemoteAddr();
-        try {
-            communityService.pick(id, email, visitorIp, isPick);
-            return ResponseEntity.ok(isPick ? "좋아요" : "싫어요");
-        } catch (IllegalArgumentException e) {
-            String message = isPick ? "이미 좋아합니다." : "이미 싫어합니다.";
-            return ResponseEntity.badRequest().body(message);
-        }
-    }
-
-    // 좋아요 랭킹 목록
-    @GetMapping("/ranking/{period}")
-    public ResponseEntity<List<Community>> getRealtimeRanking(@PathVariable String period) {
-        return ResponseEntity.ok(communityService.getRealtimeRanking(period));
-    }
-
     // 게시글 검색 기본(제목+내용)
     @GetMapping("/search/titleAndContent")
     public ResponseEntity<Page<CommunityDto>> searchByTitleAndContent(@RequestParam String keyword, Pageable pageable) {
@@ -123,16 +103,16 @@ public class CommunityController {
         return ResponseEntity.ok(list);
     }
 
-    // 이름으로 검색
-    @GetMapping("/search/name")
-    public ResponseEntity<Page<CommunityDto>> searchByName(@RequestParam String keyword, Pageable pageable) {
-        Page<CommunityDto> list = communityService.searchByName(keyword, pageable);
+    // 닉네임으로 검색
+    @GetMapping("/search/nickName")
+    public ResponseEntity<Page<CommunityDto>> searchByNickName(@RequestParam String keyword, Pageable pageable) {
+        Page<CommunityDto> list = communityService.searchByNickName(keyword, pageable);
         return ResponseEntity.ok(list);
     }
 
     // 댓글로 검색
     @GetMapping("/search/comment")
-    public ResponseEntity<Page<CommunityDto>> Search(@RequestParam String keyword, Pageable pageable) {
+    public ResponseEntity<Page<CommunityDto>> searchByComment(@RequestParam String keyword, Pageable pageable) {
         Page<CommunityDto> list = communityService.searchByComment(keyword, pageable);
         return ResponseEntity.ok(list);
     }

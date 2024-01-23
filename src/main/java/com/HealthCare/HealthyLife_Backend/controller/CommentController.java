@@ -10,7 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Slf4j
@@ -22,16 +21,9 @@ public class CommentController {
 
     // 댓글 등록
     @PostMapping("/new")
-    public ResponseEntity<Boolean> commentRegister(@RequestBody CommentDto commentDto, HttpServletRequest request) {
+    public ResponseEntity<Boolean> commentRegister(@RequestBody CommentDto commentDto) {
         log.info("commentDto: {}", commentDto);
-        boolean result = commentService.commentRegister(commentDto, request);
-        return ResponseEntity.ok(result);
-    }
-
-    @PostMapping("/reply/new")
-    public ResponseEntity<Boolean> replyRegister(@RequestBody CommentDto commentDto, HttpServletRequest request) {
-        log.info("commentDto: {}", commentDto);
-        boolean result = commentService.replyRegister(commentDto, request);
+        boolean result = commentService.commentRegister(commentDto);
         return ResponseEntity.ok(result);
     }
 

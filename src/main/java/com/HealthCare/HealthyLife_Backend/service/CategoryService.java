@@ -1,7 +1,7 @@
 package com.HealthCare.HealthyLife_Backend.service;
 
-import com.HealthCare.HealthyLife_Backend.dto.CommunityCategoryDto;
-import com.HealthCare.HealthyLife_Backend.entity.CommunityCategory;
+import com.HealthCare.HealthyLife_Backend.dto.CategoryDto;
+import com.HealthCare.HealthyLife_Backend.entity.Category;
 import com.HealthCare.HealthyLife_Backend.entity.Member;
 import com.HealthCare.HealthyLife_Backend.repository.CategoryRepository;
 import com.HealthCare.HealthyLife_Backend.repository.MemberRepository;
@@ -18,15 +18,15 @@ public class CategoryService {
     private final MemberRepository memberRepository;
 
     // 카테고리 등록
-    public boolean saveCategory(CommunityCategoryDto communityCategoryDto) {
+    public boolean saveCategory(CategoryDto categoryDto) {
         try {
-            CommunityCategory communityCategory = new CommunityCategory();
-            Member member = memberRepository.findByEmail(communityCategoryDto.getEmail()).orElseThrow(
+            Category category = new Category();
+            Member member = memberRepository.findByEmail(categoryDto.getEmail()).orElseThrow(
                     () -> new RuntimeException("해당 회원이 존재 하지 않습니다.")
             );
-            communityCategory.setCategoryName(communityCategoryDto.getCategoryName());
-            communityCategory.setMember(member);
-            categoryRepository.save(communityCategory);
+            category.setCategoryName(categoryDto.getCategoryName());
+            category.setMember(member);
+            categoryRepository.save(category);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -35,18 +35,18 @@ public class CategoryService {
     }
 
     // 카테고리 수정
-    public boolean modifyCategory(Long id, CommunityCategoryDto communityCategoryDto) {
+    public boolean modifyCategory(Long id, CategoryDto categoryDto) {
         try {
-            CommunityCategory communityCategory = categoryRepository.findById(id).orElseThrow(
+            Category category = categoryRepository.findById(id).orElseThrow(
                     () -> new RuntimeException("해당 카테고리가 존재하지 않습니다.")
             );
-            Member member = memberRepository.findByEmail(communityCategoryDto.getEmail()).orElseThrow(
+            Member member = memberRepository.findByEmail(categoryDto.getEmail()).orElseThrow(
                     () -> new RuntimeException("해당 회원이 존재하지 않습니다")
             );
-            communityCategory.setCategoryName(communityCategoryDto.getCategoryName());
-            communityCategory.setCategoryId(communityCategoryDto.getCategoryId());
-            communityCategory.setMember(member);
-            categoryRepository.save(communityCategory);
+            category.setCategoryName(categoryDto.getCategoryName());
+            category.setCategoryId(categoryDto.getCategoryId());
+            category.setMember(member);
+            categoryRepository.save(category);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -57,10 +57,10 @@ public class CategoryService {
     // 카테고리 삭제
     public boolean deleteCategory(Long id) {
         try {
-            CommunityCategory communityCategory = categoryRepository.findById(id).orElseThrow(
+            Category category = categoryRepository.findById(id).orElseThrow(
                     () -> new RuntimeException("해당 카테고리가 존재하지 않습니다.")
             );
-            categoryRepository.delete(communityCategory);
+            categoryRepository.delete(category);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -69,22 +69,22 @@ public class CategoryService {
     }
 
     // 카테고리 목록 조회
-    public List<CommunityCategoryDto> getCategoryList() {
-        List<CommunityCategory> categories = categoryRepository.findAll();
-        List<CommunityCategoryDto> communityCategoryDtos = new ArrayList<>();
-        for (CommunityCategory communityCategory : categories) {
-            communityCategoryDtos.add(convertEntityToDto(communityCategory));
+    public List<CategoryDto> getCategoryList() {
+        List<Category> categories = categoryRepository.findAll();
+        List<CategoryDto> categoryDtos = new ArrayList<>();
+        for (Category category : categories) {
+            categoryDtos.add(convertEntityToDto(category));
         }
-        return communityCategoryDtos;
+        return categoryDtos;
     }
 
     // 엔티티를 DTO로 변환하는 메서드
-    private CommunityCategoryDto convertEntityToDto(CommunityCategory communityCategory) {
-        CommunityCategoryDto communityCategoryDto = new CommunityCategoryDto();
-        communityCategoryDto.setCategoryId(communityCategory.getCategoryId());
-        communityCategoryDto.setCategoryName(communityCategory.getCategoryName());
-        communityCategoryDto.setEmail(communityCategory.getMember().getEmail());
-        return communityCategoryDto;
+    private CategoryDto convertEntityToDto(Category category) {
+        CategoryDto categoryDto = new CategoryDto();
+        categoryDto.setCategoryId(category.getCategoryId());
+        categoryDto.setCategoryName(category.getCategoryName());
+        categoryDto.setEmail(category.getMember().getEmail());
+        return categoryDto;
     }
 }
 
