@@ -19,7 +19,7 @@ import java.util.List;
 @Builder
 public class Calendar {
     @Id
-    @Column(name = "calendarId")
+    @Column(name = "calendar_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
