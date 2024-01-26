@@ -1,6 +1,4 @@
 package com.HealthCare.HealthyLife_Backend.dto;
-import com.HealthCare.HealthyLife_Backend.entity.Medicine;
-import com.HealthCare.HealthyLife_Backend.entity.MedicineCode;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -13,24 +11,17 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class MedicineCodeDto {
-    @JsonProperty("type")
-    private String medicineType;
-    @JsonProperty("id")
-    private String medicineCode;
-    @JsonProperty("functionality")
+
+    private String type;
+
+    private String id;
+
     private String functionality;
-    @JsonProperty("materials")
+
     private List<String> materials;
 
-    public MedicineCode toEntity() {
-        return MedicineCode.builder()
-                .medicineType(this.getMedicineType())
-                .medicineCode(this.getMedicineCode())
-                .functionality(this.getFunctionality())
-                .materials(this.getMaterials())
-                .build();
-    }
+
 
 }

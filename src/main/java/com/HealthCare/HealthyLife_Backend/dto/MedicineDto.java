@@ -1,6 +1,5 @@
 package com.HealthCare.HealthyLife_Backend.dto;
 
-import com.HealthCare.HealthyLife_Backend.entity.Medicine;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -44,14 +43,5 @@ public class MedicineDto {
         private String functionality;
     }
 
-    public Medicine toEntity() {
-        return Medicine.builder()
-                .type(this.getType())
-                .reportNo(this.getReportNo())
-                .name(this.getName())
-                .company(this.getCompany())
-                .functionalities(this.getFunctionalities())
-                .materials(this.getFunctionalities())
-                .build();
-    }
+
 }
