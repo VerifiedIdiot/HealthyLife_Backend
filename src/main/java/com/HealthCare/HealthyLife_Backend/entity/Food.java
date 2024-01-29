@@ -6,7 +6,7 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "food") // 실제 데이터베이스 테이블 이름에 맞게 지정해야 합니다.
+@Table(name = "food_tb") // 실제 데이터베이스 테이블 이름에 맞게 지정해야 합니다.
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,6 +16,7 @@ public class Food {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "food_id")
     private Long id;
 
     private long num;

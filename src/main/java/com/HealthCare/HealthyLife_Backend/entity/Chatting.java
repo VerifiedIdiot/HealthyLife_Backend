@@ -15,10 +15,11 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
-@Table(name = "Chatting")
+@Table(name = "chatting_tb")
 public class Chatting {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "chatting_id")
     private Long id;
 
     @Enumerated(EnumType.STRING)

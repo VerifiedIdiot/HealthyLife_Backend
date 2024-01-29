@@ -12,14 +12,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "community") // 실제 데이터베이스 테이블 이름에 맞게 지정해야 합니다.
+@Table(name = "community_tb") // 실제 데이터베이스 테이블 이름에 맞게 지정해야 합니다.
 @Getter
 @Setter
 @NoArgsConstructor
 @ToString
 public class Community {
     @Id
-    @Column(name = "communityId")
+    @Column(name = "community_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long communityId;
     private String title;

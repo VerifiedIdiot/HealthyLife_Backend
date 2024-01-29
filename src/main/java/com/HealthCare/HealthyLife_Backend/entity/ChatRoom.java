@@ -14,10 +14,11 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-@Table(name = "ChatRoom")
+@Table(name = "chat_room_tb")
 public class ChatRoom {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "chat_room_id")
     private Long id;
     @Column(name = "room_id",nullable = false)
     private String roomId; // 채팅방 ID

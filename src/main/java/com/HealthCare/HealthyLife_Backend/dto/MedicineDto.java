@@ -9,7 +9,6 @@ import java.util.List;
 
 @Getter @Setter
 @ToString
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
@@ -32,6 +31,8 @@ public class MedicineDto {
 
 
     private List<String> materials;
+
+
 
 
     @Getter

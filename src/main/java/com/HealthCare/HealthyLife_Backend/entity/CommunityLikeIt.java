@@ -8,7 +8,7 @@ import lombok.ToString;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "like_it") // 실제 데이터베이스 테이블 이름에 맞게 지정해야 합니다.
+@Table(name = "like_it_tb") // 실제 데이터베이스 테이블 이름에 맞게 지정해야 합니다.
 @Getter
 @Setter
 @ToString
@@ -16,6 +16,7 @@ import javax.persistence.*;
 public class CommunityLikeIt {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "like_it_id")
     private Long id;
 
     @ManyToOne(cascade = CascadeType.ALL)
