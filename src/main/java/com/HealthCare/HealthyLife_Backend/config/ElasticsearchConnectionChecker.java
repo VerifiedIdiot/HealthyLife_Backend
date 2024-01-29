@@ -10,6 +10,9 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+// 스프링어플리케이션 실행시 엘라스틱서치에 ping을 날려서 연동됐는지 로그로 찍기위한 클래스
+// AWS의 헬시책을 생각하면 되겠다
+// ConditionalOnProperty는 프로퍼티에 elasticsearch.enabled의 값이 true 일때만 실행하라고 스프링에 명시
 @Component
 @ConditionalOnProperty(name = "elasticsearch.enabled", havingValue = "true")
 public class ElasticsearchConnectionChecker implements ApplicationRunner {

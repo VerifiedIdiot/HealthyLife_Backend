@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Optional;
-
+// ConditionalOnProperty는 프로퍼티에 elasticsearch.enabled의 값이 true 일때만 실행하라고 스프링에 명시
 @RestController
 @RequestMapping("/api/medicines")
 @ConditionalOnProperty(name = "elasticsearch.enabled", havingValue = "true")
