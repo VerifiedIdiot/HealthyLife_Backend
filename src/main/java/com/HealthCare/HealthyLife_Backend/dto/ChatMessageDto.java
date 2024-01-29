@@ -11,6 +11,6 @@ import lombok.Setter;
 public class ChatMessageDto {
     private MessageType type;
     private String roomId;
-    private String sender;
+    private Long sender;
     private String message;
 }

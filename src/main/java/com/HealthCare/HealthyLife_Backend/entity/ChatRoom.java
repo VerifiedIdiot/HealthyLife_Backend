@@ -17,10 +17,7 @@ import java.util.List;
 @Table(name = "chat_room_tb")
 public class ChatRoom {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "chat_room_id")
-    private Long id;
-    @Column(name = "room_id",nullable = false)
+    @Column(name = "room_id",length = 50)
     private String roomId; // 채팅방 ID
     @Column(name = "room_name",nullable = false)
     private String name; // 채팅방 이름
