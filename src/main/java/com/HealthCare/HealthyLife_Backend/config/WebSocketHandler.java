@@ -37,18 +37,18 @@ public class WebSocketHandler extends TextWebSocketHandler {
     // 클라이언트가 서버로 연결을 시도할 때 호출되는 메서드
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         try{
-        String payload = message.getPayload(); // 클라이언트가 전송한 메시지
+            String payload = message.getPayload(); // 클라이언트가 전송한 메시지
 
-        log.warn("{}", payload); // 수신된 메시지를 로깅
+            log.warn("{}", payload); // 수신된 메시지를 로깅
 
-        // CommentService를 통해 댓글 메시지 처리
-        // JSON 문자열을 ChatMessageDto 객체로 변환
-        ChatMessageDto chatMessage = objectMapper.readValue(payload, ChatMessageDto.class);
+            // CommentService를 통해 댓글 메시지 처리
+            // JSON 문자열을 ChatMessageDto 객체로 변환
+            ChatMessageDto chatMessage = objectMapper.readValue(payload, ChatMessageDto.class);
 
-        String roomId = chatMessage.getRoomId(); // 채팅방 ID
+            String roomId = chatMessage.getRoomId(); // 채팅방 ID
 
-        // 세션과 채팅방 ID를 매핑
-        sessionRoomIdMap.put(session, chatMessage.getRoomId());
+            // 세션과 채팅방 ID를 매핑
+            sessionRoomIdMap.put(session, chatMessage.getRoomId());
 
 //        if (chatMessage.getType() == MessageType.ENTER) {
 //            // 메시지 타입이 ENTER이면 채팅방에 입장한 세션 추가
@@ -60,10 +60,10 @@ public class WebSocketHandler extends TextWebSocketHandler {
 //            // 그 외의 경우에는 채팅방의 모든 참가자에게 메시지 전송
 //            chatService.sendMessageToAll(roomId, chatMessage);
 //        }
-    } catch (Exception e) {
-        log.error("Error handling message: ", e);
+        } catch (Exception e) {
+            log.error("Error handling message: ", e);
+        }
     }
-}
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         // 세션과 매핑된 채팅방 ID 가져오기
