@@ -2,8 +2,10 @@ package com.HealthCare.HealthyLife_Backend.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.socket.WebSocketSession;
 
@@ -13,6 +15,8 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 @Slf4j
 @Builder
 public class ChatRoomResDto {
@@ -30,7 +34,7 @@ public class ChatRoomResDto {
         return this.sessions.size() == 0;
     }
 
-    @Builder // 빌더 패턴 적6용
+
     public ChatRoomResDto(String roomId, String name, LocalDateTime regDate ,Long memberId,Long senderId) {
         this.roomId = roomId;
         this.name = name;

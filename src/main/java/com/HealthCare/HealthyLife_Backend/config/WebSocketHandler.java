@@ -50,16 +50,16 @@ public class WebSocketHandler extends TextWebSocketHandler {
         // 세션과 채팅방 ID를 매핑
         sessionRoomIdMap.put(session, chatMessage.getRoomId());
 
-        if (chatMessage.getType() == MessageType.ENTER) {
-            // 메시지 타입이 ENTER이면 채팅방에 입장한 세션 추가
-            chatService.addSessionAndHandleEnter(roomId, session, chatMessage);
-        } else if (chatMessage.getType() == MessageType.CLOSE) {
-            // 메시지 타입이 CLOSE이면 채팅방에서 세션 제거하고 퇴장 처리
-            chatService.removeSessionAndHandleExit(roomId, session, chatMessage);
-        } else {
-            // 그 외의 경우에는 채팅방의 모든 참가자에게 메시지 전송
-            chatService.sendMessageToAll(roomId, chatMessage);
-        }
+//        if (chatMessage.getType() == MessageType.ENTER) {
+//            // 메시지 타입이 ENTER이면 채팅방에 입장한 세션 추가
+//            chatService.addSessionAndHandleEnter(roomId, session, chatMessage);
+//        } else if (chatMessage.getType() == MessageType.CLOSE) {
+//            // 메시지 타입이 CLOSE이면 채팅방에서 세션 제거하고 퇴장 처리
+//            chatService.removeSessionAndHandleExit(roomId, session, chatMessage);
+//        } else {
+//            // 그 외의 경우에는 채팅방의 모든 참가자에게 메시지 전송
+//            chatService.sendMessageToAll(roomId, chatMessage);
+//        }
     } catch (Exception e) {
         log.error("Error handling message: ", e);
     }
@@ -82,15 +82,15 @@ public class WebSocketHandler extends TextWebSocketHandler {
         // 세션과 매핑된 채팅방 ID를 가져옴
         String roomId = sessionRoomIdMap.remove(session);
 
-        // 채팅방 ID가 존재하면
-        if (roomId != null) {
-            // 채팅 메시지 객체 생성 및 타입 설정 (CLOSE)
-            ChatMessageDto chatMessage = new ChatMessageDto();
-            chatMessage.setType(MessageType.CLOSE);
-
-            // 채팅방에서 세션 제거하고 퇴장 처리
-            chatService.removeSessionAndHandleExit(roomId, session, chatMessage);
-        }
+//        // 채팅방 ID가 존재하면
+//        if (roomId != null) {
+//            // 채팅 메시지 객체 생성 및 타입 설정 (CLOSE)
+//            ChatMessageDto chatMessage = new ChatMessageDto();
+//            chatMessage.setType(MessageType.CLOSE);
+//
+//            // 채팅방에서 세션 제거하고 퇴장 처리
+//            chatService.removeSessionAndHandleExit(roomId, session, chatMessage);
+//        }
     }
 
     private String getEmailFromSession(WebSocketSession session) {
