@@ -30,4 +30,13 @@ public class ChatRoomResDto {
         return this.sessions.size() == 0;
     }
 
+    @Builder // 빌더 패턴 적6용
+    public ChatRoomResDto(String roomId, String name, LocalDateTime regDate ,Long memberId,Long senderId) {
+        this.roomId = roomId;
+        this.name = name;
+        this.memberId =memberId;
+        this.senderId=senderId;
+        this.regDate = regDate;
+        this.sessions = Collections.newSetFromMap(new ConcurrentHashMap<>()); // 동시성 문제를 해결하기 위해 ConcurrentHashMap 사용
+    }
 }

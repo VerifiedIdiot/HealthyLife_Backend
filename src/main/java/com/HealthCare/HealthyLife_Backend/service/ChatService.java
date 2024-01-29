@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
+
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -29,16 +30,18 @@ public class ChatService {
 
     @PostConstruct // 의존성 주입 이후 초기화를 수행하는 메소드
     private void init() { // 채팅방 정보를 담을 맵을 초기화
-        ChatRoomResDto chatRoom = ChatRoomResDto.builder()
-                .roomId(chatRoomEntity.getRoomId())
-                .name(chatRoomEntity.getName())
-                .memberId(chatRoomEntity.getMember().getId()) //채팅방주인
-                .senderId(chatRoomEntity.getSenderId()) //채팅이용자
-                .regDate(chatRoomEntity.getRegDate())
-                .build();
-        chatRooms.put(chatRoomEntity.getRoomId(), chatRoom);
+        List<ChatRoom> chatRoomEntityList = chatRoomRepository.findAll();
+        for (ChatRoom chatRoomEntity : chatRoomEntityList) {
+            ChatRoomResDto chatRoom = ChatRoomResDto.builder()
+                    .roomId(chatRoomEntity.getRoomId())
+                    .name(chatRoomEntity.getName())
+                    .memberId(chatRoomEntity.getMember().getId()) //채팅방주인
+                    .senderId(chatRoomEntity.getSenderId()) //채팅이용자
+                    .regDate(chatRoomEntity.getRegDate())
+                    .build();
+            chatRooms.put(chatRoomEntity.getRoomId(), chatRoom);
+        }
     }
-
         // 전체 채팅방 리스트
         public List<ChatRoomResDto> findAllRoom() {
             return new ArrayList<>(chatRooms.values());
