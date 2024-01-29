@@ -8,7 +8,7 @@ import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.convert.ElasticsearchConverter;
 
 
-// 엘라스틱서치와 연동을 위한 기본설정을 제공하는 추상클래스 정도 ㅎ
+// 엘라스틱서치와 연동을 위한 기본설정을 제공하는 추상클래스
 public abstract class AbstractElasticSearchConfig extends ElasticsearchConfigurationSupport {
     //RestHighLevelClient은 엘라스틱서치와 통신을 담당하는 클라이언트 객체
     @Bean

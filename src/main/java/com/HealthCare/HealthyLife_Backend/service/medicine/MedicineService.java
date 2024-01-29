@@ -1,6 +1,6 @@
-package com.HealthCare.HealthyLife_Backend.service;
+package com.HealthCare.HealthyLife_Backend.service.medicine;
 
-import com.HealthCare.HealthyLife_Backend.dto.MedicineDto;
+import com.HealthCare.HealthyLife_Backend.dto.medicine.MedicineDto;
 import com.HealthCare.HealthyLife_Backend.repository.MedicineRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

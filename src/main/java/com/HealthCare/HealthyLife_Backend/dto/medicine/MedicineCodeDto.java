@@ -1,4 +1,4 @@
-package com.HealthCare.HealthyLife_Backend.dto;
+package com.HealthCare.HealthyLife_Backend.dto.medicine;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;

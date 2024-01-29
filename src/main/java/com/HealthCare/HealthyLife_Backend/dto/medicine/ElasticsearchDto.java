@@ -1,4 +1,4 @@
-package com.HealthCare.HealthyLife_Backend.dto;
+package com.HealthCare.HealthyLife_Backend.dto.medicine;
 
 import com.HealthCare.HealthyLife_Backend.document.MedicineDocument;
 import lombok.*;
@@ -7,9 +7,11 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 @Setter
 @ToString
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @ConditionalOnProperty(name = "spring.elasticsearch.enabled", havingValue = "true")
 public class ElasticsearchDto {
+    private String id;
 
     private String type;
 
@@ -27,8 +29,9 @@ public class ElasticsearchDto {
     private String materials;
 
 
-    public MedicineDocument toDocument(ElasticsearchDto elasticsearchDto) {
+    public MedicineDocument toDocument() {
         return MedicineDocument.builder()
+                .id(this.getId())
                 .type(this.getType())
                 .reportNo(this.getReportNo())
                 .productName(this.getName())
@@ -37,4 +40,6 @@ public class ElasticsearchDto {
                 .company(this.getCompany())
                 .build();
     }
+
+
 }

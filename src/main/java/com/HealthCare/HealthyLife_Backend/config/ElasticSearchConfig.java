@@ -1,5 +1,6 @@
 package com.HealthCare.HealthyLife_Backend.config;
 
+import lombok.Builder;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +12,7 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 
 
 // 엘라스틱서치의 실제 연결정보와 클라이언트 생성로직을 구현하는곳
+@Builder
 @Configuration
 @EnableElasticsearchRepositories
 public class ElasticSearchConfig extends AbstractElasticsearchConfiguration {
@@ -18,9 +20,13 @@ public class ElasticSearchConfig extends AbstractElasticsearchConfiguration {
     private String esUri;
     @Override
     public RestHighLevelClient elasticsearchClient() {
-        ClientConfiguration clientConfiguration = ClientConfiguration.builder()
+        ClientConfiguration clientConfiguration =
+                ClientConfiguration
+                .builder()
                 .connectedTo(esUri)
                 .build();
-        return RestClients.create(clientConfiguration).rest();
+        return RestClients
+                .create(clientConfiguration)
+                .rest();
     }
 }

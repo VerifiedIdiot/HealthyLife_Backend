@@ -1,8 +1,6 @@
 package com.HealthCare.HealthyLife_Backend.Interface;
 
-import com.HealthCare.HealthyLife_Backend.dto.ElasticsearchDto;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 

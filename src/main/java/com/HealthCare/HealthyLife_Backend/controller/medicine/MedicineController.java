@@ -1,11 +1,11 @@
-package com.HealthCare.HealthyLife_Backend.controller;
+package com.HealthCare.HealthyLife_Backend.controller.medicine;
 
 import com.HealthCare.HealthyLife_Backend.Interface.CrudControllerInterface;
-import com.HealthCare.HealthyLife_Backend.dto.MedicineDto;
+import com.HealthCare.HealthyLife_Backend.dto.medicine.MedicineDto;
 
 
 import com.HealthCare.HealthyLife_Backend.repository.MedicineRepository;
-import com.HealthCare.HealthyLife_Backend.service.MedicineService;
+import com.HealthCare.HealthyLife_Backend.service.medicine.MedicineService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
