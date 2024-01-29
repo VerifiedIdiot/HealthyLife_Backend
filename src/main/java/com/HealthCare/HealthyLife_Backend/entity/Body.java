@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "body_tb") // 실제 데이터베이스 테이블 이름에 맞게 지정해야 합니다.
@@ -23,8 +24,13 @@ public class Body {
     @Column(name = "date")
     private LocalDate date;
 
+    @PrePersist
+    protected void prePersist() {
+        date = LocalDate.now();
+    }
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member_email")
     private Member member;
 
     @Column(name = "height")

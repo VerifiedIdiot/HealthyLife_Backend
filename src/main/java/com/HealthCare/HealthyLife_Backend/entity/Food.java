@@ -96,6 +96,7 @@ public class Food {
     @Column(name = "issuer")
     private String issuer;
 
+
     public FoodDto toFoodDto() {
         return FoodDto.builder()
                 .num(this.getNum())

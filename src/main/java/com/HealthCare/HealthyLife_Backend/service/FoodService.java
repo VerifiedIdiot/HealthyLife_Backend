@@ -1,11 +1,15 @@
 package com.HealthCare.HealthyLife_Backend.service;
 
+import com.HealthCare.HealthyLife_Backend.dto.BodyDto;
 import com.HealthCare.HealthyLife_Backend.dto.FoodDto;
 import com.HealthCare.HealthyLife_Backend.entity.Food;
 import com.HealthCare.HealthyLife_Backend.repository.FoodRepository;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.io.IOException;
@@ -41,6 +45,28 @@ public class FoodService {
             }
         }
         return foodDtoList;
+    }
+
+    public List<FoodDto> getFoodList(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Food> foodPage = foodRepository.findAll(pageable);
+
+        List<Food> foods = foodPage.getContent();
+        List<FoodDto> foodDtos = new ArrayList<>();
+        for (Food food : foods) {
+            foodDtos.add(FoodDto.builder()
+                    .name(food.getName())
+                    .brand(food.getBrand())
+                    // 다른 속성들도 추가해야 함
+                    .build());
+        }
+        return foodDtos;
+    }
+
+
+    public int getFoodPage(Pageable pageable) {
+        Page<Food> foodPage = foodRepository.findAll(pageable);
+        return foodPage.getTotalPages();
     }
 
 
