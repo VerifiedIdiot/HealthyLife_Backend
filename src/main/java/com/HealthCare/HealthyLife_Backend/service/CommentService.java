@@ -50,7 +50,6 @@ public class CommentService {
         }
     }
 
-
     // 댓글 수정
     public boolean commentModify(CommentDto commentDto) {
         try {

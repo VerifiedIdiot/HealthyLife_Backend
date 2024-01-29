@@ -41,4 +41,8 @@ public class Chatting {
     @JoinColumn(name = "room_id") // 외래키
     private ChatRoom chatRoom; // 채팅룸
 
+    @Column(name = "message_status" )
+    private String messageStatus; //메세지 읽음,안읽음
+
+
 }

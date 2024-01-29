@@ -10,7 +10,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-
 public class ExerciseDto {
     private String name;
     private String type;
@@ -18,6 +17,7 @@ public class ExerciseDto {
     private String equipment;
     private String difficulty;
     private String instructions;
+
     // builder를 통해서 반복된 getter setter 사용 방지 , @Query 어노테이션이랑 호환 안됨
     public Exercise toExerciseEntity() {
         return Exercise.builder()

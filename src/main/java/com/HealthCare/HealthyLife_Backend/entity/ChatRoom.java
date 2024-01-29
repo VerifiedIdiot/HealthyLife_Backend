@@ -24,6 +24,8 @@ public class ChatRoom {
     @Column(name = "room_name",nullable = false)
     private String name; // 채팅방 이름
     private LocalDateTime regDate; // 채팅방 생성 시간
+    private Long senderId; // 상대 정보 아이디
+
     @PrePersist
     protected void prePersist() {
         regDate = LocalDateTime.now();
@@ -31,7 +33,7 @@ public class ChatRoom {
 
     @ManyToOne(fetch = FetchType.LAZY) // 지연 전략
     @JoinColumn(name = "member_id") // 외래키
-    private Member member; // 본인
+    private Member member; // 방 주인
 
     @OneToMany(mappedBy = "chatRoom",cascade = CascadeType.ALL)
     private List<Chatting> chatting;
