@@ -24,9 +24,9 @@ public class ChatController {
     private final ChatService chatService;
     // HTTP POST 요청을 통해 새로운 채팅방을 생성하는 메서드
     @PostMapping("/new")
-    public ResponseEntity<String> createRoom(@RequestBody ChatRoomReqDto chatRoomDto,MemberReqDto memberReqDto,Long senderId) {
+    public ResponseEntity<String> createRoom(@RequestBody ChatRoomReqDto chatRoomDto) {
         log.warn("chatRoomDto : {}", chatRoomDto); // 전송된 ChatRoomReqDto 로그 기록
-        ChatRoomResDto room = chatService.createRoom(chatRoomDto.getName(),memberReqDto.getId(),senderId); // 채팅 서비스를 통해 채팅방 생성
+        ChatRoomResDto room = chatService.createRoom(chatRoomDto.getName(),chatRoomDto.getMemberId(),chatRoomDto.getSenderId()); // 채팅 서비스를 통해 채팅방 생성
         System.out.println(room.getRoomId()); // 생성된 채팅방의 ID를 콘솔에 출력
         return ResponseEntity.ok(room.getRoomId()); // 생성된 채팅방의 ID를 응답으로 반환
     }
