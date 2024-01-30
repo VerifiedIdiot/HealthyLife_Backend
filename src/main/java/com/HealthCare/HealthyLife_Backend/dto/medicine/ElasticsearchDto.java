@@ -26,7 +26,7 @@ public class ElasticsearchDto {
 
     private String functionalities;
 
-    private String materials;
+
 
 
     public MedicineDocument toDocument() {
@@ -36,7 +36,6 @@ public class ElasticsearchDto {
                 .reportNo(this.getReportNo())
                 .productName(this.getName())
                 .functionalities(this.getFunctionalities())
-                .materials(this.getMaterials())
                 .company(this.getCompany())
                 .build();
     }

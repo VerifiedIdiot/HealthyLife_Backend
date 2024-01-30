@@ -38,6 +38,8 @@ public class ElasticsearchCrudController {
 
     }
 
+
+
     @GetMapping("/findAll")
     public ResponseEntity<?> findAllData() {
         try {

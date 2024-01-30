@@ -37,9 +37,6 @@ public class MedicineDocument {
     private String functionalitiesKeyword;
 
 
-    @Field(name = "materials", type = FieldType.Text, analyzer = "nori_analyzer")
-    private String materials;
-
     @Field(name = "company",type = FieldType.Text)
     private String company;
 
@@ -51,7 +48,6 @@ public class MedicineDocument {
                 .reportNo(this.getReportNo())
                 .name(this.getProductName())
                 .functionalities(this.getFunctionalities())
-                .materials(this.getMaterials())
                 .company(this.getCompany())
                 .build();
     }
