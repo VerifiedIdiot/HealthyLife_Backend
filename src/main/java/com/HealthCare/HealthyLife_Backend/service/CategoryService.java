@@ -20,12 +20,13 @@ public class CategoryService {
     // 카테고리 등록
     public boolean saveCategory(CategoryDto categoryDto) {
         try {
-            Category category = new Category();
             Member member = memberRepository.findByEmail(categoryDto.getEmail()).orElseThrow(
                     () -> new RuntimeException("해당 회원이 존재 하지 않습니다.")
             );
-            category.setCategoryName(categoryDto.getCategoryName());
-            category.setMember(member);
+            Category category = Category.builder()
+                    .categoryName(categoryDto.getCategoryName())
+                    .member(member)
+                    .build();
             categoryRepository.save(category);
             return true;
         } catch (Exception e) {
@@ -43,9 +44,11 @@ public class CategoryService {
             Member member = memberRepository.findByEmail(categoryDto.getEmail()).orElseThrow(
                     () -> new RuntimeException("해당 회원이 존재하지 않습니다")
             );
-            category.setCategoryName(categoryDto.getCategoryName());
-            category.setCategoryId(categoryDto.getCategoryId());
-            category.setMember(member);
+            category = Category.builder()
+                    .categoryName(categoryDto.getCategoryName())
+                    .categoryId(categoryDto.getCategoryId())
+                    .member(member)
+                    .build();
             categoryRepository.save(category);
             return true;
         } catch (Exception e) {
@@ -80,11 +83,10 @@ public class CategoryService {
 
     // 엔티티를 DTO로 변환하는 메서드
     private CategoryDto convertEntityToDto(Category category) {
-        CategoryDto categoryDto = new CategoryDto();
-        categoryDto.setCategoryId(category.getCategoryId());
-        categoryDto.setCategoryName(category.getCategoryName());
-        categoryDto.setEmail(category.getMember().getEmail());
-        return categoryDto;
+        return CategoryDto.builder()
+                .categoryId(category.getCategoryId())
+                .categoryName(category.getCategoryName())
+                .email(category.getMember().getEmail())
+                .build();
     }
 }
-

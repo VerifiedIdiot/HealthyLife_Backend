@@ -2,10 +2,8 @@ package com.HealthCare.HealthyLife_Backend.dto;
 
 import lombok.*;
 
-
 @Getter
-@Setter
-@ToString
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class CategoryDto {

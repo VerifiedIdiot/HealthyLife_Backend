@@ -1,9 +1,6 @@
 package com.HealthCare.HealthyLife_Backend.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -11,9 +8,10 @@ import java.util.List;
 @Entity
 @Table(name = "community_category_tb")
 @Getter
-@Setter
-@ToString
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class Category {
     @Id
     @Column(name = "category_id")

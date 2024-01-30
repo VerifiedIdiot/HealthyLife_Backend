@@ -6,17 +6,20 @@ import com.HealthCare.HealthyLife_Backend.entity.Member;
 import com.HealthCare.HealthyLife_Backend.entity.Notification;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class NotificationDto {
     private Long id;
     private boolean isChecked;
     private Long memberId;
     private Long communityId;
     private Long commentId;
+
     public Notification toNotificationEntity(Member member, Community community, Comment comment) {
         return Notification.builder()
                 .id(this.id)

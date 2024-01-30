@@ -1,10 +1,7 @@
 package com.HealthCare.HealthyLife_Backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -14,7 +11,7 @@ import java.util.List;
 @Entity
 @Table(name = "community_tb") // 실제 데이터베이스 테이블 이름에 맞게 지정해야 합니다.
 @Getter
-@Setter
+@Builder
 @NoArgsConstructor
 @ToString
 public class Community {
@@ -49,12 +46,13 @@ public class Community {
 
 
     @OneToMany(mappedBy = "community", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CommunityLikeIt> CommunityLikeIts = new ArrayList<>();
+    private List<CommunityLikeIt> communityLikeIts = new ArrayList<>();
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category; // 카테고리
+    private int likeCount;
     private int viewCount;
     private String categoryName;
     private String email;
@@ -64,4 +62,26 @@ public class Community {
     // Board와 Comment는 1:N 관계, mappedBy는 연관관계의 주인이 아니다(난 FK가 아니에요)라는 의미
     @OneToMany(mappedBy = "community", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments; // 댓글 목록
+
+    @Builder
+    public Community(Long communityId, String title, String content, String text, LocalDateTime regDate,
+                     Member member, List<CommunityLikeIt> communityLikeIts, Category category,
+                     int likeCount, int viewCount, String categoryName, String email, String nickName, String password,
+                     List<Comment> comments) {
+        this.communityId = communityId;
+        this.title = title;
+        this.content = content;
+        this.text = text;
+        this.regDate = regDate;
+        this.member = member;
+        this.communityLikeIts = communityLikeIts;
+        this.category = category;
+        this.likeCount = likeCount;
+        this.viewCount = viewCount;
+        this.categoryName = categoryName;
+        this.email = email;
+        this.nickName = nickName;
+        this.password = password;
+        this.comments = comments;
+    }
 }

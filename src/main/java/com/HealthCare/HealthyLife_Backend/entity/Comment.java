@@ -1,9 +1,6 @@
 package com.HealthCare.HealthyLife_Backend.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,7 +9,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "comment_tb") // 실제 데이터베이스 테이블 이름에 맞게 지정해야 합니다.
-@Getter @Setter
+@Getter
+@Builder(toBuilder = true)
+@AllArgsConstructor
 @NoArgsConstructor
 @ToString
 public class Comment {
@@ -38,6 +37,7 @@ public class Comment {
     public void prePersist() {
         regDate = LocalDateTime.now();
     }
+
 
 }
 

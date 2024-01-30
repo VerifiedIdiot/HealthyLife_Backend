@@ -38,8 +38,8 @@ public class CommunityController {
 
     // 게시글 방 조회
     @GetMapping("/detail/{id}")
-    public ResponseEntity<CommunityDto> getCommunityDetail(@PathVariable Long id, HttpServletRequest request) throws IOException {
-        return ResponseEntity.ok(communityService.getCommunityDetail(id, request));
+    public ResponseEntity<CommunityDto> getCommunityDetail(@PathVariable Long id) throws IOException {
+        return ResponseEntity.ok(communityService.getCommunityDetail(id));
     }
 
     // 게시글 수정

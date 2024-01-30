@@ -12,8 +12,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -35,7 +33,6 @@ public class CommunityService {
     //        게시글 작성
     public boolean saveCommunity(CommunityDto communityDto) {
         try {
-            Community community = new Community();
             Long memberId = getCurrentMemberId();
             Member member = memberRepository.findById(memberId).orElseThrow(
                     () -> new RuntimeException("해당 회원이 존재하지 않습니다.")
@@ -43,11 +40,13 @@ public class CommunityService {
             Category category = categoryRepository.findById(communityDto.getCommunityId()).orElseThrow(
                     () -> new RuntimeException("해당 카테고리가 존재하지 않습니다.")
             );
-            community.setTitle(communityDto.getTitle());
-            community.setCategory(category);
-            community.setContent(communityDto.getContent());
-            community.setText(communityDto.getText());
-            community.setMember(member);
+            Community community = Community.builder()
+                    .title(communityDto.getTitle())
+                    .category(category)
+                    .content(communityDto.getContent())
+                    .text(communityDto.getText())
+                    .member(member)
+                    .build();
             communityRepository.save(community);
             return true;
         } catch (Exception e) {
@@ -61,17 +60,17 @@ public class CommunityService {
         List<Community> communities = communityRepository.findAll();
         List<CommunityDto> communityDtos = new ArrayList<>();
         for (Community community : communities) {
-            communityDtos.add(toCommunityEntity(community));
+            communityDtos.add(convertEntityToDto(community));
         }
         return communityDtos;
     }
 
     // 게시글 상세 조회
-    public CommunityDto getCommunityDetail(Long id, HttpServletRequest request) {
+    public CommunityDto getCommunityDetail(Long id) {
         Community community = communityRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("해당 게시물이 존재하지 않습니다.")
         );
-        return toCommunityEntity(community);
+        return convertEntityToDto(community);
     }
 
     // 게시글 수정
@@ -80,10 +79,13 @@ public class CommunityService {
             Community community = communityRepository.findById(id).orElseThrow(
                     () -> new RuntimeException("해당 게시글이 존재하지 않습니다.")
             );
-            community.setTitle(communityDto.getTitle());
-            community.setContent(communityDto.getContent());
-            community.setText(communityDto.getText());
-            communityRepository.save(community);
+            Community modifiedCommunity = Community.builder()
+                    .communityId(community.getCommunityId())
+                    .title(communityDto.getTitle())
+                    .content(communityDto.getContent())
+                    .text(communityDto.getText())
+                    .build();
+            communityRepository.save(modifiedCommunity);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -107,7 +109,7 @@ public class CommunityService {
         List<Community> communities = communityRepository.findByTitleContaining(keyword);
         List<CommunityDto> communityDtos = new ArrayList<>();
         for (Community community : communities) {
-            communityDtos.add(toCommunityEntity(community));
+            communityDtos.add(convertEntityToDto(community));
         }
         return communityDtos;
     }
@@ -118,7 +120,7 @@ public class CommunityService {
         List<Community> communities = communityRepository.findAll(pageable).getContent();
         List<CommunityDto> communityDtos = new ArrayList<>();
         for (Community community : communities) {
-            communityDtos.add(toCommunityEntity(community));
+            communityDtos.add(convertEntityToDto(community));
         }
         return communityDtos;
     }
@@ -129,7 +131,7 @@ public class CommunityService {
         List<Community> communities = communityRepository.findByCategory_CategoryId(categoryId, pageable).getContent();
         List<CommunityDto> communityDtos = new ArrayList<>();
         for (Community community : communities) {
-            communityDtos.add(toCommunityEntity(community));
+            communityDtos.add(convertEntityToDto(community));
         }
         return communityDtos;
     }
@@ -147,17 +149,17 @@ public class CommunityService {
     // 게시글 페이지네이션 검색
     public Page<CommunityDto> searchByTitleAndText(String keyword, Pageable pageable) {
         Page<Community> communities = communityRepository.findByTitleContainingOrTextContaining(keyword, keyword, pageable);
-        return communities.map(this::toCommunityEntity);
+        return communities.map(this::convertEntityToDto);
     }
 
     public Page<CommunityDto> searchByTitle(String keyword, Pageable pageable) {
         Page<Community> communities = communityRepository.findByTitleContaining(keyword, pageable);
-        return communities.map(this::toCommunityEntity);
+        return communities.map(this::convertEntityToDto);
     }
 
     public Page<CommunityDto> searchByNickName(String keyword, Pageable pageable) {
         Page<Community> communities = communityRepository.findByNickNameContaining(keyword, pageable);
-        return communities.map(this::toCommunityEntity);
+        return communities.map(this::convertEntityToDto);
     }
 
     public Page<CommunityDto> searchByComment(String keyword, Pageable pageable) {
@@ -175,7 +177,7 @@ public class CommunityService {
         // Community들을 DTO로 변환
         // 중복 제거된 리스트를 사용
         List<CommunityDto> communityDtos = uniqueCommunities.stream()
-                .map(this::toCommunityEntity)
+                .map(this::convertEntityToDto)
                 .collect(Collectors.toList());
 
         // DTO 리스트를 페이지로 변환하여 반환
@@ -183,23 +185,70 @@ public class CommunityService {
         return new PageImpl<>(communityDtos, pageable, communityDtos.size());
     }
 
-    // 게시글 엔티티를 DTO로 변환
-    private CommunityDto toCommunityEntity(Community community) {
-        CommunityDto communityDto = new CommunityDto();
-        communityDto.setCommunityId(community.getCommunityId());
-        communityDto.setTitle(community.getTitle());
-        communityDto.setContent(community.getContent());
-        communityDto.setText(community.getText());
-        communityDto.setRegDate(community.getRegDate());
-        communityDto.setViewCount(community.getViewCount());
-        communityDto.setCategoryName(community.getCategoryName());
-        communityDto.setEmail(community.getMember().getEmail());
-        communityDto.setNickName(community.getNickName());
-        communityDto.setPassword(community.getPassword());
+    // 좋아요
+    public void like(Long communityId, String email, boolean isLikeIt) {
+        Optional<Community> communityOptional = communityRepository.findById(communityId);
+        if (!communityOptional.isPresent()) {
+            throw new IllegalArgumentException("해당 게시글이 존재하지 않습니다.");
+        }
 
-        return communityDto;
+        Community community = communityOptional.get();
+        Optional<CommunityLikeIt> likeItOptional = likeItRepository.findByCommunityAndEmail(community, email);
+// 확인
+        if (likeItOptional.isPresent()) {
+            throw new IllegalArgumentException("이미 좋아합니다.");
+
+        }
+// 추천수 증가 감소
+        int newLikeCount = isLikeIt ? community.getLikeCount() + 1 : community.getLikeCount() - 1;
+
+        Community updatedCommunity = Community.builder()
+                .communityId(community.getCommunityId())
+                .title(community.getTitle())
+                .content(community.getContent())
+                .text(community.getText())
+                .regDate(community.getRegDate())
+                .member(community.getMember())
+                .communityLikeIts(community.getCommunityLikeIts())
+                .category(community.getCategory())
+                .likeCount(newLikeCount)
+                .viewCount(community.getViewCount())
+                .categoryName(community.getCategoryName())
+                .email(community.getEmail())
+                .nickName(community.getNickName())
+                .password(community.getPassword())
+                .comments(community.getComments())
+                .build();
+
+        communityRepository.save(updatedCommunity);
+
+        CommunityLikeIt like = CommunityLikeIt.builder()
+                .community(updatedCommunity)
+                .isLikeIt(isLikeIt)
+                .email(email)
+                .build();
+
+        likeItRepository.save(like);
     }
 
+
+    // 게시글 엔티티를 DTO로 변환
+    private CommunityDto convertEntityToDto(Community community) {
+        return CommunityDto.builder()
+                .communityId(community.getCommunityId())
+                .title(community.getTitle())
+                .content(community.getContent())
+                .text(community.getText())
+                .regDate(community.getRegDate())
+                .likeCount(community.getLikeCount())
+                .viewCount(community.getViewCount())
+                .categoryName(community.getCategoryName())
+                .email(community.getMember().getEmail())
+                .nickName(community.getNickName())
+                .password(community.getPassword())
+                .build();
+    }
 }
+
 
 

@@ -31,7 +31,6 @@ public class CommentService {
     // 댓글 등록
     public boolean commentRegister(CommentDto commentDto) {
         try {
-            Comment comment = new Comment();
             Community community = communityRepository.findById(commentDto.getCommunityId()).orElseThrow(
                     () -> new RuntimeException("해당 게시글이 존재하지 않습니다.")
             );
@@ -39,9 +38,11 @@ public class CommentService {
             Member member = memberRepository.findById(memberId).orElseThrow(
                     () -> new RuntimeException("해당 회원이 존재하지 않습니다.")
             );
-            comment.setContent(commentDto.getContent());
-            comment.setMember(member);
-            comment.setCommunity(community);
+            Comment comment = Comment.builder()
+                    .content(commentDto.getContent())
+                    .member(member)
+                    .community(community)
+                    .build();
             commentRepository.save(comment);
             return true;
         } catch (Exception e) {
@@ -54,9 +55,10 @@ public class CommentService {
     public boolean commentModify(CommentDto commentDto) {
         try {
             Comment comment = commentRepository.findById(commentDto.getCommentId()).orElseThrow(
-                    () -> new RuntimeException("해당 댓글이 존재하지 않습니다.")
-            );
-            comment.setContent(commentDto.getContent());
+                    () -> new RuntimeException("해당 댓글이 존재하지 않습니다."));
+            comment = comment.toBuilder()
+                    .content(commentDto.getContent())
+                    .build();
             commentRepository.save(comment);
             return true;
         } catch (Exception e) {
@@ -157,11 +159,11 @@ public class CommentService {
 
     // 댓글 엔티티를 DTO로 변환
     private CommentDto convertEntityToDto(Comment comment) {
-        CommentDto commentDto = new CommentDto();
-        commentDto.setCommentId(comment.getCommentId());
-        commentDto.setCommunityId(comment.getCommunity().getCommunityId());
-        commentDto.setContent(comment.getContent());
-        commentDto.setRegDate(comment.getRegDate());
-        return commentDto;
+        return CommentDto.builder()
+                .commentId(comment.getCommentId())
+                .communityId(comment.getCommunity().getCommunityId())
+                .content(comment.getContent())
+                .regDate(comment.getRegDate())
+                .build();
     }
 }
