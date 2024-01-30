@@ -69,35 +69,38 @@ public class FoodService {
         return foodPage.getTotalPages();
     }
 
+    public List<FoodDto> getFoodSortedByKeyword(String keyword) {
+        return foodRepository.findByKeyword(keyword);
+    }
+
 
     private static FoodDto fromExcelRow(Row row) {
         FoodDto foodDto = new FoodDto();
 
-        foodDto.setNum((long) Double.parseDouble(getStringValue(row.getCell(0))));
-        foodDto.setName(getStringValue(row.getCell(1)));
-        foodDto.setBrand(getStringValue(row.getCell(2)));
-        foodDto.setClass1(getStringValue(row.getCell(3)));
-        foodDto.setClass2(getStringValue(row.getCell(4)));
-        foodDto.setServingSize(getStringValue(row.getCell(5)));
-        foodDto.setServingUnit(getStringValue(row.getCell(6)));
-        foodDto.setKcal(getStringValue(row.getCell(7)));
-        foodDto.setProtein(getStringValue(row.getCell(8)));
-        foodDto.setProvince(getStringValue(row.getCell(9)));
-        foodDto.setCarbohydrate(getStringValue(row.getCell(10)));
-        foodDto.setSugar(getStringValue(row.getCell(11)));
-        foodDto.setDietaryFiber(getStringValue(row.getCell(12)));
-        foodDto.setCalcium(getStringValue(row.getCell(13)));
-        foodDto.setIron(getStringValue(row.getCell(14)));
-        foodDto.setSalt(getStringValue(row.getCell(15)));
-        foodDto.setZinc(getStringValue(row.getCell(16)));
-        foodDto.setVitaB1(getStringValue(row.getCell(17)));
-        foodDto.setVitaB2(getStringValue(row.getCell(18)));
-        foodDto.setVitaB12(getStringValue(row.getCell(19)));
-        foodDto.setVitaC(getStringValue(row.getCell(20)));
-        foodDto.setCholesterol(getStringValue(row.getCell(21)));
-        foodDto.setSaturatedFat(getStringValue(row.getCell(22)));
-        foodDto.setTransFat(getStringValue(row.getCell(23)));
-        foodDto.setIssuer(getStringValue(row.getCell(24)));
+        foodDto.setName(getStringValue(row.getCell(0)));
+        foodDto.setBrand(getStringValue(row.getCell(1)));
+        foodDto.setClass1(getStringValue(row.getCell(2)));
+        foodDto.setClass2(getStringValue(row.getCell(3)));
+        foodDto.setServingSize(getStringValue(row.getCell(4)));
+        foodDto.setServingUnit(getStringValue(row.getCell(5)));
+        foodDto.setKcal(getStringValue(row.getCell(6)));
+        foodDto.setProtein(getStringValue(row.getCell(7)));
+        foodDto.setProvince(getStringValue(row.getCell(8)));
+        foodDto.setCarbohydrate(getStringValue(row.getCell(9)));
+        foodDto.setSugar(getStringValue(row.getCell(10)));
+        foodDto.setDietaryFiber(getStringValue(row.getCell(11)));
+        foodDto.setCalcium(getStringValue(row.getCell(12)));
+        foodDto.setIron(getStringValue(row.getCell(13)));
+        foodDto.setSalt(getStringValue(row.getCell(14)));
+        foodDto.setZinc(getStringValue(row.getCell(15)));
+        foodDto.setVitaB1(getStringValue(row.getCell(16)));
+        foodDto.setVitaB2(getStringValue(row.getCell(17)));
+        foodDto.setVitaB12(getStringValue(row.getCell(18)));
+        foodDto.setVitaC(getStringValue(row.getCell(19)));
+        foodDto.setCholesterol(getStringValue(row.getCell(20)));
+        foodDto.setSaturatedFat(getStringValue(row.getCell(21)));
+        foodDto.setTransFat(getStringValue(row.getCell(22)));
+        foodDto.setIssuer(getStringValue(row.getCell(23)));
 
         return foodDto;
     }

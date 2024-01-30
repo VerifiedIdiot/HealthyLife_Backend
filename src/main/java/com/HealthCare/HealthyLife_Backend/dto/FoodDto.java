@@ -13,7 +13,6 @@ import lombok.*;
 @Builder
 
 public class FoodDto {
-    private long num;
     private String image;
     private String name;
     private String brand;
@@ -43,7 +42,6 @@ public class FoodDto {
     // builder를 통해서 반복된 getter setter 사용 방지 , @Query 어노테이션이랑 호환 안됨
     public Food toFoodEntity() {
         return Food.builder()
-                .num(this.num)
                 .name(this.name)
                 .brand(this.brand)
                 .class1(this.class1)

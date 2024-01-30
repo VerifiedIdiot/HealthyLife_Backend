@@ -1,6 +1,7 @@
 package com.HealthCare.HealthyLife_Backend.controller;
 import com.HealthCare.HealthyLife_Backend.dto.BodyDto;
 import com.HealthCare.HealthyLife_Backend.dto.FoodDto;
+import com.HealthCare.HealthyLife_Backend.entity.Food;
 import com.HealthCare.HealthyLife_Backend.service.BodyService;
 import com.HealthCare.HealthyLife_Backend.service.FoodService;
 import com.HealthCare.HealthyLife_Backend.utils.Views;
@@ -41,6 +42,18 @@ public class FoodController {
         List<FoodDto> list = foodService.getFoodList(page, size);
         log.info("list : {}", list);
         return ResponseEntity.ok(list);
+    }
+
+    @GetMapping("/view/search")
+    @JsonView(Views.Public.class)
+    public ResponseEntity<List<FoodDto>> getFoodSearchView(@RequestParam String keyword) {
+        try {
+            List<FoodDto> foods = foodService.getFoodSortedByKeyword(keyword);
+            return ResponseEntity.ok(foods);
+        } catch (Exception e) {
+            // 데이터가 조회되지 않았을때 발생하는 에러를 처리하기 위한 예외처리
+            return ResponseEntity.notFound().build();
+        }
     }
 }
 
