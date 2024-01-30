@@ -5,6 +5,7 @@ import com.HealthCare.HealthyLife_Backend.dto.medicine.ElasticsearchDto;
 
 import com.HealthCare.HealthyLife_Backend.repository.MedicineRepository;
 import com.HealthCare.HealthyLife_Backend.service.medicine.ElasticsearchCrudService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/elastic-search")
 @ConditionalOnProperty(name = "spring.elasticsearch.enabled", havingValue = "true")

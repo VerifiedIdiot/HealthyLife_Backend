@@ -3,6 +3,7 @@ package com.HealthCare.HealthyLife_Backend.service.medicine;
 import com.HealthCare.HealthyLife_Backend.document.MedicineDocument;
 import com.HealthCare.HealthyLife_Backend.dto.medicine.ElasticsearchDto;
 import com.HealthCare.HealthyLife_Backend.repository.MedicineRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -12,6 +13,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+@Slf4j
 @Service
 @ConditionalOnProperty(name = "spring.elasticsearch.enabled", havingValue = "true")
 public class ElasticsearchCrudService {

@@ -1,35 +1,24 @@
 package com.HealthCare.HealthyLife_Backend.service.medicine;
 
-import org.springframework.http.*;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.client.RestTemplate;
 
-public class AbstractMedicineService {
+public abstract class AbstractMedicineService {
 
+    protected final ObjectMapper objectMapper;
 
-    protected final RestTemplate restTemplate;
-
-    public AbstractMedicineService(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
+    public AbstractMedicineService() {
+        this.objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
-    protected <T> T makeApiCall(String url, HttpMethod method, Class<T> responseType) {
-        try {
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            HttpEntity<String> entity = new HttpEntity<>(headers);
-
-            ResponseEntity<T> response = restTemplate.exchange(
-                    url,
-                    method,
-                    entity,
-                    responseType
-            );
-
-            return response.getBody();
-        } catch (Exception e) {
-            System.out.println("API 호출 실패: " + e.getMessage());
-            e.printStackTrace();
-            return null;
-        }
+    protected JsonNode getResponseData(String url, RestTemplate restTemplate) throws Exception {
+        String responseString = restTemplate.getForObject(url, String.class);
+        JsonNode rootNode = objectMapper.readTree(responseString);
+        return rootNode.path("data");
     }
+
+    // 기타 공통 메서드 추가 가능
 }

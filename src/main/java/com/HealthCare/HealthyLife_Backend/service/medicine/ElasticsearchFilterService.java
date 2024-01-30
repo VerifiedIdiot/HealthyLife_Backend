@@ -3,6 +3,7 @@ package com.HealthCare.HealthyLife_Backend.service.medicine;
 import com.HealthCare.HealthyLife_Backend.dto.medicine.ElasticsearchDto;
 import com.HealthCare.HealthyLife_Backend.document.MedicineDocument;
 import com.HealthCare.HealthyLife_Backend.repository.MedicineRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.sort.SortBuilders;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @ConditionalOnProperty(name = "spring.elasticsearch.enabled", havingValue = "true")
 public class ElasticsearchFilterService {

@@ -1,5 +1,6 @@
 package com.HealthCare.HealthyLife_Backend.dto.medicine;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -10,8 +11,10 @@ import java.util.List;
 @Getter @Setter
 @ToString
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class MedicineDto {
 
 
@@ -32,17 +35,6 @@ public class MedicineDto {
 
     private List<String> materials;
 
-
-
-
-    @Getter
-    public static class FunctionalityCodes {
-        @JsonProperty("id")
-        private String id;
-
-        @JsonProperty("functionality")
-        private String functionality;
-    }
 
 
 }
