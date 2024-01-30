@@ -37,15 +37,16 @@ public class MemberService {
         try {
             Member member = memberRepository.findByEmail(memberReqDto.getEmail())
                     .orElseThrow(() -> new RuntimeException("해당 회원이 존재하지 않습니다."));
-            if (!memberReqDto.getPassword().isEmpty()) {
-                member.setPassword(passwordEncoder.encode(memberReqDto.getPassword()));
-            }
 
-            member.setNickName(memberReqDto.getNickName());
-            member.setPhone(memberReqDto.getPhone());
-            member.setAddr(memberReqDto.getAddr());
-            member.setImage(memberReqDto.getImage());
-            memberRepository.save(member);
+            memberRepository.save(Member.builder()
+                    .nickName(memberReqDto.getNickName())
+                    .password(memberReqDto.getPassword().isEmpty()
+                            ? member.getPassword()
+                            : passwordEncoder.encode(memberReqDto.getPassword()))
+                    .phone(memberReqDto.getPhone())
+                    .addr(memberReqDto.getAddr())
+                    .image(memberReqDto.getImage())
+                    .build());
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -63,16 +64,16 @@ public class MemberService {
 
     // 회원 엔티티를 회원 DTO로 변환
     private MemberResDto converEntityToDto(Member member) {
-        MemberResDto memberResDto = new MemberResDto();
-        memberResDto.setEmail(member.getEmail());
-        memberResDto.setName(member.getName());
-        memberResDto.setNickName(member.getNickName());
-        memberResDto.setGender(member.getGender());
-        memberResDto.setPhone(member.getPhone());
-        memberResDto.setAddr(member.getAddr());
-        memberResDto.setImage(member.getImage());
-        memberResDto.setBirth(member.getBirth());
-        memberResDto.setRegDate(member.getRegDate());
-        return memberResDto;
+        return MemberResDto.builder()
+                .email(member.getEmail())
+                .name(member.getName())
+                .nickName(member.getNickName())
+                .gender(member.getGender())
+                .phone(member.getPhone())
+                .addr(member.getAddr())
+                .image(member.getImage())
+                .birth(member.getBirth())
+                .regDate(member.getRegDate())
+                .build();
     }
 }
