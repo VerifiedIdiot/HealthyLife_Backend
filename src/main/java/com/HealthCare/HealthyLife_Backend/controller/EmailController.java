@@ -11,7 +11,10 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.util.Random;
 
+import static com.HealthCare.HealthyLife_Backend.utils.Common.CORS_ORIGIN;
+
 @RestController
+@CrossOrigin(origins = CORS_ORIGIN)
 @RequestMapping("/email")
 public class EmailController {
     @Autowired
