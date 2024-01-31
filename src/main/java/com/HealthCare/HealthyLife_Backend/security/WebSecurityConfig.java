@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @RequiredArgsConstructor
@@ -49,10 +50,13 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                 .apply(new JwtSecurityConfig(tokenProvider)); // JwtSecurityConfig를 적용합니다. 이 클래스는 커스텀한 JwtFilter를 설정에 추가
 
         return http.build();
-
-        /*
-         SecurityFilterChain은 Spring Security에 대한 기본적인 보안 규칙을 정의하며, JwtSecurityConfig를 적용하여 JWT 관련 필터를 추가합니다.
-         따라서 인증과 권한이 통과해야만 해당 경로로의 접근이 허용
-         */
+    }
+    @Override // 메소드 오버라이딩, localhost:3000번으로 들어오는 요청 허가
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("http://localhost:3000")
+                .allowedMethods("*")
+                .allowedHeaders("*")
+                .allowCredentials(true);
     }
 }

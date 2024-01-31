@@ -1,12 +1,9 @@
 package com.HealthCare.HealthyLife_Backend.dto;
 
-import com.HealthCare.HealthyLife_Backend.entity.Calendar;
 import com.HealthCare.HealthyLife_Backend.entity.Member;
 import com.HealthCare.HealthyLife_Backend.entity.SeasonRanking;
-import com.HealthCare.HealthyLife_Backend.entity.TotalRanking;
+import com.HealthCare.HealthyLife_Backend.entity.calendar.Calendar;
 import lombok.*;
-
-import java.time.LocalDate;
 
 
 @Getter @Setter

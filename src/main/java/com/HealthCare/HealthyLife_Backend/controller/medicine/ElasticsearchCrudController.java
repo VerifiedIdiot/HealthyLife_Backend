@@ -80,4 +80,19 @@ public class ElasticsearchCrudController {
         }
     }
 
+
+
+
+    @GetMapping("/find")
+    public ResponseEntity<?> findBySize(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        try {
+            List<ElasticsearchDto> results = elasticsearchCrudService.findBySize(page, size);
+            return ResponseEntity.ok(results);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("데이터 조회 실패: " + e.getMessage());
+        }
+    }
+
 }

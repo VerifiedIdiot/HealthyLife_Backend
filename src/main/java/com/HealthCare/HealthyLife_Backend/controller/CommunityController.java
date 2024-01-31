@@ -116,5 +116,16 @@ public class CommunityController {
         Page<CommunityDto> list = communityService.searchByComment(keyword, pageable);
         return ResponseEntity.ok(list);
     }
+    // 좋아요
+    @PostMapping("/like/{id}/{isLikeIt}")
+    public ResponseEntity<String> like(@PathVariable Long id, @PathVariable boolean isLikeIt, Principal principal){
+        String email = principal != null ? principal.getName() : null;
+        try {
+            communityService.like(id, email, true);
+            return ResponseEntity.ok("좋아요가 완료되었습니다.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("이미 좋아요를 했습니다.");
+        }
+    }
 
 }

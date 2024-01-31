@@ -19,6 +19,8 @@ public class Food {
     @Column(name = "food_id")
     private Long id;
 
+    private long num;
+
     @Column(name = "image")
     private String image;
 
@@ -73,7 +75,7 @@ public class Food {
     @Column(name = "vita_b1")
     private String vitaB1;
 
-    @Column(name = "vita_b2")
+    @Column(name = "vit_b2")
     private String vitaB2;
 
     @Column(name = "vita_b12")
@@ -97,6 +99,7 @@ public class Food {
 
     public FoodDto toFoodDto() {
         return FoodDto.builder()
+                .num(this.getNum())
                 .name(this.getName())
                 .brand(this.getBrand())
                 .class1(this.getClass1())

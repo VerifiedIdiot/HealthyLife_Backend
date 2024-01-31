@@ -11,7 +11,6 @@ import java.util.List;
 @Entity
 @Table(name = "community_tb") // 실제 데이터베이스 테이블 이름에 맞게 지정해야 합니다.
 @Getter
-@Builder
 @NoArgsConstructor
 @ToString
 public class Community {
@@ -78,7 +77,6 @@ public class Community {
         this.category = category;
         this.likeCount = likeCount;
         this.viewCount = viewCount;
-        this.categoryName = categoryName;
         this.email = email;
         this.nickName = nickName;
         this.password = password;

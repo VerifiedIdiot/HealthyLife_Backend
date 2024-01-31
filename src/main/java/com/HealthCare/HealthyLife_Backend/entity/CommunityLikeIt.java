@@ -8,6 +8,8 @@ import javax.persistence.*;
 @Table(name = "like_it_tb") // 실제 데이터베이스 테이블 이름에 맞게 지정해야 합니다.
 @Getter
 @ToString
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class CommunityLikeIt {
     @Id
@@ -23,23 +25,4 @@ public class CommunityLikeIt {
     private boolean isLikeIt; // true일 경우 추천, false일 경우 비추천
     @Column(name = "email")
     private String email;
-
-    @Builder
-    public CommunityLikeIt(Community community, boolean isLikeIt, String email) {
-        this.community = community;
-        this.isLikeIt = isLikeIt;
-        this.email = email;
-    }
-
-    // 빌더 패턴을 유지하면서 추천/비추천 여부를 변경하는 메서드
-    public CommunityLikeIt toBuilder(boolean isLikeIt) {
-        return CommunityLikeIt.builder()
-                .community(this.community)
-                .isLikeIt(isLikeIt)
-                .email(this.email)
-                .build();
-    }
-
-
 }
-
