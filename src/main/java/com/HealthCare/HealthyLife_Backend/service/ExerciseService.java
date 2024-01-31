@@ -73,10 +73,11 @@ public class ExerciseService {
                     // 응답 배열을 순회하면서 번역하고 저장합니다.
                     for (ExerciseDto originalExerciseDto : response) {
                         // 번역 서비스를 호출하여 ExerciseDto를 번역합니다.
-                        ExerciseDto translatedExerciseDto = this.translateExerciseDto(originalExerciseDto);
+//                        ExerciseDto translatedExerciseDto = this.translateExerciseDto(originalExerciseDto);
 
                         // 변환된 Exercise 엔티티를 리포지토리를 통해 데이터베이스에 저장합니다.
-                        Exercise exercise = mapToExerciseEntity(translatedExerciseDto);
+//                        Exercise exercise = mapToExerciseEntity(translatedExerciseDto);
+                        Exercise exercise = mapToExerciseEntity(originalExerciseDto);
                         exerciseRepository.save(exercise);
 
                         // 저장된 운동 정보를 콘솔에 출력합니다.
