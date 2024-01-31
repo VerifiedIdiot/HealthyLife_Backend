@@ -4,6 +4,7 @@ import com.HealthCare.HealthyLife_Backend.dto.BodyDto;
 import com.HealthCare.HealthyLife_Backend.dto.FoodDto;
 import com.HealthCare.HealthyLife_Backend.entity.Food;
 import com.HealthCare.HealthyLife_Backend.repository.FoodRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +19,7 @@ import java.util.Iterator;
 import java.util.List;
 
 @Service
+@Slf4j
 public class FoodService {
 
     @Autowired
@@ -54,24 +56,50 @@ public class FoodService {
         List<Food> foods = foodPage.getContent();
         List<FoodDto> foodDtos = new ArrayList<>();
         for (Food food : foods) {
-            foodDtos.add(FoodDto.builder()
-                    .name(food.getName())
-                    .brand(food.getBrand())
-                    // 다른 속성들도 추가해야 함
-                    .build());
+            FoodDto foodDto = food.toFoodDto(); // Food 엔티티를 FoodDto로 변환
+            foodDtos.add(foodDto);
         }
         return foodDtos;
     }
 
+    public List<FoodDto> getFoodSortedByKeywordAndClass1AndClass2(String keyword, String class1, String class2, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Food> foods;
 
-    public int getFoodPage(Pageable pageable) {
-        Page<Food> foodPage = foodRepository.findAll(pageable);
-        return foodPage.getTotalPages();
+        if (keyword != null) {
+            if (class1 == null && class2 == null) {
+                // keyword만 입력된 경우
+                foods = foodRepository.findByNameContaining(keyword, pageable);
+            } else if (class1 != null && class2 == null) {
+                // keyword와 class1만 입력된 경우
+                foods = foodRepository.findByNameAndClass1Containing(keyword, class1, pageable);
+            } else if (class1 != null && class2 != null) {
+                // keyword, class1, class2 모두 입력된 경우
+                foods = foodRepository.findByNameAndClass1AndClass2Containing(keyword, class1, class2, pageable);
+            } else {
+                // class1이 null이거나 class2가 null이 아닌 경우에 대한 처리
+                foods = foodRepository.findByNameContaining(keyword, pageable); // 예외가 아니라 기본적으로 keyword로 검색
+            }
+        } else if (class1 != null) {
+            if (class2 == null) {
+                // class1만 입력된 경우
+                foods = foodRepository.findByClass1Containing(class1, pageable);
+            } else {
+                // class1과 class2 모두 입력된 경우
+                foods = foodRepository.findByClass1ContainingAndClass2Containing(class1, class2, pageable);
+            }
+        } else {
+            // keyword가 null이면서 class1도 null인 경우
+            foods = foodRepository.findAll(pageable);
+        }
+
+        List<FoodDto> foodDtos = new ArrayList<>();
+        for (Food food : foods.getContent()) {
+            foodDtos.add(food.toFoodDto());
+        }
+        return foodDtos;
     }
 
-    public List<FoodDto> getFoodSortedByKeyword(String keyword) {
-        return foodRepository.findByKeyword(keyword);
-    }
 
 
     private static FoodDto fromExcelRow(Row row) {

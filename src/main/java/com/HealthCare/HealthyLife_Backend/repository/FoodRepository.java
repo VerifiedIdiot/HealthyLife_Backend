@@ -12,11 +12,18 @@ import java.util.List;
 
 public interface FoodRepository extends JpaRepository<Food, Long> {
     Page<Food> findAll(Pageable pageable);
-    @Query("SELECT new com.HealthCare.HealthyLife_Backend.dto.FoodDto(f.image, f.name, f.brand, f.class1, f.class2, " +
-            "f.servingSize, f.servingUnit, f.kcal, f.protein, f.province, f.carbohydrate, f.sugar, f.dietaryFiber, " +
-            "f.calcium, f.iron, f.salt, f.zinc, f.vitaB1, f.vitaB2, f.vitaB12, f.vitaC, f.cholesterol, " +
-            "f.saturatedFat, f.transFat, f.issuer) " +
-            "FROM Food f WHERE f.name LIKE %:keyword% OR f.brand LIKE %:keyword% ORDER BY f.name ASC")
-    List<FoodDto> findByKeyword(@Param("keyword") String keyword);
+    Page<Food> findByNameContaining(String name, Pageable pageable);
+
+    Page<Food> findByClass1ContainingAndClass2Containing(String class1, String class2, Pageable pageable);
+
+    @Query("SELECT f FROM Food f WHERE f.name LIKE %:name% AND f.class1 = :class1")
+    Page<Food> findByNameAndClass1Containing(@Param("name") String name, @Param("class1") String class1, Pageable pageable);
+
+
+    Page<Food> findByClass1Containing(String class1, Pageable pageable);
+
+    @Query("SELECT f FROM Food f WHERE f.name LIKE %:name% AND f.class1 = :class1 AND f.class2 = :class2")
+    Page<Food> findByNameAndClass1AndClass2Containing(@Param("name") String name, @Param("class1") String class1, @Param("class2") String class2, Pageable pageable);
+
 
 }

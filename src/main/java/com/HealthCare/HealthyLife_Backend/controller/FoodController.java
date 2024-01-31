@@ -8,6 +8,7 @@ import com.HealthCare.HealthyLife_Backend.utils.Views;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -45,13 +46,16 @@ public class FoodController {
     }
 
     @GetMapping("/view/search")
-    @JsonView(Views.Public.class)
-    public ResponseEntity<List<FoodDto>> getFoodSearchView(@RequestParam String keyword) {
+    public ResponseEntity<List<FoodDto>> getFoodSearchView(@RequestParam(required = false) String keyword,
+                                                           @RequestParam(required = false) String class1,
+                                                           @RequestParam(required = false) String class2,
+                                                           @RequestParam(defaultValue = "0") int page,
+                                                           @RequestParam(defaultValue = "10") int size) {
         try {
-            List<FoodDto> foods = foodService.getFoodSortedByKeyword(keyword);
-            return ResponseEntity.ok(foods);
+            List<FoodDto> foodPage = foodService.getFoodSortedByKeywordAndClass1AndClass2(keyword, class1, class2, page, size);
+            return ResponseEntity.ok(foodPage);
         } catch (Exception e) {
-            // 데이터가 조회되지 않았을때 발생하는 에러를 처리하기 위한 예외처리
+            log.error("음식 검색 중 오류 발생: {}", e.getMessage());
             return ResponseEntity.notFound().build();
         }
     }
