@@ -1,6 +1,7 @@
 package com.HealthCare.HealthyLife_Backend.entity;
 
 import com.HealthCare.HealthyLife_Backend.dto.RankingDto;
+import com.HealthCare.HealthyLife_Backend.entity.calendar.Calendar;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import javax.persistence.*;
