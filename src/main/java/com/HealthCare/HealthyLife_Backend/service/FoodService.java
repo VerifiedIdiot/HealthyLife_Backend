@@ -104,7 +104,6 @@ public class FoodService {
 
     private static FoodDto fromExcelRow(Row row) {
         FoodDto foodDto = new FoodDto();
-
         foodDto.setName(getStringValue(row.getCell(0)));
         foodDto.setBrand(getStringValue(row.getCell(1)));
         foodDto.setClass1(getStringValue(row.getCell(2)));
