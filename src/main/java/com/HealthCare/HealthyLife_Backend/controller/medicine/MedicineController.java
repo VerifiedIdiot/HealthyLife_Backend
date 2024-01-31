@@ -31,14 +31,14 @@ public class MedicineController {
     private final MedicineService medicineService;
     private final ElasticsearchOperations elasticsearchOperations;
     private final ElasticsearchCrudService elasticsearchCrudService;
-    private final MedicineRepository medicineRepository;
 
 
-    public MedicineController(MedicineService medicineService, ElasticsearchOperations elasticsearchOperations, ElasticsearchCrudService elasticsearchCrudService, MedicineRepository medicineRepository) {
+
+    public MedicineController(MedicineService medicineService, ElasticsearchOperations elasticsearchOperations, ElasticsearchCrudService elasticsearchCrudService) {
         this.medicineService = medicineService;
         this.elasticsearchOperations = elasticsearchOperations;
         this.elasticsearchCrudService = elasticsearchCrudService;
-        this.medicineRepository = medicineRepository;
+
     }
 
 
@@ -74,7 +74,30 @@ public class MedicineController {
         }
     }
 
-    @PostMapping("/insert")
+    @PostMapping("/insert-code")
+    public ResponseEntity<?> insertMedicineCodes() {
+        try {
+            List<MedicineCodeDto> codes = medicineService.getCodes();
+            if (codes.isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+            long startTime = System.currentTimeMillis(); // 시작 시간 기록
+
+            medicineService.insertCodes(codes);
+
+            long endTime = System.currentTimeMillis(); // 종료 시간 기록
+            long duration = endTime - startTime; // 걸린 시간 계산
+
+            return ResponseEntity.ok("Insert 완료. 총 걸린 시간: " + duration + "ms, 총 삽입된 데이터 수: " + codes.size());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("서버 내부 오류 발생");
+        }
+    }
+
+
+
+
+    @PostMapping("/insert-medicine")
     public ResponseEntity<?> insertMedicineList() {
         try {
             List<MedicineDto> allMedicineDtos = medicineService.getMedicineList();

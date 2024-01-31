@@ -3,6 +3,9 @@ package com.HealthCare.HealthyLife_Backend.dto.medicine;
 import com.HealthCare.HealthyLife_Backend.document.MedicineDocument;
 import lombok.*;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+
+import java.util.List;
+
 @Getter
 @Setter
 @ToString
@@ -24,7 +27,7 @@ public class ElasticsearchDto {
 
     private String company;
 
-    private String functionalities;
+    private List<String> functionalities;
 
 
 

@@ -44,8 +44,8 @@ public class MedicineDto {
                 .type(this.getType())
                 .reportNo(Long.parseLong(this.getReportNo()))
                 .productName(this.getName())
-                .functionalities(String.join(", ", this.getFunctionalities()))
                 .company(this.getCompany())
+                .functionalities(this.getFunctionalities())
                 .build();
     }
 

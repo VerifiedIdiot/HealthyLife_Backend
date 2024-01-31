@@ -1,4 +1,6 @@
 package com.HealthCare.HealthyLife_Backend.dto.medicine;
+import com.HealthCare.HealthyLife_Backend.entity.Exercise;
+import com.HealthCare.HealthyLife_Backend.entity.MedicineCode;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -25,5 +27,11 @@ public class MedicineCodeDto {
 
     private String functionality;
 
-
+    public MedicineCode toEntity() {
+        return MedicineCode.builder()
+                .type(this.getType())
+                .id(this.getId())
+                .functionality(this.getFunctionality())
+                .build();
+    }
 }

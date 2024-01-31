@@ -7,6 +7,8 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.*;
 
+import java.util.List;
+
 
 @Document(indexName = "medicine_index")
 @AllArgsConstructor
@@ -20,7 +22,7 @@ public class MedicineDocument {
     @Field(name = "medicine_id", type = FieldType.Keyword)
     private String id;
 
-    @Field(name = "type", type = FieldType.Text)
+    @Field(name = "type", type = FieldType.Keyword)
     private String type;
 
     @Field(name = "report_no", type = FieldType.Long)
@@ -30,11 +32,8 @@ public class MedicineDocument {
     private String productName;
 
     @Field(type = FieldType.Text, analyzer = "nori_analyzer")
-    private String functionalities;
+    private List<String> functionalities;
 
-    // 키워드 타입으로 분석되는 필드 (동일한 데이터를 다른 필드에 저장)
-    @Field(type = FieldType.Keyword)
-    private String functionalitiesKeyword;
 
 
     @Field(name = "company",type = FieldType.Text)

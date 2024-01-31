@@ -38,7 +38,6 @@ public class ElasticsearchFilterService {
                 .map(hit -> hit.getContent().toDto())
                 .collect(Collectors.toList());
     }
-
     public List<ElasticsearchDto> searchWithDropdown(
             String productName, Long reportNo, String company,
             String functionalities, String type,
@@ -48,19 +47,24 @@ public class ElasticsearchFilterService {
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 
         if (productName != null) {
-            boolQueryBuilder.must(QueryBuilders.matchQuery("product_name", productName));
+
+            boolQueryBuilder.must(QueryBuilders.matchPhrasePrefixQuery("product_name", productName));
         }
 
         if (reportNo != null) {
-            boolQueryBuilder.must(QueryBuilders.matchQuery("report_no", reportNo));
+            boolQueryBuilder.must(QueryBuilders.termQuery("report_no", reportNo));
+
         }
 
         if (company != null) {
-            boolQueryBuilder.must(QueryBuilders.matchQuery("company", company));
+
+            boolQueryBuilder.must(QueryBuilders.matchPhrasePrefixQuery("company", company));
+            boolQueryBuilder.must(QueryBuilders.termQuery("company", "(주)"));
         }
 
         if (functionalities != null) {
-            boolQueryBuilder.must(QueryBuilders.matchQuery("functionalities", functionalities));
+
+            boolQueryBuilder.must(QueryBuilders.matchPhrasePrefixQuery("functionalities", functionalities));
         }
 
         if (type != null) {
@@ -84,4 +88,5 @@ public class ElasticsearchFilterService {
                 .map(hit -> hit.getContent().toDto())
                 .collect(Collectors.toList());
     }
+
 }

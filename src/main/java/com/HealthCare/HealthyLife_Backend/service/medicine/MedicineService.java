@@ -2,10 +2,11 @@ package com.HealthCare.HealthyLife_Backend.service.medicine;
 
 import com.HealthCare.HealthyLife_Backend.dto.medicine.MedicineCodeDto;
 import com.HealthCare.HealthyLife_Backend.dto.medicine.MedicineDto;
+import com.HealthCare.HealthyLife_Backend.entity.MedicineCode;
+import com.HealthCare.HealthyLife_Backend.repository.MedicineCodeRepository;
 import com.HealthCare.HealthyLife_Backend.repository.MedicineRepository;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.sun.jna.StringArray;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -24,6 +25,8 @@ import java.util.stream.Collectors;
 public class MedicineService extends AbstractMedicineService {
 
     private final MedicineRepository medicineRepository;
+
+    private final MedicineCodeRepository medicineCodeRepository;
     private final RestTemplate restTemplate;
 
     @Value("${get.medicineCode.url}")
@@ -32,8 +35,9 @@ public class MedicineService extends AbstractMedicineService {
     @Value("${get.medicineList.url}")
     private String medicineListUrl;
 
-    public MedicineService(MedicineRepository medicineRepository, RestTemplate restTemplate) {
+    public MedicineService(MedicineRepository medicineRepository, MedicineCodeRepository medicineCodeRepository, RestTemplate restTemplate) {
         this.medicineRepository = medicineRepository;
+        this.medicineCodeRepository = medicineCodeRepository;
         this.restTemplate = restTemplate;
     }
 
@@ -88,6 +92,15 @@ public class MedicineService extends AbstractMedicineService {
             e.printStackTrace();
             return new ArrayList<>();
         }
+    }
+
+    public void insertCodes(List<MedicineCodeDto> codes) {
+
+        for (MedicineCodeDto code : codes) {
+            MedicineCode medicineCode = code.toEntity();
+            medicineCodeRepository.save(medicineCode);
+        }
+
     }
 
     private Map<String, String> createCodeMap(List<MedicineCodeDto> codes) {
