@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 // ConditionalOnProperty는 프로퍼티에 elasticsearch.enabled의 값이 true 일때만 실행하라고 스프링에 명시
 @Slf4j
@@ -42,10 +43,10 @@ public class MedicineController {
     }
 
 
-    @GetMapping("/get-codes")
-    public ResponseEntity<?> getCodes() {
+    @GetMapping("/parse-codes")
+    public ResponseEntity<?> parseCodes() {
         try {
-            List<MedicineCodeDto> codes = medicineService.getCodes();
+            List<MedicineCodeDto> codes = medicineService.parseCodes();
             if (codes.isEmpty()) {
 
                 return ResponseEntity.notFound().build();
@@ -58,26 +59,10 @@ public class MedicineController {
         }
     }
 
-    @GetMapping("/get-medicines")
-    public ResponseEntity<?> getMedicineList() {
-        try {
-            List<MedicineDto> allMedicineDtos = medicineService.getMedicineList();
-            if (allMedicineDtos.isEmpty()) {
-
-                return ResponseEntity.notFound().build();
-            }
-
-            return ResponseEntity.ok(allMedicineDtos);
-        } catch (Exception e) {
-            // 서버 내부 오류 발생 시 500 Internal Server Error 반환
-            return ResponseEntity.internalServerError().body("서버 내부 오류 발생");
-        }
-    }
-
     @PostMapping("/insert-code")
     public ResponseEntity<?> insertMedicineCodes() {
         try {
-            List<MedicineCodeDto> codes = medicineService.getCodes();
+            List<MedicineCodeDto> codes = medicineService.parseCodes();
             if (codes.isEmpty()) {
                 return ResponseEntity.notFound().build();
             }
@@ -94,13 +79,47 @@ public class MedicineController {
         }
     }
 
+    @GetMapping("/get-codes")
+    public ResponseEntity<?> getCodes() {
+        try {
+            Map<String, List<MedicineCodeDto>> codes = medicineService.getCodes();
+            if (codes.isEmpty()) {
+
+                return ResponseEntity.notFound().build();
+            }
+
+            return ResponseEntity.ok(codes);
+        } catch (Exception e) {
+            // 서버 내부 오류 발생 시 500 Internal Server Error 반환
+            return ResponseEntity.internalServerError().body("서버 내부 오류 발생");
+        }
+    }
+
+    @GetMapping("/parse-medicines")
+    public ResponseEntity<?> parseMedicineList() {
+        try {
+            List<MedicineDto> allMedicineDtos = medicineService.parseMedicineList();
+            if (allMedicineDtos.isEmpty()) {
+
+                return ResponseEntity.notFound().build();
+            }
+
+            return ResponseEntity.ok(allMedicineDtos);
+        } catch (Exception e) {
+            // 서버 내부 오류 발생 시 500 Internal Server Error 반환
+            return ResponseEntity.internalServerError().body("서버 내부 오류 발생");
+        }
+    }
+
+
+
 
 
 
     @PostMapping("/insert-medicine")
     public ResponseEntity<?> insertMedicineList() {
         try {
-            List<MedicineDto> allMedicineDtos = medicineService.getMedicineList();
+            List<MedicineDto> allMedicineDtos = medicineService.parseMedicineList();
 
             if (allMedicineDtos.isEmpty()) {
                 return ResponseEntity.notFound().build();
