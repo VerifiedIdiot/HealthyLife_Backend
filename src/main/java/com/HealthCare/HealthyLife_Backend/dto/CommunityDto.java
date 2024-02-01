@@ -10,6 +10,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class CommunityDto {
     private Long communityId;
+    private Long memberId;
+    private Long categoryId;
     private String title;
     private String content; // 사진
     private String text; // 내용
@@ -19,7 +21,6 @@ public class CommunityDto {
     private String categoryName;
     private String email;
     private String nickName;
-    private String password;
 
 
 }

@@ -2,8 +2,11 @@ package com.HealthCare.HealthyLife_Backend.service;
 
 
 import com.HealthCare.HealthyLife_Backend.dto.CommunityDto;
+import com.HealthCare.HealthyLife_Backend.dto.MemberReqDto;
+import com.HealthCare.HealthyLife_Backend.dto.MemberResDto;
 import com.HealthCare.HealthyLife_Backend.entity.*;
 import com.HealthCare.HealthyLife_Backend.repository.*;
+import com.HealthCare.HealthyLife_Backend.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -29,23 +32,24 @@ public class CommunityService {
     private final CommentRepository commentRepository;
     private final CategoryRepository categoryRepository;
     private final LikeItRepository likeItRepository;
+    private final MemberService memberService;
 
     //        게시글 작성
     public boolean saveCommunity(CommunityDto communityDto) {
         try {
-            Long memberId = getCurrentMemberId();
-            Member member = memberRepository.findById(memberId).orElseThrow(
-                    () -> new RuntimeException("해당 회원이 존재하지 않습니다.")
+            Member member = memberRepository.findByEmail(communityDto.getEmail()).orElseThrow(() -> new RuntimeException("해당 회원이 존재하지 않습니다.")
             );
-            Category category = categoryRepository.findById(communityDto.getCommunityId()).orElseThrow(
-                    () -> new RuntimeException("해당 카테고리가 존재하지 않습니다.")
+            Category category = categoryRepository.findById(communityDto.getCategoryId()).orElseThrow(() -> new RuntimeException("해당 카테고리가 존재하지 않습니다.")
             );
             Community community = Community.builder()
                     .title(communityDto.getTitle())
-                    .category(category)
                     .content(communityDto.getContent())
                     .text(communityDto.getText())
                     .member(member)
+                    .category(category)
+                    .likeCount(communityDto.getLikeCount())
+                    .viewCount(communityDto.getViewCount())
+                    .comments(new ArrayList<>())
                     .build();
             communityRepository.save(community);
             return true;
@@ -80,10 +84,18 @@ public class CommunityService {
                     () -> new RuntimeException("해당 게시글이 존재하지 않습니다.")
             );
             Community modifiedCommunity = Community.builder()
-                    .communityId(community.getCommunityId())
+                    .communityId(id) // 기존의 ID를 유지
                     .title(communityDto.getTitle())
                     .content(communityDto.getContent())
                     .text(communityDto.getText())
+                    .regDate(community.getRegDate()) // 등록일은 그대로 유지
+                    .member(community.getMember()) // Member도 그대로 유지
+                    .communityLikeIts(community.getCommunityLikeIts()) // CommunityLikeIts도 그대로 유지
+                    .category(community.getCategory()) // Category도 그대로 유지
+                    .likeCount(community.getLikeCount()) // likeCount도 그대로 유지
+                    .viewCount(community.getViewCount()) // viewCount도 그대로 유지
+                    .comments(community.getComments()) // Comments도 그대로 유지
+                    .nickName(community.getNickName()) // NickName도 그대로 유지
                     .build();
             communityRepository.save(modifiedCommunity);
             return true;
@@ -213,10 +225,6 @@ public class CommunityService {
                 .category(community.getCategory())
                 .likeCount(newLikeCount)
                 .viewCount(community.getViewCount())
-                .categoryName(community.getCategoryName())
-                .email(community.getEmail())
-                .nickName(community.getNickName())
-                .password(community.getPassword())
                 .comments(community.getComments())
                 .build();
 
@@ -236,16 +244,17 @@ public class CommunityService {
     private CommunityDto convertEntityToDto(Community community) {
         return CommunityDto.builder()
                 .communityId(community.getCommunityId())
+                .categoryId(community.getCategory().getCategoryId())
+                .memberId(community.getMember().getId())
                 .title(community.getTitle())
                 .content(community.getContent())
                 .text(community.getText())
                 .regDate(community.getRegDate())
                 .likeCount(community.getLikeCount())
                 .viewCount(community.getViewCount())
-                .categoryName(community.getCategoryName())
+                .categoryName(community.getCategory().getCategoryName())
                 .email(community.getMember().getEmail())
-                .nickName(community.getNickName())
-                .password(community.getPassword())
+                .nickName(community.getMember().getNickName())
                 .build();
     }
 }

@@ -58,7 +58,10 @@ public class Member {
     private List<Chatting> chattings;
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<ChatRoom> chatRooms;
-
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Community> communities;
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Comment> comments;
 
 
     @PrePersist
@@ -68,7 +71,7 @@ public class Member {
 
     @Builder
     public Member(String email, String password, String name, String nickName, String gender, String phone
-                 , String addr, String image, LocalDate birth, boolean isAuthDelete, Authority authority, ExercisePurpose exercisePurpose) {
+            , String addr, String image, LocalDate birth, boolean isAuthDelete, Authority authority, ExercisePurpose exercisePurpose) {
         this.email = email;
         this.password = password;
         this.name = name;

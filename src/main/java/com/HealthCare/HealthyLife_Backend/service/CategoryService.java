@@ -10,12 +10,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final MemberRepository memberRepository;
+
 
     // 카테고리 등록
     public boolean saveCategory(CategoryDto categoryDto) {
@@ -38,15 +40,15 @@ public class CategoryService {
     // 카테고리 수정
     public boolean modifyCategory(Long id, CategoryDto categoryDto) {
         try {
-            Category category = categoryRepository.findById(id).orElseThrow(
-                    () -> new RuntimeException("해당 카테고리가 존재하지 않습니다.")
-            );
             Member member = memberRepository.findByEmail(categoryDto.getEmail()).orElseThrow(
                     () -> new RuntimeException("해당 회원이 존재하지 않습니다")
             );
+            Category category = categoryRepository.findById(id).orElseThrow(
+                    () -> new RuntimeException("해당 카테고리가 존재하지 않습니다.")
+            );
+
             category = Category.builder()
                     .categoryName(categoryDto.getCategoryName())
-                    .categoryId(categoryDto.getCategoryId())
                     .member(member)
                     .build();
             categoryRepository.save(category);

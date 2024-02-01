@@ -23,7 +23,6 @@ import static com.HealthCare.HealthyLife_Backend.security.SecurityUtil.getCurren
 @Service
 @RequiredArgsConstructor
 public class CommentService {
-    private final ObjectMapper objectMapper;
     private final CommentRepository commentRepository;
     private final CommunityRepository communityRepository;
     private final MemberRepository memberRepository;
@@ -31,13 +30,13 @@ public class CommentService {
     // 댓글 등록
     public boolean commentRegister(CommentDto commentDto) {
         try {
+            Member member = memberRepository.findByEmail(commentDto.getEmail()).orElseThrow(
+                    () -> new RuntimeException("해당 회원이 존재하지 않습니다")
+            );
             Community community = communityRepository.findById(commentDto.getCommunityId()).orElseThrow(
                     () -> new RuntimeException("해당 게시글이 존재하지 않습니다.")
             );
-            Long memberId = getCurrentMemberId();
-            Member member = memberRepository.findById(memberId).orElseThrow(
-                    () -> new RuntimeException("해당 회원이 존재하지 않습니다.")
-            );
+
             Comment comment = Comment.builder()
                     .content(commentDto.getContent())
                     .member(member)
@@ -162,6 +161,8 @@ public class CommentService {
         return CommentDto.builder()
                 .commentId(comment.getCommentId())
                 .communityId(comment.getCommunity().getCommunityId())
+                .email(comment.getMember().getEmail())
+                .nickName(comment.getMember().getNickName())
                 .content(comment.getContent())
                 .regDate(comment.getRegDate())
                 .build();

@@ -13,6 +13,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @ToString
+@Builder
 public class Community {
     @Id
     @Column(name = "community_id")
@@ -44,29 +45,27 @@ public class Community {
     private Member member;
 
 
-    @OneToMany(mappedBy = "community", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "community", cascade = CascadeType.ALL)
     private List<CommunityLikeIt> communityLikeIts = new ArrayList<>();
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "category_id", nullable = true)
     private Category category; // 카테고리
+
     private int likeCount;
     private int viewCount;
-    private String categoryName;
-    private String email;
-    private String nickName;
-    private String password;
 
     // Board와 Comment는 1:N 관계, mappedBy는 연관관계의 주인이 아니다(난 FK가 아니에요)라는 의미
-    @OneToMany(mappedBy = "community", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> comments; // 댓글 목록
+    @OneToMany(mappedBy = "community", cascade = CascadeType.ALL)
+    private List<Comment> comments = new ArrayList<>();
+
+    private String nickName;
 
     @Builder
     public Community(Long communityId, String title, String content, String text, LocalDateTime regDate,
                      Member member, List<CommunityLikeIt> communityLikeIts, Category category,
-                     int likeCount, int viewCount, String categoryName, String email, String nickName, String password,
-                     List<Comment> comments) {
+                     int likeCount, int viewCount, List<Comment> comments, String nickName) {
         this.communityId = communityId;
         this.title = title;
         this.content = content;
@@ -77,9 +76,7 @@ public class Community {
         this.category = category;
         this.likeCount = likeCount;
         this.viewCount = viewCount;
-        this.email = email;
-        this.nickName = nickName;
-        this.password = password;
         this.comments = comments;
+        this.nickName = nickName;
     }
 }
