@@ -19,6 +19,8 @@ public class ExerciseDto {
     private String muscle;
     private String equipment;
     private String difficulty;
+    private String instructions;
+    private String image;
     // builder를 통해서 반복된 getter setter 사용 방지 , @Query 어노테이션이랑 호환 안됨
     public Exercise toExerciseEntity() {
         return Exercise.builder()
@@ -27,6 +29,8 @@ public class ExerciseDto {
                 .muscle(this.muscle)
                 .equipment(this.equipment)
                 .difficulty(this.difficulty)
+                .instructions(this.instructions)
+                .image(this.image)
                 .build();
     }
 }
