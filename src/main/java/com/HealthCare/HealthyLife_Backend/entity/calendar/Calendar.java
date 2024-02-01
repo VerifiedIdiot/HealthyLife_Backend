@@ -24,8 +24,6 @@ public class Calendar {
     private Long id;
     private int month;
 
-    private String workout; // 운동.
-
     private Integer carbohydrate; // 탄수화물
     private Integer protein; // 단백질
     private Integer fat; // 지방
@@ -53,13 +51,10 @@ public class Calendar {
     private List<SeasonRanking> seasonRankings;
 
     @OneToMany(mappedBy = "calendar", cascade = CascadeType.ALL)
-    private List<Breakfast> breakfasts;
+    private List<Meal> meals;
 
     @OneToMany(mappedBy = "calendar", cascade = CascadeType.ALL)
-    private List<Lunch> lunches;
-
-    @OneToMany(mappedBy = "calendar", cascade = CascadeType.ALL)
-    private List<Dinner> dinners;
+    private List<Workout> workout;
 
     private LocalDateTime regDate;
     @PrePersist

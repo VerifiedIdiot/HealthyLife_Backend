@@ -112,7 +112,7 @@ public class FoodService {
         foodDto.setServingUnit(getStringValue(row.getCell(5)));
         foodDto.setKcal(getStringValue(row.getCell(6)));
         foodDto.setProtein(getStringValue(row.getCell(7)));
-        foodDto.setProvince(getStringValue(row.getCell(8)));
+        foodDto.setFat(getStringValue(row.getCell(8)));
         foodDto.setCarbohydrate(getStringValue(row.getCell(9)));
         foodDto.setSugar(getStringValue(row.getCell(10)));
         foodDto.setDietaryFiber(getStringValue(row.getCell(11)));

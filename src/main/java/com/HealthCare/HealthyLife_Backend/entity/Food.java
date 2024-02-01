@@ -46,8 +46,8 @@ public class Food {
     @Column(name = "protein")
     private String protein;
 
-    @Column(name = "province")
-    private String province;
+    @Column(name = "fat")
+    private String fat;
 
     @Column(name = "carbohydrate")
     private String carbohydrate;
@@ -105,7 +105,7 @@ public class Food {
                 .servingUnit(this.getServingUnit())
                 .kcal(this.getKcal())
                 .protein(this.getProtein())
-                .province(this.getProvince())
+                .fat(this.getFat())
                 .carbohydrate(this.getCarbohydrate())
                 .sugar(this.getSugar())
                 .dietaryFiber(this.getDietaryFiber())

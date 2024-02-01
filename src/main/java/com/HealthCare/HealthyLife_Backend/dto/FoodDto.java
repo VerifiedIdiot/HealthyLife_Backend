@@ -1,6 +1,7 @@
 package com.HealthCare.HealthyLife_Backend.dto;
 
 import com.HealthCare.HealthyLife_Backend.entity.Food;
+import com.HealthCare.HealthyLife_Backend.entity.calendar.Meal;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
@@ -22,7 +23,7 @@ public class FoodDto {
     private String servingUnit;
     private String kcal;
     private String protein;
-    private String province;
+    private String fat;
     private String carbohydrate;
     private String sugar;
     private String dietaryFiber;
@@ -51,7 +52,7 @@ public class FoodDto {
                 .servingUnit(this.servingUnit)
                 .kcal(this.kcal)
                 .protein(this.protein)
-                .province(this.province)
+                .fat(this.fat)
                 .carbohydrate(this.carbohydrate)
                 .sugar(this.sugar)
                 .dietaryFiber(this.dietaryFiber)
@@ -69,4 +70,5 @@ public class FoodDto {
                 .issuer(this.issuer)
                 .build();
         }
+
 }

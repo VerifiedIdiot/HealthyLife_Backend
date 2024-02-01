@@ -26,4 +26,5 @@ public interface FoodRepository extends JpaRepository<Food, Long> {
     Page<Food> findByNameAndClass1AndClass2Containing(@Param("name") String name, @Param("class1") String class1, @Param("class2") String class2, Pageable pageable);
 
 
+    FoodDto findByName(String keyword);
 }
