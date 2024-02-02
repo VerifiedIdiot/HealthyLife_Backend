@@ -22,6 +22,18 @@ public class MealService {
 
     }
 
+    public MealDto addMealWithFood(String keyword) {
+        MealDto mealDto = new MealDto();
+
+        FoodDto foodDto = foodRepository.findByName(keyword);
+        System.out.println(foodDto);
+        mealDto.setMealName(foodDto.getName());
+        Meal meal = mealDto.toMealEntity();
+        mealRepository.save(meal);
+
+        return null;
+    }
+
     public MealDto addMealWithFood(String keyword, String id, String type ) {
         MealDto mealDto = new MealDto();
 
@@ -35,4 +47,6 @@ public class MealService {
 
         return null;
     }
+
+
 }
