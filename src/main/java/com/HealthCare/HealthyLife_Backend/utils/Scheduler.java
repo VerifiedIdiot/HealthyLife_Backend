@@ -3,6 +3,7 @@ package com.HealthCare.HealthyLife_Backend.utils;
 import com.HealthCare.HealthyLife_Backend.dto.medicine.MedicineCodeDto;
 import com.HealthCare.HealthyLife_Backend.service.medicine.MedicineService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -12,6 +13,7 @@ import javax.annotation.PostConstruct;
 import java.util.List;
 
 @Component
+@ConditionalOnProperty(name = "spring.elasticsearch.enabled", havingValue = "true")
 public class Scheduler {
 
     private final MedicineService medicineService;

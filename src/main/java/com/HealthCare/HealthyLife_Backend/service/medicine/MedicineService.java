@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @Transactional
-//@ConditionalOnProperty(name = "spring.elasticsearch.enabled", havingValue = "true")
+@ConditionalOnProperty(name = "spring.elasticsearch.enabled", havingValue = "true")
 public class MedicineService extends AbstractMedicineService {
 
     private final MedicineRepository medicineRepository;
