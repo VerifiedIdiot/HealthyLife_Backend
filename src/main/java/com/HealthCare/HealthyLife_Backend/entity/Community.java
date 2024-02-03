@@ -10,10 +10,11 @@ import java.util.List;
 
 @Entity
 @Table(name = "community_tb") // 실제 데이터베이스 테이블 이름에 맞게 지정해야 합니다.
-@Getter
 @NoArgsConstructor
-@ToString
+@AllArgsConstructor
 @Builder
+@Getter
+@ToString
 public class Community {
     @Id
     @Column(name = "community_id")
@@ -62,21 +63,4 @@ public class Community {
 
     private String nickName;
 
-    @Builder
-    public Community(Long communityId, String title, String content, String text, LocalDateTime regDate,
-                     Member member, List<CommunityLikeIt> communityLikeIts, Category category,
-                     int likeCount, int viewCount, List<Comment> comments, String nickName) {
-        this.communityId = communityId;
-        this.title = title;
-        this.content = content;
-        this.text = text;
-        this.regDate = regDate;
-        this.member = member;
-        this.communityLikeIts = communityLikeIts;
-        this.category = category;
-        this.likeCount = likeCount;
-        this.viewCount = viewCount;
-        this.comments = comments;
-        this.nickName = nickName;
-    }
 }

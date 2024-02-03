@@ -4,15 +4,14 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "comment_tb") // 실제 데이터베이스 테이블 이름에 맞게 지정해야 합니다.
-@Getter
-@Builder(toBuilder = true)
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Getter
+@Setter
 @ToString
 public class Comment {
     @Id

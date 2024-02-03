@@ -32,7 +32,7 @@ public class CommunityService {
     private final CommentRepository commentRepository;
     private final CategoryRepository categoryRepository;
     private final LikeItRepository likeItRepository;
-    private final MemberService memberService;
+
 
     //        게시글 작성
     public boolean saveCommunity(CommunityDto communityDto) {
@@ -205,8 +205,11 @@ public class CommunityService {
         }
 
         Community community = communityOptional.get();
-        Optional<CommunityLikeIt> likeItOptional = likeItRepository.findByCommunityAndEmail(community, email);
-// 확인
+
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("해당 이메일을 가진 사용자가 존재하지 않습니다."));
+
+        Optional<CommunityLikeIt> likeItOptional = likeItRepository.findByCommunityAndMember(community, member);
         if (likeItOptional.isPresent()) {
             throw new IllegalArgumentException("이미 좋아합니다.");
 
@@ -233,7 +236,7 @@ public class CommunityService {
         CommunityLikeIt like = CommunityLikeIt.builder()
                 .community(updatedCommunity)
                 .isLikeIt(isLikeIt)
-                .email(email)
+                .member(member)
                 .build();
 
         likeItRepository.save(like);

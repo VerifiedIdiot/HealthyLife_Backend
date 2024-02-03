@@ -54,10 +54,9 @@ public class CommentService {
     public boolean commentModify(CommentDto commentDto) {
         try {
             Comment comment = commentRepository.findById(commentDto.getCommentId()).orElseThrow(
-                    () -> new RuntimeException("해당 댓글이 존재하지 않습니다."));
-            comment = comment.toBuilder()
-                    .content(commentDto.getContent())
-                    .build();
+                    () -> new RuntimeException("해당 댓글이 존재하지 않습니다.")
+            );
+            comment.setContent(commentDto.getContent());
             commentRepository.save(comment);
             return true;
         } catch (Exception e) {

@@ -21,8 +21,11 @@ public class CommunityLikeIt {
     @JoinColumn(name = "community_id")
     private Community community;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "Member_id")
+    private Member member;
+
     @Column(name = "is_like_it")
     private boolean isLikeIt; // true일 경우 추천, false일 경우 비추천
-    @Column(name = "email")
-    private String email;
+
 }
