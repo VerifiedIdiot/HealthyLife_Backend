@@ -2,7 +2,9 @@ package com.HealthCare.HealthyLife_Backend.dto;
 
 import com.HealthCare.HealthyLife_Backend.entity.Food;
 import com.HealthCare.HealthyLife_Backend.entity.calendar.Meal;
+import com.HealthCare.HealthyLife_Backend.utils.Views;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.*;
 
 
@@ -14,13 +16,19 @@ import lombok.*;
 @Builder
 
 public class FoodDto {
+    // 문지예 캘린더 측 검색을 위해 추가 24/02/03
+    @JsonView(Views.Internal.class)
     private String image;
+    // 문지예 캘린더 측 검색을 위해 추가 24/02/03
+    @JsonView(Views.Internal.class)
     private String name;
     private String brand;
     private String class1;
     private String class2;
     private String servingSize;
     private String servingUnit;
+    // 문지예 캘린더 측 검색을 위해 추가 24/02/03
+    @JsonView(Views.Internal.class)
     private String kcal;
     private String protein;
     private String fat;
@@ -71,4 +79,10 @@ public class FoodDto {
                 .build();
         }
 
+    // 문지예 캘린더 측 검색을 위해 추가 24/02/03
+        public FoodDto(String name, String image, String kcal) {
+            this.name = name;
+            this.image = image;
+            this.kcal = kcal;
+        }
 }

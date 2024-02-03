@@ -2,6 +2,8 @@ package com.HealthCare.HealthyLife_Backend.repository;
 
 import com.HealthCare.HealthyLife_Backend.dto.FoodDto;
 import com.HealthCare.HealthyLife_Backend.entity.Food;
+import com.HealthCare.HealthyLife_Backend.utils.Views;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -27,4 +29,9 @@ public interface FoodRepository extends JpaRepository<Food, Long> {
 
 
     FoodDto findByName(String keyword);
+
+    // 문지예 캘린더 측 검색을 위해 추가 24/02/03
+    @JsonView(Views.Internal.class)
+    @Query("SELECT new com.HealthCare.HealthyLife_Backend.dto.FoodDto(f.name, f.image, f.kcal) FROM Food f WHERE f.name LIKE %:keyword%")
+    List<FoodDto> findAllByName(@Param("keyword") String keyword);
 }

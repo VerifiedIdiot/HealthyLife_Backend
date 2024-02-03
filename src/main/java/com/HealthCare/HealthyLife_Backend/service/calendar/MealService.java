@@ -3,10 +3,14 @@ package com.HealthCare.HealthyLife_Backend.service.calendar;
 import com.HealthCare.HealthyLife_Backend.dto.FoodDto;
 import com.HealthCare.HealthyLife_Backend.dto.calendar.MealDto;
 
+import com.HealthCare.HealthyLife_Backend.entity.Food;
 import com.HealthCare.HealthyLife_Backend.entity.calendar.Meal;
 import com.HealthCare.HealthyLife_Backend.repository.FoodRepository;
 import com.HealthCare.HealthyLife_Backend.repository.MealRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class MealService {
@@ -48,5 +52,8 @@ public class MealService {
         return null;
     }
 
-
+    public List<FoodDto> getFoodKeyword(String keyword) {
+        List<FoodDto> foodDtos = foodRepository.findAllByName(keyword);
+        return foodDtos;
+    }
 }

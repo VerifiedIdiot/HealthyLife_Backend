@@ -45,6 +45,8 @@ public class FoodController {
         return ResponseEntity.ok(list);
     }
 
+
+
     @GetMapping("/view/search")
     public ResponseEntity<List<FoodDto>> getFoodSearchView(@RequestParam(required = false) String keyword,
                                                            @RequestParam(required = false) String class1,
@@ -59,5 +61,6 @@ public class FoodController {
             return ResponseEntity.notFound().build();
         }
     }
+
 }
 
