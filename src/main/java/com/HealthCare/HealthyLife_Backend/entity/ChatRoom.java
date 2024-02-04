@@ -19,8 +19,6 @@ public class ChatRoom {
     @Id
     @Column(name = "room_id",length = 50)
     private String roomId; // 채팅방 ID
-    @Column(name = "room_name",nullable = false)
-    private String name; // 채팅방 이름
     private LocalDateTime regDate; // 채팅방 생성 시간
     private Long senderId; // 상대 정보 아이디
 

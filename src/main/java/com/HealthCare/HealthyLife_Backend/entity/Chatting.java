@@ -2,7 +2,6 @@ package com.HealthCare.HealthyLife_Backend.entity;
 
 
 import com.HealthCare.HealthyLife_Backend.dto.ChatMessageDto;
-import com.HealthCare.HealthyLife_Backend.enums.MessageType;
 import lombok.*;
 
 import javax.persistence.*;
@@ -21,9 +20,7 @@ public class Chatting {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "chatting_id")
     private Long id;
-
-    @Enumerated(EnumType.STRING)
-    private MessageType type;
+    private String type;
     @Column(name = "message",nullable = false)
     private String message; //메세지
     @Column(name = "message_time",nullable = false)
@@ -45,5 +42,13 @@ public class Chatting {
     @Column(name = "message_status" )
     private String messageStatus; //메세지 읽음,안읽음
 
-
+    public Chatting build() {
+        Chatting chatting = new Chatting();
+        chatting.setMessage(this.message);
+        chatting.setMessageTime(this.messageTime);
+        chatting.setMember(this.member);
+        chatting.setChatRoom(this.chatRoom);
+        chatting.setMessageStatus(this.messageStatus);
+        return chatting;
+    }
 }
