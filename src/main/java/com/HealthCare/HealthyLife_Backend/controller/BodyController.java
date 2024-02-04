@@ -1,6 +1,8 @@
 package com.HealthCare.HealthyLife_Backend.controller;
 
 import com.HealthCare.HealthyLife_Backend.dto.BodyDto;
+import com.HealthCare.HealthyLife_Backend.dto.FoodDto;
+import com.HealthCare.HealthyLife_Backend.entity.Exercise;
 import com.HealthCare.HealthyLife_Backend.service.BodyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

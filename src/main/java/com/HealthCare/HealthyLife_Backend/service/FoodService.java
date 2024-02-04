@@ -62,7 +62,7 @@ public class FoodService {
         return foodDtos;
     }
 
-    public List<FoodDto> getFoodSortedByKeywordAndClass1AndClass2(String keyword, String class1, String class2, int page, int size) {
+    public List<FoodDto> getExerciseSortedByKeywordAndMuscleAndDifficulty(String keyword, String class1, String class2, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Food> foods;
 

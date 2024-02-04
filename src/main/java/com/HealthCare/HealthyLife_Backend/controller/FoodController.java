@@ -20,7 +20,7 @@ import java.util.List;
 import static com.HealthCare.HealthyLife_Backend.utils.Common.CORS_ORIGIN;
 
 @Controller
-@CrossOrigin(origins = CORS_ORIGIN)
+//@CrossOrigin(origins = CORS_ORIGIN)
 @RequestMapping("/api/food")
 @Slf4j
 public class FoodController {
@@ -54,13 +54,12 @@ public class FoodController {
                                                            @RequestParam(defaultValue = "0") int page,
                                                            @RequestParam(defaultValue = "10") int size) {
         try {
-            List<FoodDto> foodPage = foodService.getFoodSortedByKeywordAndClass1AndClass2(keyword, class1, class2, page, size);
+            List<FoodDto> foodPage = foodService.getExerciseSortedByKeywordAndMuscleAndDifficulty(keyword, class1, class2, page, size);
             return ResponseEntity.ok(foodPage);
         } catch (Exception e) {
             log.error("음식 검색 중 오류 발생: {}", e.getMessage());
             return ResponseEntity.notFound().build();
         }
     }
-
 }
 
