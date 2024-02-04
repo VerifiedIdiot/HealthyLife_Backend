@@ -3,6 +3,8 @@ package com.HealthCare.HealthyLife_Backend.dto;
 import com.HealthCare.HealthyLife_Backend.entity.Body;
 import com.HealthCare.HealthyLife_Backend.entity.Exercise;
 import com.HealthCare.HealthyLife_Backend.entity.Member;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
 
 import javax.persistence.Column;
@@ -14,7 +16,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-
 public class BodyDto {
     private LocalDate date;
     private String memberEmail;

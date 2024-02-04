@@ -30,7 +30,7 @@ public class Body {
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_email")
+    @JoinColumn(name = "email", referencedColumnName = "email")
     private Member member;
 
     @Column(name = "height")

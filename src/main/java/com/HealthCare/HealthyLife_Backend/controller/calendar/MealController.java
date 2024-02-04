@@ -6,7 +6,6 @@ import com.HealthCare.HealthyLife_Backend.service.calendar.MealService;
 import com.HealthCare.HealthyLife_Backend.utils.Views;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +16,7 @@ import java.util.List;
 @RequestMapping("/meal")
 public class MealController {
     private final MealService mealService;
-
+//    private final MemeberSevice memeberSevice;
 
     public MealController(MealService mealService) {
         this.mealService = mealService;
@@ -36,20 +35,21 @@ public class MealController {
 //            return ResponseEntity.badRequest().body("검색 실패: " + e.getMessage());
 //        }
 //    }
-@PostMapping("/add")
-public ResponseEntity<?> add(
-        @RequestParam(required = false) String keyword) {
-    try {
-        MealDto results = mealService.addMealWithFood(keyword);
-        return ResponseEntity.ok(results);
-    } catch (Exception e) {
-        log.error("Error");
-        return ResponseEntity.badRequest().body("검색 실패: " + e.getMessage());
+    @PostMapping("/add")
+    public ResponseEntity<?> add(
+            @RequestParam(required = false) String keyword) {
+        try {
+            MealDto results = mealService.addMealWithFood(keyword);
+            return ResponseEntity.ok(results);
+        } catch (Exception e) {
+            log.error("음식 추가 중 오류 발생: {}", e.getMessage());
+            return ResponseEntity.notFound().build();
+        }
     }
-}
     @JsonView(Views.Internal.class)
     @GetMapping("/view/search")
-    public ResponseEntity<List<FoodDto>> getFoodByKeyword(@RequestParam(required = true) String keyword) {
+    public ResponseEntity<List<FoodDto>> getFoodByKeyword(
+            @RequestParam(required = true) String keyword) {
         try {
             List<FoodDto> foodDtos = mealService.getFoodKeyword(keyword);
             return ResponseEntity.ok(foodDtos);
@@ -58,4 +58,6 @@ public ResponseEntity<?> add(
             return ResponseEntity.notFound().build();
         }
     }
+
+
 }

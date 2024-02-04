@@ -1,5 +1,6 @@
 package com.HealthCare.HealthyLife_Backend.entity.calendar;
 
+import com.HealthCare.HealthyLife_Backend.entity.Exercise;
 import lombok.*;
 
 import javax.persistence.*;
@@ -23,6 +24,10 @@ public class Workout {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "calendar_id")
     private Calendar calendar;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name ="exercise_id")
+    private Exercise exercise;
 
     private String workout;
     private String memberId;

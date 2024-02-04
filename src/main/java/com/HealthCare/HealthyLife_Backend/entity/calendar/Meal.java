@@ -1,6 +1,7 @@
 package com.HealthCare.HealthyLife_Backend.entity.calendar;
 
 import com.HealthCare.HealthyLife_Backend.dto.calendar.MealDto;
+import com.HealthCare.HealthyLife_Backend.entity.Food;
 import lombok.*;
 
 import javax.persistence.*;
@@ -28,6 +29,10 @@ public class Meal {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "calendar_id")
     private Calendar calendar;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "food_id")
+    private Food food;
 
     @PrePersist
     public void prePersist() {

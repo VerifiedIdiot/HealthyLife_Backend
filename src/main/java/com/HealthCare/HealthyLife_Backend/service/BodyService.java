@@ -22,7 +22,9 @@ public class BodyService {
 
     public boolean saveBody(BodyDto bodyDto) {
         try {
+            System.out.println("응답값 : " + bodyDto.getMemberEmail());
             Body body = Body.builder()
+
                     .member(memberRepository.findByEmail(bodyDto.getMemberEmail())
                             .orElseThrow(() -> new RuntimeException("해당 회원이 존재하지 않습니다.")))
                     .height(bodyDto.getHeight())

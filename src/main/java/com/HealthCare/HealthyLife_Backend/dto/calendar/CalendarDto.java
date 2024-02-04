@@ -1,11 +1,17 @@
 package com.HealthCare.HealthyLife_Backend.dto.calendar;
 
+import com.HealthCare.HealthyLife_Backend.entity.Member;
 import com.HealthCare.HealthyLife_Backend.entity.calendar.Calendar;
+import com.HealthCare.HealthyLife_Backend.entity.calendar.Meal;
+import com.HealthCare.HealthyLife_Backend.entity.calendar.Workout;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
 
+import javax.persistence.CascadeType;
+import javax.persistence.OneToMany;
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Builder
@@ -30,6 +36,10 @@ public class CalendarDto {
     private Long memberId;
 
     private Integer points; // 포인트
+
+    private Member member;
+    private Meal meals;
+    private Workout workout;
 
     public Calendar toCalendarEntity() {
         return Calendar.builder()

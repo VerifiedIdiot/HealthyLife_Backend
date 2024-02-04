@@ -22,6 +22,7 @@ public class Calendar {
     @Column(name = "calendar_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     private int month;
 
     private Integer carbohydrate; // 탄수화물
@@ -32,20 +33,12 @@ public class Calendar {
     private Integer points; // 포인트
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member_email")
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "body_id")
     private Body body;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "exercise_id")
-    private Exercise exercise;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "food_id")
-    private Food food;
 
     @OneToMany(mappedBy = "calendar", cascade = CascadeType.ALL)
     private List<SeasonRanking> seasonRankings;
@@ -64,7 +57,6 @@ public class Calendar {
 
     public CalendarDto toCalendarDto() {
         return CalendarDto.builder()
-                .month(this.getMonth())
                 .regDate(this.getRegDate())
                 .points(this.getPoints())
                 .build();

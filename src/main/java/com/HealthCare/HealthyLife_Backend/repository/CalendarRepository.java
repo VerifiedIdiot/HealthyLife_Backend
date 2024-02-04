@@ -12,9 +12,4 @@ public interface CalendarRepository extends JpaRepository<Calendar, Long> {
     @Query("SELECT c FROM Calendar c WHERE c.month = :month")
     List<Calendar> findByMonth(@Param("month") int month);
 
-
-
-
-//    @Query("SELECT new com.Doggo.DoggoEx.dto.CatDto(c.id, c.name, c.koreanName, c.imageLink) FROM Cat c WHERE c.name LIKE %:keyword% OR c.koreanName LIKE %:keyword% ORDER BY c.koreanName ASC")
-//    List<FoodDto> findByKeyword(@Param("keyword") String keyword);
 }
