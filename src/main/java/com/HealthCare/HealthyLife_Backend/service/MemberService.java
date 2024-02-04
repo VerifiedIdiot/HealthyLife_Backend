@@ -18,7 +18,7 @@ public class MemberService {
 
     // 회원 상세 조회
     public MemberResDto getMemberDetail(Long id) {
-        Member member = memberRepository.findById(id).orElseThrow(() -> new RuntimeException("해당 회원이 존재하지 않습니다."));
+        Member member = memberRepository.findById(id).orElseThrow(()-> new RuntimeException("해당 회원이 존재하지 않습니다."));
         return converEntityToDto(member);
     }
     // 비밀번호 일치 체크

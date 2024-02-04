@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 public class TokenProvider {
     private static final String AUTHORITIES_KEY = "auth"; // 토큰에 저장되는 권한 정보의 key
     private static final String BEARER_TYPE = "Bearer"; // 토큰의 타입
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30; // 30분
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 1; // 30분
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7L; // 1일
     private final Key key; // 토큰을 서명하기 위한 Key
 
@@ -45,13 +45,13 @@ public class TokenProvider {
                 // 각 권한 문자열을 쉼표(,)로 구분된 하나의 문자열로 결합
                 .collect(Collectors.joining(","));
 
-        long now = (new Date()).getTime(); // 현재 시간
+        long now = (new java.util.Date()).getTime(); // 현재 시간
         // 토큰 만료 시간 설정
         Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
         Date refreshTokenExpiresIn = new Date(now + REFRESH_TOKEN_EXPIRE_TIME);
 
         // Access 토큰 생성
-        String accessToken = Jwts.builder()
+        String accessToken = io.jsonwebtoken.Jwts.builder()
                 // 토큰의 주체 설정 (일반적으로는 사용자명)
                 .setSubject(authentication.getName())
                 // 토큰에 추가적인 클레임(Claim) 설정, 여기서는 권한 정보를 설정
@@ -64,7 +64,7 @@ public class TokenProvider {
                 .compact();
 
         // 리프레시 토큰 생성
-        String refreshToken = Jwts.builder()
+        String refreshToken = io.jsonwebtoken.Jwts.builder()
                 // 토큰의 만료 시간 설정
                 .setExpiration(refreshTokenExpiresIn)
                 // 토큰의 주체 설정 (일반적으로는 사용자명)
@@ -117,9 +117,9 @@ public class TokenProvider {
     // 토큰의 유효성 검증
     public boolean validateToken (String token) {
         try {
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+            io.jsonwebtoken.Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
-        } catch (SecurityException | MalformedJwtException e) {
+        } catch (SecurityException | io.jsonwebtoken.MalformedJwtException e) {
             log.info("잘못된 JWT 서명입니다.");
         } catch (ExpiredJwtException e) {
             log.info("만료된 JWT 토큰입니다.");
@@ -139,7 +139,7 @@ public class TokenProvider {
             // build() 메서드를 통해 최종적으로 토큰 파서를 생성
             // parseClaimsJws(accessToken)를 사용하여 토큰을 파싱하고, Jws<Claims> 객체를 반환
             // Jws<Claims> 객체에서 getBody() 메서드를 사용하여 페이로드(Claims)를 추출
-            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody();
+            return io.jsonwebtoken.Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody();
         } catch (ExpiredJwtException e) {
             return e.getClaims();
         }
@@ -147,6 +147,7 @@ public class TokenProvider {
 
     // access 토큰 재발급
     public String generateAccessToken(Authentication authentication) {
+        log.info("Generating access token for user: {}", authentication.getName());
         return generateTokenDto(authentication).getAccessToken();
     }
 }

@@ -15,9 +15,9 @@ import java.io.IOException;
 
 @Slf4j
 @RequiredArgsConstructor // final이 붙은 필드를 인자값으로 하는 생성자를 만들어줌
-public class JwtFilter extends OncePerRequestFilter{
+public class JwtFilter extends OncePerRequestFilter {
     public static final String AUTHORIZATION_HEADER = "Authorization"; // 토큰을 요청 헤더의 Authorization 키에 담아서 전달
-    public static final String BEARER_PREFIX = "Bearer "; // 토큰 앞에 붙이는 문자열
+    public static final String BEARER_PREFIX = "Bearer "; // 토큰 앞에 붙는 문자열
     private final TokenProvider tokenProvider; // 토큰 생성, 토큰 검증을 수행하는 TokenProvider
 
     private String resolveToken(HttpServletRequest request) { // 토큰을 요청 헤더에서 꺼내오는 메서드

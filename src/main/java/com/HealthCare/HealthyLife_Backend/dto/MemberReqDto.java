@@ -24,7 +24,6 @@ public class MemberReqDto {
     private String phone;
     private String addr;
     private String image;
-    private String isPayment;
     private LocalDate birth;
     private LocalDateTime regDate;
 

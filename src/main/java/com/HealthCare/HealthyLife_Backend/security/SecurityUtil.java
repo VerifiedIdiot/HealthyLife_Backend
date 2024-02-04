@@ -17,6 +17,13 @@ public class SecurityUtil {
         if (authentication == null || authentication.getName() == null) {
             throw new RuntimeException("Security Context에 인증 정보가 없습니다.");
         }
-        return Long.parseLong(authentication.getName());
+        String userId = authentication.getName();
+        try {
+            return Long.parseLong(userId);
+        } catch (NumberFormatException e) {
+            log.error("사용자 ID를 Long으로 변환하는 중 에러 발생: {}", userId);
+            // 적절한 예외 처리 또는 기본값 설정 등을 수행할 수 있습니다.
+            throw new RuntimeException("사용자 ID를 가져오는 중 에러 발생");
+        }
     }
 }
