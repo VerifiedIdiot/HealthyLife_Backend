@@ -25,33 +25,26 @@ public class MealService {
         this.memberRepository = memberRepository;
     }
 
-    public MealDto addMealWithFood(String keyword) {
-        MealDto mealDto = new MealDto();
-
-        FoodDto foodDto = foodRepository.findByName(keyword);
-        System.out.println(foodDto);
-        mealDto.setMealName(foodDto.getName());
+    public void addMealWithFood(MealDto mealDto) {
         Meal meal = mealDto.toMealEntity();
         mealRepository.save(meal);
-
-        return null;
     }
 
     // 키워드, 멤버ID, 유형, 날짜
-    public MealDto addMealWithFood(String keyword, String id, String type, String regDate) {
-        MealDto mealDto = new MealDto();
-
-        FoodDto foodDto = foodRepository.findByName(keyword);
-        System.out.println(foodDto);
-        mealDto.setMealName(foodDto.getName());
-        mealDto.setMemberId(id);
-        mealDto.setMealType(type);
-        mealDto.setRegDate(LocalDateTime.parse(regDate));
-        Meal meal = mealDto.toMealEntity();
-        mealRepository.save(meal);
-
-        return null;
-    }
+//    public MealDto addMealWithFood(String keyword, String id, String type, String regDate) {
+//        MealDto mealDto = new MealDto();
+//
+//        FoodDto foodDto = foodRepository.findByName(keyword);
+//        System.out.println(foodDto);
+//        mealDto.setMealName(foodDto.getName());
+//        mealDto.setMemberId(id);
+//        mealDto.setMealType(type);
+//        mealDto.setRegDate(LocalDateTime.parse(regDate));
+//        Meal meal = mealDto.toMealEntity();
+//        mealRepository.save(meal);
+//
+//        return null;
+//    }
 
     public List<FoodDto> getFoodKeyword(String keyword) {
         List<FoodDto> foodDtos = foodRepository.findAllByName(keyword);
