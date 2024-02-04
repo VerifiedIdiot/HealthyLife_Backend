@@ -11,23 +11,34 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class CalendarService {
     @Autowired
+    private final MealService mealService;
     private final CalendarRepository calendarRepository;
-    private final MealRepository mealRepository;
-    private final WorkoutRepository workoutRepository;
 
-    private final MemberService memberService;
-    private final FoodService foodService;
-    private final FoodRepository foodRepository;
+//    public boolean saveCalendar(CalendarDto calendarDto) {
+//        try {
+//            if(CalendarRepository.existByIdAndWriteDate(calendarDto.getMemberId(), calendarDto.getRegDate())){
+//                Calendar calendar = CalendarRepository.existByIdAndWriteDate(calendarDto.getMemberId(), calendarDto.getRegDate());
+//                return true;
+//            }
+//
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+//        return false;
+//    }
 
 
-    public List<CalendarDto> findAll() {
-        return null;
+    public void insert(CalendarDto calendarDto) {
+
     }
 
     public CalendarDto create(CalendarDto calendarDto) {
@@ -47,5 +58,9 @@ public class CalendarService {
 
     public boolean saveCalendar() {
         return true;
+    }
+
+    public List<CalendarDto> findAll() {
+        return null;
     }
 }

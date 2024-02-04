@@ -37,10 +37,10 @@ public class MealController {
 //    }
     @PostMapping("/add")
     public ResponseEntity<?> add(
-            @RequestParam(required = false) String keyword) {
+            @RequestBody(required = true) MealDto mealDto) {
         try {
-            MealDto results = mealService.addMealWithFood(keyword);
-            return ResponseEntity.ok(results);
+            mealService.addMealWithFood(mealDto);
+            return ResponseEntity.ok("z");
         } catch (Exception e) {
             log.error("음식 추가 중 오류 발생: {}", e.getMessage());
             return ResponseEntity.notFound().build();

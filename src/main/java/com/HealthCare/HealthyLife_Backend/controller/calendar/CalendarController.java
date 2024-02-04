@@ -16,11 +16,9 @@ import java.util.List;
 public class CalendarController  {
 
     private final CalendarService calendarService;
-    private final FoodService foodService;
 
-    public CalendarController(CalendarService calendarService, FoodService foodService) {
+    public CalendarController(CalendarService calendarService) {
         this.calendarService = calendarService;
-        this.foodService = foodService;
     }
 
     @GetMapping("/test")
@@ -34,15 +32,15 @@ public class CalendarController  {
         return ResponseEntity.ok("정상작동");
     }
 
-    @PostMapping("/new")
-    public ResponseEntity<CalendarDto> create(@RequestBody CalendarDto calendarDto) {
-        try {
-            CalendarDto newCalendar = calendarService.create(calendarDto);
-            return ResponseEntity.ok(newCalendar);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
+//    @PostMapping("/new")
+//    public ResponseEntity<Boolean> insert(@RequestBody CalendarDto calendarDto) {
+//        try {
+//            boolean isTrue = calendarService.saveCalendar(calendarDto);
+//            return ResponseEntity.ok(isTrue);
+//        } catch (Exception e) {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
 
     @GetMapping("/findAll")
     public ResponseEntity<List<CalendarDto>> findAll() {
@@ -63,12 +61,6 @@ public class CalendarController  {
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
-    }
-
-    @PostMapping("/insert")
-    public ResponseEntity<?> insert(@RequestBody CalendarDto calendarDto) {
-        boolean isTrue = calendarService.saveCalendar();
-        return ResponseEntity.ok(isTrue);
     }
 
     @DeleteMapping("/delete/{id}")
