@@ -19,7 +19,7 @@ import static com.HealthCare.HealthyLife_Backend.utils.Common.CORS_ORIGIN;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@CrossOrigin(origins = CORS_ORIGIN)
+//@CrossOrigin(origins = CORS_ORIGIN)
 @RequestMapping("/chat")
 public class ChatController {
     private final ChatService chatService;

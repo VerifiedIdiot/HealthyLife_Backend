@@ -30,7 +30,7 @@ public class FriendService {
                 FriendDto friendDto = FriendDto.builder()
                         .friendsId(friend.getFriendsId())
                         .status(friend.getStatus())
-                        .member(friend.getMember())
+                        .memberId(friend.getMember().getId())
                         .build();
                 friends.add(friendDto);
             }
@@ -40,7 +40,7 @@ public class FriendService {
     //친구/차단 추가 true일때 친구 / false 차단
     public boolean saveFriend(FriendDto friendDto,boolean isFriend) {
         try {
-            Member member = memberRepository.findByEmail(friendDto.getMember().getEmail()).orElseThrow(
+            Member member = memberRepository.findById(friendDto.getMemberId()).orElseThrow(
                     () -> new RuntimeException("해당 회원이 존재 하지 않습니다.")
             );
             Friend friend = Friend.builder()
@@ -69,5 +69,4 @@ public class FriendService {
             return false;
         }
     }
-
 }

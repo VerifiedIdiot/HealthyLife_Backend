@@ -15,7 +15,7 @@ import static com.HealthCare.HealthyLife_Backend.utils.Common.CORS_ORIGIN;
 @Slf4j
 @RestController
 @RequestMapping("/status")
-@CrossOrigin(origins = CORS_ORIGIN)
+//@CrossOrigin(origins = CORS_ORIGIN)
 @RequiredArgsConstructor
 public class MemberStatusControllor {
     private final MemberStatusService memberStatusService;
