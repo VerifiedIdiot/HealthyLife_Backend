@@ -16,36 +16,25 @@ import java.util.List;
 @RequestMapping("/meal")
 public class MealController {
     private final MealService mealService;
-//    private final MemeberSevice memeberSevice;
 
     public MealController(MealService mealService) {
         this.mealService = mealService;
     }
 
-//    @PostMapping("/add")
-//    public ResponseEntity<?> add(
-//            @RequestParam(required = false) String keyword,
-//            @RequestParam(required = false) String id,
-//            @RequestParam(required = false) String type) {
-//        try {
-//            MealDto results = mealService.addMealWithFood(keyword, id, type);
-//            return ResponseEntity.ok(results);
-//        } catch (Exception e) {
-//            log.error("Error");
-//            return ResponseEntity.badRequest().body("검색 실패: " + e.getMessage());
-//        }
-//    }
+    // 식단 추가
     @PostMapping("/add")
     public ResponseEntity<?> add(
             @RequestBody(required = true) MealDto mealDto) {
         try {
             mealService.addMealWithFood(mealDto);
-            return ResponseEntity.ok("z");
+            return ResponseEntity.ok("음식추가");
         } catch (Exception e) {
             log.error("음식 추가 중 오류 발생: {}", e.getMessage());
             return ResponseEntity.notFound().build();
         }
     }
+
+    // 음식 검색
     @JsonView(Views.Internal.class)
     @GetMapping("/view/search")
     public ResponseEntity<List<FoodDto>> getFoodByKeyword(
@@ -59,5 +48,30 @@ public class MealController {
         }
     }
 
+    // 식단 수정
+    @PutMapping("/modify/{id}")
+    public ResponseEntity<String> mealModify(
+            @PathVariable Long id,
+            @RequestBody MealDto mealDto) {
+        try{
+            ResponseEntity<String> modifyMeal = mealService.modifyMeal(id, mealDto);
+            return modifyMeal;
+        } catch (Exception e) {
+            log.error("음식 수정 중 오류 발생: {}", e.getMessage());
+            return ResponseEntity.notFound().build();
+        }
+    }
 
+    // 식단 삭제
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Boolean> delete(
+            @PathVariable Long id) {
+        try {
+            boolean isTrue = mealService.deleteMeal(id);
+            return ResponseEntity.ok(isTrue);
+        } catch (Exception e) {
+            log.error("음식 삭제 중 오류 발생 : {}", e.getMessage());
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

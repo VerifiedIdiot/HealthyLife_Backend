@@ -7,8 +7,10 @@ import com.HealthCare.HealthyLife_Backend.entity.calendar.Meal;
 import com.HealthCare.HealthyLife_Backend.repository.FoodRepository;
 import com.HealthCare.HealthyLife_Backend.repository.MealRepository;
 import com.HealthCare.HealthyLife_Backend.repository.MemberRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -50,4 +52,32 @@ public class MealService {
         List<FoodDto> foodDtos = foodRepository.findAllByName(keyword);
         return foodDtos;
     }
+
+    // 수정
+    public ResponseEntity<String> modifyMeal(Long id, MealDto mealDto) {
+        try {
+            Meal meal = mealRepository.findById(id).orElseThrow(
+                    () -> new RuntimeException("해당 식단이 존재하지 않습니다.")
+            );
+            meal.setMealType(mealDto.getMealType());
+            meal.setMealName(mealDto.getMealName());
+            mealRepository.save(meal);
+            return ResponseEntity.ok("식단이 성공적으로 수정되었습니다.");
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // 삭제
+    public boolean deleteMeal(Long id) {
+        try {
+            mealRepository.findById(id);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
 }
