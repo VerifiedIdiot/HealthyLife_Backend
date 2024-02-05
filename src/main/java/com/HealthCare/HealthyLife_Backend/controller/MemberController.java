@@ -17,13 +17,28 @@ import static com.HealthCare.HealthyLife_Backend.utils.Common.CORS_ORIGIN;
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
+    private final SecurityUtil securityUtil;
 
     // 회원 상세 조회
     @GetMapping("/detail")
     public ResponseEntity<MemberResDto> memberDetail(){
-        Long id = SecurityUtil.getCurrentMemberId();
+        Long id = securityUtil.getCurrentMemberId();
         log.info("id : {} ", id);
         MemberResDto memberResDto = memberService.getMemberDetail(id);
         return ResponseEntity.ok(memberResDto);
     }
+
+    //토큰값받고 이메일 출력
+    @GetMapping("/takenEmail")
+    public ResponseEntity<String> takenEmail() {
+        String email=memberService.getEmail(securityUtil.getCurrentMemberId());
+        return ResponseEntity.ok(email);
+    }
+
+    @GetMapping("/takenId")
+    public ResponseEntity<Long> takenMemberId(){
+        Long id = securityUtil.getCurrentMemberId();
+        return ResponseEntity.ok(id);
+    }
+
 }
