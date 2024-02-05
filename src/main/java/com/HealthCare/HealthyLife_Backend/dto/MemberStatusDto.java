@@ -1,6 +1,7 @@
 package com.HealthCare.HealthyLife_Backend.dto;
 
 import com.HealthCare.HealthyLife_Backend.entity.Member;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import java.time.LocalDateTime;

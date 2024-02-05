@@ -13,7 +13,7 @@ import static com.HealthCare.HealthyLife_Backend.utils.Common.CORS_ORIGIN;
 @Slf4j
 @RestController
 @RequestMapping("/member")
-@CrossOrigin(origins = CORS_ORIGIN)
+//@CrossOrigin(origins = CORS_ORIGIN)
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
@@ -39,6 +39,13 @@ public class MemberController {
     public ResponseEntity<Long> takenMemberId(){
         Long id = securityUtil.getCurrentMemberId();
         return ResponseEntity.ok(id);
+    }
+
+    // 회원 정보 조회
+    @GetMapping("/detail/{memberId}")
+    public ResponseEntity<MemberResDto> memberInfo(@PathVariable Long memberId){
+        MemberResDto memberResDto = memberService.getMemberDetail(memberId);
+        return ResponseEntity.ok(memberResDto);
     }
 
 }
