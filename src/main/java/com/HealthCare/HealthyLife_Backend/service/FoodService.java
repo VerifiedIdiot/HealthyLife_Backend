@@ -62,34 +62,14 @@ public class FoodService {
         return foodDtos;
     }
 
-    public List<FoodDto> getExerciseSortedByKeywordAndMuscleAndDifficulty(String keyword, String class1, String class2, int page, int size) {
+    public List<FoodDto> getFoodSortedByKeywordAndClass1AndClass2(String keyword, String class1, String class2, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Food> foods;
 
-        if (keyword != null) {
-            if (class1 == null && class2 == null) {
-                // keyword만 입력된 경우
-                foods = foodRepository.findByNameContaining(keyword, pageable);
-            } else if (class1 != null && class2 == null) {
-                // keyword와 class1만 입력된 경우
-                foods = foodRepository.findByNameAndClass1Containing(keyword, class1, pageable);
-            } else if (class1 != null && class2 != null) {
-                // keyword, class1, class2 모두 입력된 경우
-                foods = foodRepository.findByNameAndClass1AndClass2Containing(keyword, class1, class2, pageable);
-            } else {
-                // class1이 null이거나 class2가 null이 아닌 경우에 대한 처리
-                foods = foodRepository.findByNameContaining(keyword, pageable); // 예외가 아니라 기본적으로 keyword로 검색
-            }
-        } else if (class1 != null) {
-            if (class2 == null) {
-                // class1만 입력된 경우
-                foods = foodRepository.findByClass1Containing(class1, pageable);
-            } else {
-                // class1과 class2 모두 입력된 경우
-                foods = foodRepository.findByClass1ContainingAndClass2Containing(class1, class2, pageable);
-            }
+        if (keyword != null || class1 != null || class2 != null) {
+            foods = foodRepository.findByConditions(keyword, class1, class2, pageable);
         } else {
-            // keyword가 null이면서 class1도 null인 경우
+            // 모든 조건이 null인 경우 모든 음식 데이터를 반환
             foods = foodRepository.findAll(pageable);
         }
 

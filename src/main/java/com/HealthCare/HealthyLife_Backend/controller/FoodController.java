@@ -31,7 +31,7 @@ public class FoodController {
         this.foodService = foodService;
     }
 
-    @PostMapping("/upload")
+    @PostMapping("/insert")
     public ResponseEntity<String> uploadFoodData() {
         foodService.saveFoodData();
         return ResponseEntity.ok("Food data uploaded and processed successfully!");
@@ -54,7 +54,7 @@ public class FoodController {
                                                            @RequestParam(defaultValue = "0") int page,
                                                            @RequestParam(defaultValue = "10") int size) {
         try {
-            List<FoodDto> foodPage = foodService.getExerciseSortedByKeywordAndMuscleAndDifficulty(keyword, class1, class2, page, size);
+            List<FoodDto> foodPage = foodService.getFoodSortedByKeywordAndClass1AndClass2(keyword, class1, class2, page, size);
             return ResponseEntity.ok(foodPage);
         } catch (Exception e) {
             log.error("음식 검색 중 오류 발생: {}", e.getMessage());
