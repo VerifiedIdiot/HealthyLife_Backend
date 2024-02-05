@@ -47,7 +47,7 @@ public class Community {
 
 
     @OneToMany(mappedBy = "community", cascade = CascadeType.ALL)
-    private List<CommunityLikeIt> communityLikeIts = new ArrayList<>();
+    private List<CommunityLikeIt> communityLikeIts;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
@@ -59,7 +59,8 @@ public class Community {
 
     // Board와 Comment는 1:N 관계, mappedBy는 연관관계의 주인이 아니다(난 FK가 아니에요)라는 의미
     @OneToMany(mappedBy = "community", cascade = CascadeType.ALL)
-    private List<Comment> comments = new ArrayList<>();
+    private List<Comment> comments;
+
 
     private String nickName;
 

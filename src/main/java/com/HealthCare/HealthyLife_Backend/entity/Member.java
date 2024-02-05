@@ -5,6 +5,7 @@ import com.HealthCare.HealthyLife_Backend.enums.ExercisePurpose;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,7 +18,7 @@ import java.util.List;
 @Setter
 @ToString
 @Table(name = "member_tb")
-public class Member {
+public class Member implements Serializable {
     @Id
     @Column(name = "member_id")
     @GeneratedValue(strategy = GenerationType.AUTO)

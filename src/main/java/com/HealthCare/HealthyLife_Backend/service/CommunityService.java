@@ -49,7 +49,6 @@ public class CommunityService {
                     .category(category)
                     .likeCount(communityDto.getLikeCount())
                     .viewCount(communityDto.getViewCount())
-                    .comments(new ArrayList<>())
                     .build();
             communityRepository.save(community);
             return true;
