@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 import static com.HealthCare.HealthyLife_Backend.utils.Common.CORS_ORIGIN;
 
 @Slf4j
@@ -48,4 +50,12 @@ public class MemberController {
         return ResponseEntity.ok(memberResDto);
     }
 
+    //비밀번호 체크
+    @PostMapping("/ispassword")
+    public ResponseEntity<Boolean> checkPw(@RequestBody Map<String, String> data){
+        Long id = SecurityUtil.getCurrentMemberId();
+        String password = data.get("password");
+        log.info("password : {}", password);
+        return ResponseEntity.ok(memberService.isPassword(password, id));
+    }
 }
