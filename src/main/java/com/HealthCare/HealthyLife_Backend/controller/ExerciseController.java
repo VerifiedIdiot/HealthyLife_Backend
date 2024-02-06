@@ -27,13 +27,13 @@ public class ExerciseController {
         this.exerciseService = exerciseService;
     }
 
-    @PostMapping("/upload")
+    @PostMapping("/insert")
     public ResponseEntity<String> uploadFoodData() {
         exerciseService.insertExercises();
         return ResponseEntity.ok("Exercise data uploaded and processed successfully!");
     }
 
-    @GetMapping("/list/page")
+    @GetMapping("/list/insert")
     public ResponseEntity<List<ExerciseDto>> exerciseList(@RequestParam(defaultValue = "0") int page,
                                                           @RequestParam(defaultValue = "10") int size) {
         List<ExerciseDto> list = exerciseService.getExerciseList(page, size);

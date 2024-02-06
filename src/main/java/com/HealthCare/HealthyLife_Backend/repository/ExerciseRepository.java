@@ -16,23 +16,14 @@ import java.util.List;
 
 public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
     Page<Exercise> findAll(Pageable pageable);
-    Page<Exercise> findByNameContaining(String name, Pageable pageable);
-
-    Page<Exercise> findByMuscleAndDifficultyContaining(String muscle, String difficulty, Pageable pageable);
-
-    @Query("SELECT f FROM Exercise f WHERE f.name LIKE %:name% AND f.muscle = :muscle")
-    Page<Exercise> findByNameAndMuscleContaining(@Param("name") String name, @Param("muscle") String muscle, Pageable pageable);
-
-    @Query("SELECT f FROM Exercise f WHERE f.name LIKE %:name% AND f.difficulty = :difficulty")
-    Page<Exercise> findByNameAndDifficultyContaining(@Param("name") String name, @Param("difficulty") String difficulty, Pageable pageable);
-
-    Page<Exercise> findByDifficultyContaining(String difficulty, Pageable pageable);
-
-    Page<Exercise> findByMuscleContaining(String muscle, Pageable pageable);
-
-    @Query("SELECT f FROM Exercise f WHERE f.name LIKE %:name% AND f.muscle = :muscle AND f.difficulty = :difficulty")
-    Page<Exercise> findByNameAndMuscleAndDifficultyContaining(@Param("name") String name, @Param("muscle") String muscle, @Param("difficulty") String difficulty, Pageable pageable);
-
+    @Query("SELECT DISTINCT f FROM Exercise f " +
+            "WHERE (:name IS NULL OR f.name LIKE %:name%) " +
+            "AND (:muscle IS NULL OR f.muscle LIKE %:muscle%) " +
+            "AND (:difficulty IS NULL OR f.difficulty LIKE %:difficulty%)")
+    Page<Exercise> findByConditions(@Param("name") String name,
+                                 @Param("muscle") String muscle,
+                                 @Param("difficulty") String difficulty,
+                                 Pageable pageable);
 
     ExerciseDto findByName(String keyword);
 
