@@ -55,7 +55,7 @@ public class ElasticsearchFilterService {
                 boolQueryBuilder.must(multiMatchQueryBuilder);
             } else {
                 // 특정 필드에 대한 검색
-                boolQueryBuilder.must(QueryBuilders.matchPhraseQuery(filter, query));
+                boolQueryBuilder.must(QueryBuilders.matchPhraseQuery(filter.trim().replace("\"", ""), query.trim().replace("\"", "")));
             }
         } else {
             // 쿼리가 null 또는 비어있는 경우, 모든 문서를 매치
@@ -76,8 +76,8 @@ public class ElasticsearchFilterService {
             boolQueryBuilder.must(functionalitiesQueryBuilder);
         }
 
-        if (originType != null) {
-            boolQueryBuilder.filter(QueryBuilders.termQuery("origin_type", originType));
+        if (originType != null && !originType.isEmpty()) {
+            boolQueryBuilder.filter(QueryBuilders.termQuery("origin_type", originType.trim().replace("\"", "")));
             System.out.println(originType);
         }
 
