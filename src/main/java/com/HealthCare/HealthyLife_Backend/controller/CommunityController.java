@@ -1,7 +1,6 @@
 package com.HealthCare.HealthyLife_Backend.controller;
 
 import com.HealthCare.HealthyLife_Backend.dto.CommunityDto;
-import com.HealthCare.HealthyLife_Backend.entity.Community;
 import com.HealthCare.HealthyLife_Backend.service.CommunityService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,12 +10,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 
+import static com.HealthCare.HealthyLife_Backend.utils.Common.CORS_ORIGIN;
+
 @Slf4j
+@CrossOrigin(origins = CORS_ORIGIN)
 @RestController
 @RequestMapping("/api/community")
 @RequiredArgsConstructor
@@ -117,15 +118,24 @@ public class CommunityController {
         return ResponseEntity.ok(list);
     }
     // 좋아요
-    @PostMapping("/like/{id}/{isLikeIt}")
-    public ResponseEntity<String> like(@PathVariable Long id, @PathVariable boolean isLikeIt, Principal principal){
-        String email = principal != null ? principal.getName() : null;
+    @PutMapping("/like/{id}/{isLiked}")
+    public ResponseEntity<String> likeIt(@PathVariable Long id, @PathVariable boolean isLiked, @RequestParam String email)
+    {
         try {
-            communityService.like(id, email, true);
+            communityService.like(id, email,isLiked);
             return ResponseEntity.ok("좋아요가 완료되었습니다.");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body("이미 좋아요를 했습니다.");
         }
     }
 
+    @GetMapping("/like/{id}")
+    public ResponseEntity<Boolean> checkLikeStatus(@PathVariable Long id, @RequestParam String email) {
+        try {
+            boolean isLiked = communityService.checkLikeStatus(id, email);
+            return ResponseEntity.ok(isLiked);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(false);
+        }
+    }
 }

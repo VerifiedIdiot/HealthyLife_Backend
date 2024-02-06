@@ -197,7 +197,57 @@ public class CommunityService {
     }
 
     // 좋아요
-    public void like(Long communityId, String email, boolean isLikeIt) {
+    public int like(Long communityId, String email, boolean isLiked) {
+        try {
+            Optional<Community> communityOptional = communityRepository.findById(communityId);
+            if (!communityOptional.isPresent()) {
+                throw new IllegalArgumentException("해당 게시글이 존재하지 않습니다.");
+            }
+
+            Community community = communityOptional.get();
+            Member member = memberRepository.findByEmail(email)
+                    .orElseThrow(() -> new IllegalArgumentException("해당 이메일을 가진 사용자가 존재하지 않습니다."));
+
+            Optional<CommunityLikeIt> likeItOptional = likeItRepository.findByCommunityAndMember(community, member);
+
+                if (isLiked) { // 좋아요 추가
+                    if (likeItOptional.isPresent()) {
+                        throw new IllegalArgumentException("이미 좋아합니다.");
+                    }
+
+                    int newLikeCount = community.getLikeCount() + 1;
+                    community.setLikeCount(newLikeCount);
+                    communityRepository.save(community);
+
+                    CommunityLikeIt like = CommunityLikeIt.builder()
+                            .community(community)
+                            .isLiked(isLiked)
+                            .member(member)
+                            .build();
+                    likeItRepository.save(like);
+
+                    return 1; // 좋아요 추가 성공
+                } else { // 좋아요 취소
+                    if (!likeItOptional.isPresent()) {
+                        throw new IllegalArgumentException("좋아요를 누르지 않았습니다.");
+                    }
+
+                    int newLikeCount = Math.max(0, community.getLikeCount() - 1); // 좋아요 수가 음수가 되지 않도록 설정
+                    community.setLikeCount(newLikeCount);
+                    communityRepository.save(community);
+
+                    likeItRepository.delete(likeItOptional.get());
+
+                    return 0; // 좋아요 취소 성공
+                }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("좋아요 처리 중 오류가 발생했습니다.");
+        }
+    }
+    // 좋아요 여부 확인
+    public boolean checkLikeStatus(Long communityId, String email) {
         Optional<Community> communityOptional = communityRepository.findById(communityId);
         if (!communityOptional.isPresent()) {
             throw new IllegalArgumentException("해당 게시글이 존재하지 않습니다.");
@@ -209,39 +259,8 @@ public class CommunityService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 이메일을 가진 사용자가 존재하지 않습니다."));
 
         Optional<CommunityLikeIt> likeItOptional = likeItRepository.findByCommunityAndMember(community, member);
-        if (likeItOptional.isPresent()) {
-            throw new IllegalArgumentException("이미 좋아합니다.");
-
-        }
-// 추천수 증가 감소
-        int newLikeCount = isLikeIt ? community.getLikeCount() + 1 : community.getLikeCount() - 1;
-
-        Community updatedCommunity = Community.builder()
-                .communityId(community.getCommunityId())
-                .title(community.getTitle())
-                .content(community.getContent())
-                .text(community.getText())
-                .regDate(community.getRegDate())
-                .member(community.getMember())
-                .communityLikeIts(community.getCommunityLikeIts())
-                .category(community.getCategory())
-                .likeCount(newLikeCount)
-                .viewCount(community.getViewCount())
-                .comments(community.getComments())
-                .build();
-
-        communityRepository.save(updatedCommunity);
-
-        CommunityLikeIt like = CommunityLikeIt.builder()
-                .community(updatedCommunity)
-                .isLikeIt(isLikeIt)
-                .member(member)
-                .build();
-
-        likeItRepository.save(like);
+        return likeItOptional.isPresent();
     }
-
-
     // 게시글 엔티티를 DTO로 변환
     private CommunityDto convertEntityToDto(Community community) {
         return CommunityDto.builder()
