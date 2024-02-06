@@ -19,6 +19,7 @@ public class CommunityDto {
     private String text; // 내용
     private LocalDateTime regDate;
     private int likeCount;
+    private boolean isLiked;
     private int viewCount;
     private String categoryName;
     private String email;

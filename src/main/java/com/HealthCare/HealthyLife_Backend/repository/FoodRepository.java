@@ -14,24 +14,19 @@ import java.util.List;
 
 public interface FoodRepository extends JpaRepository<Food, Long> {
     Page<Food> findAll(Pageable pageable);
-    Page<Food> findByNameContaining(String name, Pageable pageable);
-
-    Page<Food> findByClass1ContainingAndClass2Containing(String class1, String class2, Pageable pageable);
-
-    @Query("SELECT f FROM Food f WHERE f.name LIKE %:name% AND f.class1 = :class1")
-    Page<Food> findByNameAndClass1Containing(@Param("name") String name, @Param("class1") String class1, Pageable pageable);
-
-
-    Page<Food> findByClass1Containing(String class1, Pageable pageable);
-
-    @Query("SELECT f FROM Food f WHERE f.name LIKE %:name% AND f.class1 = :class1 AND f.class2 = :class2")
-    Page<Food> findByNameAndClass1AndClass2Containing(@Param("name") String name, @Param("class1") String class1, @Param("class2") String class2, Pageable pageable);
-
+    @Query("SELECT DISTINCT f FROM Food f WHERE " +
+            "(:name IS NULL OR f.name LIKE %:name%) AND " +
+            "(:class1 IS NULL OR f.class1 LIKE %:class1%) AND " +
+            "(:class2 IS NULL OR f.class2 LIKE %:class2%)")
+    Page<Food> findByConditions(@Param("name") String name,
+                                @Param("class1") String class1,
+                                @Param("class2") String class2,
+                                Pageable pageable);
 
     FoodDto findByName(String keyword);
 
     // 문지예 캘린더 측 검색을 위해 추가 24/02/03
     @JsonView(Views.Internal.class)
-    @Query("SELECT new com.HealthCare.HealthyLife_Backend.dto.FoodDto(f.name, f.image, f.kcal) FROM Food f WHERE f.name LIKE %:keyword%")
+    @Query("SELECT DISTINCT new com.HealthCare.HealthyLife_Backend.dto.FoodDto(f.name, f.image, f.kcal) FROM Food f WHERE f.name LIKE %:keyword%")
     List<FoodDto> findAllByName(@Param("keyword") String keyword);
 }

@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class FriendDto {
-    private Long friendsId;
+    private Long friendsId; //친구
     private Boolean status; // 친구일떄 true , 차단일때 false 상태
-    private Member member; // 본인
+    private Long memberId; // 본인
 }

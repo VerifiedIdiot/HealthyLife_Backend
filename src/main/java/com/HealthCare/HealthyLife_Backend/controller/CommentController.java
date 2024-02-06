@@ -12,7 +12,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.HealthCare.HealthyLife_Backend.utils.Common.CORS_ORIGIN;
+
 @Slf4j
+@CrossOrigin(origins = CORS_ORIGIN)
 @RestController
 @RequestMapping("/api/comment")
 @RequiredArgsConstructor
@@ -44,7 +47,7 @@ public class CommentController {
     // 댓글 목록 조회
     @GetMapping("/list/{communityId}")
     public ResponseEntity<List<CommentDto>> commentList(@PathVariable Long communityId, @RequestParam(defaultValue = "최신순") String sortType, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
-        log.info("boardId: {}, sortType: {}, page: {}, size: {}", communityId, sortType, page, size);
+        log.info("communityId: {}, sortType: {}, page: {}, size: {}", communityId, sortType, page, size);
         List<CommentDto> list = commentService.getCommentList(communityId, sortType, page, size);
         return ResponseEntity.ok(list);
     }
