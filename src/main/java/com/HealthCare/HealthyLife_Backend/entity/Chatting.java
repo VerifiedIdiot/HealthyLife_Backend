@@ -2,6 +2,8 @@ package com.HealthCare.HealthyLife_Backend.entity;
 
 
 import com.HealthCare.HealthyLife_Backend.dto.ChatMessageDto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -30,11 +32,12 @@ public class Chatting {
     protected void prePersist() {
         messageTime = LocalDateTime.now();
     }
-
-    @ManyToOne(fetch = FetchType.LAZY) // 지연 전략
-    @JoinColumn(name = "member_id") // 외래키
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
     private Member member; // 본인
 
+    @JsonIgnore // 무한 루프 방지
     @ManyToOne(fetch = FetchType.LAZY) // 지연 전략
     @JoinColumn(name = "room_id") // 외래키
     private ChatRoom chatRoom; // 채팅룸

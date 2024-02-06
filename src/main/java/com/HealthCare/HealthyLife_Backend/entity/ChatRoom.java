@@ -1,6 +1,7 @@
 package com.HealthCare.HealthyLife_Backend.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -27,10 +28,12 @@ public class ChatRoom {
         regDate = LocalDateTime.now();
     }
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY) // 지연 전략
     @JoinColumn(name = "member_id") // 외래키
     private Member member; // 방 주인
 
+    @JsonIgnore // 무한 루프 방지
     @OneToMany(mappedBy = "chatRoom",cascade = CascadeType.ALL)
     private List<Chatting> chatting;
 

@@ -3,6 +3,7 @@ package com.HealthCare.HealthyLife_Backend.entity;
 import com.HealthCare.HealthyLife_Backend.enums.Authority;
 import com.HealthCare.HealthyLife_Backend.enums.ExercisePurpose;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -51,7 +52,6 @@ public class Member implements Serializable {
     private List<Body> bodies;
     @OneToMany(mappedBy = "member", cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST})
     private List<SeasonRanking> seasonRankings;
-    @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "member", cascade = CascadeType.ALL)
     private MemberStatus memberStatus;
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)

@@ -16,4 +16,13 @@ public class ChatMessageDto {
     private Long sender;
     private String message;
     private LocalDateTime messageTime;
+
+
+    public ChatMessageDto(Chatting chatting) {
+        this.type = MessageType.TALK; // Assuming it's always a talk type
+        this.roomId = chatting.getChatRoom().getMember().getId().toString();
+        this.sender = chatting.getMember().getId();
+        this.message = chatting.getMessage();
+        this.messageTime = chatting.getMessageTime();
+    }
 }
