@@ -197,7 +197,7 @@ public class CommunityService {
     }
 
     // 좋아요
-    public int like(Long communityId, String email, boolean isLiked) {
+    public void like(Long communityId, String email, boolean isLiked) {
         try {
             Optional<Community> communityOptional = communityRepository.findById(communityId);
             if (!communityOptional.isPresent()) {
@@ -209,14 +209,9 @@ public class CommunityService {
                     .orElseThrow(() -> new IllegalArgumentException("해당 이메일을 가진 사용자가 존재하지 않습니다."));
 
             Optional<CommunityLikeIt> likeItOptional = likeItRepository.findByCommunityAndMember(community, member);
-
-                if (isLiked) { // 좋아요 추가
-                    if (likeItOptional.isPresent()) {
-                        throw new IllegalArgumentException("이미 좋아합니다.");
-                    }
-
-                    int newLikeCount = community.getLikeCount() + 1;
-                    community.setLikeCount(newLikeCount);
+            if (isLiked) { // 좋아요 추가
+                if (!likeItOptional.isPresent()) { // 사용자가 이미 좋아요를 한 경우를 방지하기 위해 확인
+                    community.setLikeCount(community.getLikeCount() + 1);
                     communityRepository.save(community);
 
                     CommunityLikeIt like = CommunityLikeIt.builder()
@@ -225,21 +220,14 @@ public class CommunityService {
                             .member(member)
                             .build();
                     likeItRepository.save(like);
-
-                    return 1; // 좋아요 추가 성공
-                } else { // 좋아요 취소
-                    if (!likeItOptional.isPresent()) {
-                        throw new IllegalArgumentException("좋아요를 누르지 않았습니다.");
-                    }
-
-                    int newLikeCount = Math.max(0, community.getLikeCount() - 1); // 좋아요 수가 음수가 되지 않도록 설정
-                    community.setLikeCount(newLikeCount);
-                    communityRepository.save(community);
-
-                    likeItRepository.delete(likeItOptional.get());
-
-                    return 0; // 좋아요 취소 성공
                 }
+            } else { // 좋아요 취소
+                likeItOptional.ifPresent(like -> {
+                    community.setLikeCount(Math.max(0, community.getLikeCount() - 1)); // 좋아요 수가 음수가 되지 않도록 설정
+                    communityRepository.save(community);
+                    likeItRepository.delete(like);
+                });
+            }
 
         } catch (Exception e) {
             e.printStackTrace();

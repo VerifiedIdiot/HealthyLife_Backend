@@ -119,11 +119,14 @@ public class CommunityController {
     }
     // 좋아요
     @PutMapping("/like/{id}/{isLiked}")
-    public ResponseEntity<String> likeIt(@PathVariable Long id, @PathVariable boolean isLiked, @RequestParam String email)
-    {
+    public ResponseEntity<String> likeIt(@PathVariable Long id, @PathVariable boolean isLiked, @RequestParam String email) {
         try {
-            communityService.like(id, email,isLiked);
-            return ResponseEntity.ok("좋아요가 완료되었습니다.");
+            communityService.like(id, email, isLiked);
+            if (isLiked) {
+                return ResponseEntity.ok("좋아요가 완료되었습니다.");
+            } else {
+                return ResponseEntity.ok("좋아요가 취소되었습니다.");
+            }
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body("이미 좋아요를 했습니다.");
         }
