@@ -24,9 +24,12 @@ public class Meal {
     @Column(name = "meal_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(name = "meal_type")
     private String mealType; // 식사유형 (아침,점심,저녁)
+    @Column(name = "meal_name")
     private String mealName;
-    private String memberId;
+
+    private String email;
     @Column(name = "reg_date")
     private String regDate;
 
@@ -47,7 +50,8 @@ public class Meal {
         return MealDto.builder()
                 .mealType(this.getMealType())
                 .mealName(this.getMealName())
-                .memberId(this.getMemberId())
+                .email(this.getEmail())
+                .regDate(this.getRegDate())
                 .build();
     }
 

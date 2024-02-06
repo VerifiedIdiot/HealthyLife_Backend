@@ -56,10 +56,10 @@ public class MealController {
     // 출력
     @GetMapping("/detail")
     public ResponseEntity<List<MealDto>> MealByEmail(
-            @RequestParam Long id,
-            @RequestParam LocalDateTime regDate
+            @RequestParam String email,
+            @RequestParam String regDate
             ){
-        List<MealDto> list = mealService.getMealByEmail(id, regDate);
+        List<MealDto> list = mealService.getMealByEmail(email, regDate);
         return ResponseEntity.ok(list);
     }
 

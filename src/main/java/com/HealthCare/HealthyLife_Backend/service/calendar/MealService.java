@@ -71,8 +71,8 @@ public class MealService {
     }
 
     // 출력
-    public List<MealDto> getMealByEmail(Long id, LocalDateTime regDate) {
-        List<Meal> meals = mealRepository.findByRegDateAndId(regDate, id);
+    public List<MealDto> getMealByEmail(String email, String regDate) {
+        List<Meal> meals = mealRepository.findByEmailAndRegDate(email, regDate);
         return meals.stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
@@ -83,7 +83,8 @@ public class MealService {
         mealDto.setId(meal.getId());
         mealDto.setMealName(meal.getMealName());
         mealDto.setMealType(meal.getMealType());
-        mealDto.setMemberId(meal.getMemberId());
+        mealDto.setEmail(meal.getEmail());
+        mealDto.setRegDate(meal.getRegDate());
         return mealDto;
     }
 

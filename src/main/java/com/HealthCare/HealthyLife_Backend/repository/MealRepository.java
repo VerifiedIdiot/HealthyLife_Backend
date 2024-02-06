@@ -9,5 +9,5 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface MealRepository extends JpaRepository<Meal, Long> {
-    List<Meal> findByRegDateAndId(LocalDateTime regDate, Long id);
+    List<Meal> findByEmailAndRegDate(String email, String regDate);
 }
