@@ -19,7 +19,7 @@ public class MealDto {
     private String mealType;
     private String mealName;
     private String memberId;
-    private LocalDateTime regDate;
+    private String regDate;
 
     public Meal toMealEntity() {
         return Meal.builder()

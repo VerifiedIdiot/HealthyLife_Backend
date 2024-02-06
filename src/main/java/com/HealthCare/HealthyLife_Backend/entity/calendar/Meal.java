@@ -3,9 +3,12 @@ package com.HealthCare.HealthyLife_Backend.entity.calendar;
 import com.HealthCare.HealthyLife_Backend.dto.calendar.MealDto;
 import com.HealthCare.HealthyLife_Backend.entity.Food;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Entity
@@ -24,7 +27,8 @@ public class Meal {
     private String mealType; // 식사유형 (아침,점심,저녁)
     private String mealName;
     private String memberId;
-    private LocalDateTime regDate;
+    @Column(name = "reg_date")
+    private String regDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "calendar_id")
@@ -36,9 +40,9 @@ public class Meal {
 
     @PrePersist
     public void prePersist() {
-        regDate = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        this.regDate = LocalDateTime.now().format(formatter);
     }
-
     public MealDto toMealDto(Meal meal) {
         return MealDto.builder()
                 .mealType(this.getMealType())
