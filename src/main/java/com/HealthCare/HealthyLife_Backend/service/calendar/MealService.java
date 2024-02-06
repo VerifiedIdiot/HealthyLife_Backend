@@ -10,9 +10,11 @@ import com.HealthCare.HealthyLife_Backend.repository.MemberRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MealService {
@@ -66,6 +68,23 @@ public class MealService {
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    // 출력
+    public List<MealDto> getMealByEmail(Long id, LocalDateTime regDate) {
+        List<Meal> meals = mealRepository.findByRegDateAndId(regDate, id);
+        return meals.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    private MealDto convertToDto(Meal meal) {
+        MealDto mealDto = new MealDto();
+        mealDto.setId(meal.getId());
+        mealDto.setMealName(meal.getMealName());
+        mealDto.setMealType(meal.getMealType());
+        mealDto.setMemberId(meal.getMemberId());
+        return mealDto;
     }
 
     // 삭제

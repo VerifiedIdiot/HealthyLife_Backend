@@ -5,11 +5,16 @@ import com.HealthCare.HealthyLife_Backend.dto.calendar.MealDto;
 import com.HealthCare.HealthyLife_Backend.service.calendar.MealService;
 import com.HealthCare.HealthyLife_Backend.utils.Views;
 import com.fasterxml.jackson.annotation.JsonView;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
+
+import static org.springframework.data.elasticsearch.annotations.DateFormat.date;
 
 @Slf4j
 @RestController
@@ -47,6 +52,17 @@ public class MealController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    // 출력
+    @GetMapping("/detail")
+    public ResponseEntity<List<MealDto>> MealByEmail(
+            @RequestParam Long id,
+            @RequestParam LocalDateTime regDate
+            ){
+        List<MealDto> list = mealService.getMealByEmail(id, regDate);
+        return ResponseEntity.ok(list);
+    }
+
 
     // 식단 수정
     @PutMapping("/modify/{id}")
