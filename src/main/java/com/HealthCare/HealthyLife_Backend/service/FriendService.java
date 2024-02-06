@@ -23,7 +23,7 @@ public class FriendService {
     public List<FriendDto> getFriendList(Long memberId,boolean isFriend) {
         List<FriendDto> friends = new ArrayList<>();
         List<Friend> friendList = freindRepository.findAllByMemberId(memberId);
-
+        List<Friend> friendList2 = freindRepository.findAllByFriendsId(memberId);
         for (Friend friend : friendList) {
             // isFriend 값에 따라 status와 일치하는 경우만 추가
             if (isFriend && friend.getStatus() || !isFriend && !friend.getStatus()) {
@@ -38,17 +38,28 @@ public class FriendService {
         return friends;
     }
     //친구/차단 추가 true일때 친구 / false 차단
-    public boolean saveFriend(FriendDto friendDto,boolean isFriend) {
+// 친구/차단 추가 true일때 친구 / false 차단
+    public boolean saveFriend(FriendDto friendDto, boolean isFriend) {
         try {
             Member member = memberRepository.findById(friendDto.getMemberId()).orElseThrow(
-                    () -> new RuntimeException("해당 회원이 존재 하지 않습니다.")
+                    () -> new RuntimeException("해당 회원이 존재하지 않습니다.")
             );
+            Member friendMember = memberRepository.findById(friendDto.getFriendsId()).orElseThrow(
+                    () -> new RuntimeException("친구 회원이 존재하지 않습니다.")
+            );
+            // 현재 회원에게 친구를 추가하고, 친구 회원에게 현재 회원을 추가
             Friend friend = Friend.builder()
-                    .friendsId(friendDto.getFriendsId())
                     .member(member)
+                    .friendsId(friendDto.getFriendsId())
+                    .status(isFriend)
+                    .build();
+            Friend friendReverse = Friend.builder()
+                    .member(friendMember)
+                    .friendsId(friendDto.getMemberId())
                     .status(isFriend)
                     .build();
             freindRepository.save(friend);
+            freindRepository.save(friendReverse);
             return true;
         } catch (Exception e) {
             e.printStackTrace();

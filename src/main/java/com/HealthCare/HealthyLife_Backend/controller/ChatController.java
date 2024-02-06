@@ -34,7 +34,7 @@ public class ChatController {
     @PostMapping("/new")
     public ResponseEntity<String> createRoom(@RequestBody ChatRoomReqDto chatRoomDto) {
         log.warn("chatRoomDto : {}", chatRoomDto); // 전송된 ChatRoomReqDto 로그 기록
-        ChatRoomResDto room = chatService.createRoom(chatRoomDto.getMemberId(),chatRoomDto.getSenderId()); // 채팅 서비스를 통해 채팅방 생성
+        ChatRoomResDto room = chatService.createOrEnterRoom(chatRoomDto.getMemberId(),chatRoomDto.getSenderId()); // 채팅 서비스를 통해 채팅방 생성
         System.out.println(room.getRoomId()); // 생성된 채팅방의 ID를 콘솔에 출력
         return ResponseEntity.ok(room.getRoomId()); // 생성된 채팅방의 ID를 응답으로 반환
     }
@@ -53,14 +53,9 @@ public class ChatController {
 
     // 전 메세지 가져오기(Dto 변환예정)
     @PostMapping("/messages/{roomId}")
-    public ResponseEntity<List<Chatting>> findChatting(@PathVariable String roomId) {
+    public ResponseEntity<List<ChatMessageDto>> findChatting(@PathVariable String roomId) {
         return ResponseEntity.ok(chatService.getRecentMessages(roomId)); // 특정 채팅방의 정보를 응답으로 반환
     }
 
-    //세션 생성후 입장 메서드
-    @GetMapping("/enter")
-    public ResponseEntity<ChatRoomResDto> enterRoom(@RequestBody ChatRoomResDto chatRoomReqDto) {
-        return ResponseEntity.ok(chatService.enterRoom(chatRoomReqDto.getMemberId(),chatRoomReqDto.getSenderId())); // 특정 채팅방의 정보를 응답으로 반환
-    }
 
 }

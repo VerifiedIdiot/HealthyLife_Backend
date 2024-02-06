@@ -103,35 +103,10 @@ public class ExerciseService {
         Pageable pageable = PageRequest.of(page, size);
         Page<Exercise> exercises;
 
-        if (keyword != null) {
-            if (muscle != null) {
-                if (difficulty != null) {
-                    // keyword, muscle, difficulty 모두 입력된 경우
-                    exercises = exerciseRepository.findByNameAndMuscleAndDifficultyContaining(keyword, muscle, difficulty, pageable);
-                } else {
-                    // keyword와 muscle만 입력된 경우
-                    exercises = exerciseRepository.findByNameAndMuscleContaining(keyword, muscle, pageable);
-                }
-            } else if (difficulty != null) {
-                // keyword와 difficulty만 입력된 경우
-                exercises = exerciseRepository.findByNameAndDifficultyContaining(keyword, difficulty, pageable);
-            } else {
-                // keyword만 입력된 경우
-                exercises = exerciseRepository.findByNameContaining(keyword, pageable);
-            }
-        } else if (muscle != null) {
-            if (difficulty != null) {
-                // muscle과 difficulty만 입력된 경우
-                exercises = exerciseRepository.findByMuscleAndDifficultyContaining(muscle, difficulty, pageable);
-            } else {
-                // muscle만 입력된 경우
-                exercises = exerciseRepository.findByMuscleContaining(muscle, pageable);
-            }
-        } else if (difficulty != null) {
-            // difficulty만 입력된 경우
-            exercises = exerciseRepository.findByDifficultyContaining(difficulty, pageable);
+        if (keyword != null || muscle != null || difficulty != null) {
+            exercises = exerciseRepository.findByConditions(keyword, muscle, difficulty, pageable);
         } else {
-            // 모든 요소가 입력되지 않은 경우 모든 것을 가져옴
+            // 모든 조건이 null인 경우 모든 음식 데이터를 반환
             exercises = exerciseRepository.findAll(pageable);
         }
 

@@ -98,6 +98,7 @@ public class Food {
     public FoodDto toFoodDto() {
         return FoodDto.builder()
                 .name(this.getName())
+                .image(this.getImage())
                 .brand(this.getBrand())
                 .class1(this.getClass1())
                 .class2(this.getClass2())

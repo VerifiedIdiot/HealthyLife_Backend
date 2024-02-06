@@ -11,17 +11,17 @@ import com.HealthCare.HealthyLife_Backend.repository.MemberRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
-
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -30,7 +30,7 @@ public class ChatService {
     private final ChattingRepository chattingRepository;
     private final ChatRoomRepository chatRoomRepository;
     private final MemberRepository memberRepository;
-    private Map<String, ChatRoomResDto> chatRooms; // 채팅방 정보를 담을 맵
+    private Map<String, ChatRoomResDto> chatRooms = new ConcurrentHashMap<>(); // 채팅방 정보를 담을 맵
 
     @PostConstruct // 의존성 주입 이후 초기화를 수행하는 메소드
     private void init() { // 채팅방 정보를 담을 맵을 초기화
@@ -44,35 +44,15 @@ public class ChatService {
         return (memberId < senderId) ? String.format("%d_%d", memberId, senderId) : String.format("%d_%d", senderId, memberId);
     }
     //방 생성 및 저장
-    public ChatRoomResDto createRoom(Long memberId, Long senderId) {
+    public ChatRoomResDto createOrEnterRoom(Long memberId, Long senderId) {
         String roomId = generateRoomId(memberId, senderId);
-        ChatRoomResDto chatRoom = ChatRoomResDto.builder()
-                .roomId(roomId)
-                .memberId(memberId)
-                .senderId(senderId)
-                .regDate(LocalDateTime.now())
-                .build();
-        chatRooms.put(roomId, chatRoom);
-        Member member = memberRepository.findById(memberId).orElseThrow();
-        ChatRoom chatRoomEntity = ChatRoom.builder()
-                .roomId(roomId)
-                .member(member)
-                .senderId(senderId)
-                .regDate(LocalDateTime.now())
-                .build();
-        chatRoomRepository.save(chatRoomEntity);
-        return chatRoom;
-    }
-
-    //기존 방 세션 입장 매서드, 기존 id로 생성하고 입장
-    public ChatRoomResDto enterRoom(Long memberId, Long senderId) {
-        String roomId = generateRoomId(memberId, senderId);
-        // 해당 roomId로 이미 방이 생성되어 있는 경우 예외 처리
+        // 해당 roomId로 이미 방이 생성되어 있는 경우
         if (chatRooms.containsKey(roomId)) {
-            // 기존방에 입장 하는 메서드
+            // 기존 방에 입장하는 메서드
             ChatRoomResDto existingRoom = chatRooms.get(roomId);
             return existingRoom;
         }
+        // 방이 없는 경우, 새로 생성하여 저장
         ChatRoomResDto chatRoom = ChatRoomResDto.builder()
                 .roomId(roomId)
                 .memberId(memberId)
@@ -81,6 +61,15 @@ public class ChatService {
                 .build();
         // 방 정보를 맵에 등록
         chatRooms.put(roomId, chatRoom);
+        // 데이터베이스에도 저장
+        Member member = memberRepository.findById(memberId).orElseThrow();
+        ChatRoom chatRoomEntity = ChatRoom.builder()
+                .roomId(roomId)
+                .member(member)
+                .senderId(senderId)
+                .regDate(LocalDateTime.now())
+                .build();
+        chatRoomRepository.save(chatRoomEntity);
         return chatRoom;
     }
 
@@ -114,9 +103,14 @@ public class ChatService {
         chattingRepository.save(chatMessage);
     }
 
-    // 전의 메세지 가져오기
-    public List<Chatting> getRecentMessages(String roomId) {
-        return chattingRepository.findRecentMessages(roomId);
+// 전의 메세지 가져오기
+    public List<ChatMessageDto> getRecentMessages(String roomId) {
+        List<Chatting> recentMessages = chattingRepository.findRecentMessages(roomId);
+
+        // Chatting 엔터티를 ChatMessageDto로 변환
+        return recentMessages.stream()
+                .map(ChatMessageDto::new)
+                .collect(Collectors.toList());
     }
 
     // 세션 삭제하는 메서드, 해당 방이 세션을 포함하지 않으면 삭제

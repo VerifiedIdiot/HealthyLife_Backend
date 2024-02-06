@@ -36,8 +36,6 @@ public class Comment {
     public void prePersist() {
         regDate = LocalDateTime.now();
     }
-
-
 }
 
 
