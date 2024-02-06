@@ -16,7 +16,7 @@ import java.util.List;
 public class ElasticsearchDto {
     private String id;
 
-    private String type;
+    private String originType;
 
 
     private String reportNo;
@@ -37,7 +37,7 @@ public class ElasticsearchDto {
     public MedicineDocument toDocument() {
         return MedicineDocument.builder()
                 .id(this.getId())
-                .type(this.getType())
+                .originType(this.getOriginType())
                 .reportNo(this.getReportNo())
                 .productName(this.getName())
                 .functionalities(this.getFunctionalities())

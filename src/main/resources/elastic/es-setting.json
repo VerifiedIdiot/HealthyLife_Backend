@@ -3,18 +3,18 @@
     "index": {
       "analysis": {
         "tokenizer": {
-          "my_nori_tokenizer": {
-            "type": "nori_tokenizer",
-            "decompound_mode": "mixed",
-            "discard_punctuation": "false"
+          "nori_tokenizer_custom": {
+            "type": "nori_tokenizer"
           }
         },
         "analyzer": {
-          "my_nori_analyzer": {
-            "type": "custom",
-            "tokenizer": "my_nori_tokenizer",
-            "filter": ["lowercase", "stop"],
-            "char_filter": ["html_strip"]
+          "nori_custom_analyzer": {
+            "type": "standard",
+            "tokenizer": "nori_tokenizer_custom",
+            "filter": [
+              "nori_reading_form",
+              "lowercase"
+            ]
           }
         }
       }

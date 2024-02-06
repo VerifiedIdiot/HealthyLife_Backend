@@ -41,7 +41,7 @@ public class MedicineDto {
 
     public MedicineDocument toDocument() {
         return MedicineDocument.builder()
-                .type(this.getType())
+                .originType(this.getType())
                 .reportNo(this.getReportNo())
                 .productName(this.getName())
                 .company(this.getCompany())

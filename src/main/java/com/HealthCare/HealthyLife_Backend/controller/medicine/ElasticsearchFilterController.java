@@ -43,15 +43,16 @@ public class ElasticsearchFilterController {
             @RequestParam(required = false , defaultValue = "통합") String filter,
             @RequestParam(required = false) String functionalities,
             // type은 domestic, foreign
-            @RequestParam(required = false) String type,
+            @RequestParam(required = false) String originType,
             @RequestParam(required = false) String sortField,
             @RequestParam(defaultValue = "true") boolean sortAscending,
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size) {
         try {
             List<ElasticsearchDto> results = elasticsearchFilterService.findByFilter(
-                    query, filter, functionalities, type,
+                    query, filter, functionalities, originType,
                     sortField, sortAscending, page, size);
+            System.out.println(results);
             return ResponseEntity.ok(results);
         } catch (Exception e) {
             log.error("Error during search: ", e);

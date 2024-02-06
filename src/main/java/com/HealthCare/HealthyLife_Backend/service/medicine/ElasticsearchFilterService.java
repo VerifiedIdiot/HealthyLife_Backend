@@ -40,33 +40,45 @@ public class ElasticsearchFilterService {
     }
     public List<ElasticsearchDto> findByFilter(
             String query, String filter,
-            String functionalities, String type,
+            String functionalities, String originType,
             String sortField, boolean sortAscending,
             int page, int size) {
 
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 
         // "통합" 검색 모드일 때
-        if ("통합".equals(filter)) {
-            BoolQueryBuilder shouldQueryBuilder = QueryBuilders.boolQuery();
-            shouldQueryBuilder.should(QueryBuilders.matchPhrasePrefixQuery("product_name", query));
-            shouldQueryBuilder.should(QueryBuilders.matchPhrasePrefixQuery("company", query));
-            shouldQueryBuilder.should(QueryBuilders.matchPhrasePrefixQuery("functionalities", query));
-            boolQueryBuilder.must(shouldQueryBuilder);
+        if (query != null && !query.isEmpty()) {
+            if ("통합".equals(filter)) {
+                // MultiMatchQueryBuilder를 사용하여 여러 필드에 대한 검색 수행
+                MultiMatchQueryBuilder multiMatchQueryBuilder = QueryBuilders.multiMatchQuery(query, "product_name", "company", "report_no", "functionalities")
+                        .type(MultiMatchQueryBuilder.Type.BEST_FIELDS);
+                boolQueryBuilder.must(multiMatchQueryBuilder);
+            } else {
+                // 특정 필드에 대한 검색
+                boolQueryBuilder.must(QueryBuilders.matchPhraseQuery(filter, query));
+            }
         } else {
-            // 특정 필드에 대한 검색이 필요한 경우
-            boolQueryBuilder.must(QueryBuilders.matchPhrasePrefixQuery(filter, query));
+            // 쿼리가 null 또는 비어있는 경우, 모든 문서를 매치
+            boolQueryBuilder.must(QueryBuilders.matchAllQuery());
         }
 
 
 
         if (functionalities != null && !functionalities.isEmpty()) {
-            boolQueryBuilder.must(QueryBuilders.matchPhrasePrefixQuery("functionalities", functionalities));
+            BoolQueryBuilder functionalitiesQueryBuilder = QueryBuilders.boolQuery();
+
+            // 쉼표로 구분된 값을 분리하고 쌍따옴표를 제거
+            String[] functionalitiesArray = functionalities.split(",");
+            for (String functionality : functionalitiesArray) {
+                String sanitizedFunctionality = functionality.trim().replace("\"", "");
+                functionalitiesQueryBuilder.should(QueryBuilders.matchQuery("functionalities", sanitizedFunctionality));
+            }
+            boolQueryBuilder.must(functionalitiesQueryBuilder);
         }
 
-        if (type != null) {
-            boolQueryBuilder.filter(QueryBuilders.termQuery("type", type));
-            System.out.println(type);
+        if (originType != null) {
+            boolQueryBuilder.filter(QueryBuilders.termQuery("origin_type", originType));
+            System.out.println(originType);
         }
 
         NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder();
