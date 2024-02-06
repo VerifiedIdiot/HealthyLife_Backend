@@ -1,12 +1,10 @@
 package com.HealthCare.HealthyLife_Backend.controller.medicine;
 
 
-import com.HealthCare.HealthyLife_Backend.document.MedicineDocument;
 import com.HealthCare.HealthyLife_Backend.dto.medicine.MedicineCodeDto;
 import com.HealthCare.HealthyLife_Backend.dto.medicine.MedicineDto;
 
 
-import com.HealthCare.HealthyLife_Backend.repository.MedicineRepository;
 import com.HealthCare.HealthyLife_Backend.service.medicine.ElasticsearchCrudService;
 import com.HealthCare.HealthyLife_Backend.service.medicine.MedicineService;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 

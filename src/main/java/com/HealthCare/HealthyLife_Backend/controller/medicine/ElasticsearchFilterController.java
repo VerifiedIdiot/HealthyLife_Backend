@@ -1,7 +1,6 @@
 package com.HealthCare.HealthyLife_Backend.controller.medicine;
 
 import com.HealthCare.HealthyLife_Backend.dto.medicine.ElasticsearchDto;
-import com.HealthCare.HealthyLife_Backend.repository.MedicineRepository;
 import com.HealthCare.HealthyLife_Backend.service.medicine.ElasticsearchFilterService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -40,18 +39,18 @@ public class ElasticsearchFilterController {
     // 검색조건 다중 적용된것 , 현재 테스트 중
     @GetMapping("/search")
     public ResponseEntity<?> search(
-            @RequestParam(required = false) String productName,
-            @RequestParam(required = false) Long reportNo,
-            @RequestParam(required = false) String company,
+            @RequestParam(required = false) String query,
+            @RequestParam(required = false , defaultValue = "통합") String filter,
             @RequestParam(required = false) String functionalities,
+            // type은 domestic, foreign
             @RequestParam(required = false) String type,
             @RequestParam(required = false) String sortField,
             @RequestParam(defaultValue = "true") boolean sortAscending,
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size) {
         try {
-            List<ElasticsearchDto> results = elasticsearchFilterService.searchWithDropdown(
-                    productName, reportNo, company, functionalities, type,
+            List<ElasticsearchDto> results = elasticsearchFilterService.findByFilter(
+                    query, filter, functionalities, type,
                     sortField, sortAscending, page, size);
             return ResponseEntity.ok(results);
         } catch (Exception e) {

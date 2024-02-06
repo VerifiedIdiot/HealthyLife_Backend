@@ -2,14 +2,14 @@ package com.HealthCare.HealthyLife_Backend.service.medicine;
 
 import com.HealthCare.HealthyLife_Backend.dto.medicine.ElasticsearchDto;
 import com.HealthCare.HealthyLife_Backend.document.MedicineDocument;
-import com.HealthCare.HealthyLife_Backend.repository.MedicineRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.MatchQueryBuilder;
+import org.elasticsearch.index.query.MultiMatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
@@ -38,37 +38,35 @@ public class ElasticsearchFilterService {
                 .map(hit -> hit.getContent().toDto())
                 .collect(Collectors.toList());
     }
-    public List<ElasticsearchDto> searchWithDropdown(
-            String productName, Long reportNo, String company,
+    public List<ElasticsearchDto> findByFilter(
+            String query, String filter,
             String functionalities, String type,
             String sortField, boolean sortAscending,
             int page, int size) {
 
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 
-        if (productName != null) {
-
-            boolQueryBuilder.must(QueryBuilders.matchPhrasePrefixQuery("product_name", productName));
+        // "통합" 검색 모드일 때
+        if ("통합".equals(filter)) {
+            BoolQueryBuilder shouldQueryBuilder = QueryBuilders.boolQuery();
+            shouldQueryBuilder.should(QueryBuilders.matchPhrasePrefixQuery("product_name", query));
+            shouldQueryBuilder.should(QueryBuilders.matchPhrasePrefixQuery("company", query));
+            shouldQueryBuilder.should(QueryBuilders.matchPhrasePrefixQuery("functionalities", query));
+            boolQueryBuilder.must(shouldQueryBuilder);
+        } else {
+            // 특정 필드에 대한 검색이 필요한 경우
+            boolQueryBuilder.must(QueryBuilders.matchPhrasePrefixQuery(filter, query));
         }
 
-        if (reportNo != null) {
-            boolQueryBuilder.must(QueryBuilders.termQuery("report_no", reportNo));
 
-        }
 
-        if (company != null) {
-
-            boolQueryBuilder.must(QueryBuilders.matchPhrasePrefixQuery("company", company));
-            boolQueryBuilder.must(QueryBuilders.termQuery("company", "(주)"));
-        }
-
-        if (functionalities != null) {
-
+        if (functionalities != null && !functionalities.isEmpty()) {
             boolQueryBuilder.must(QueryBuilders.matchPhrasePrefixQuery("functionalities", functionalities));
         }
 
         if (type != null) {
-            boolQueryBuilder.must(QueryBuilders.matchQuery("type", type));
+            boolQueryBuilder.filter(QueryBuilders.termQuery("type", type));
+            System.out.println(type);
         }
 
         NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder();
@@ -88,5 +86,6 @@ public class ElasticsearchFilterService {
                 .map(hit -> hit.getContent().toDto())
                 .collect(Collectors.toList());
     }
+
 
 }

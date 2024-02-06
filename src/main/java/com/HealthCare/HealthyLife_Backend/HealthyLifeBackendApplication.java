@@ -1,7 +1,7 @@
 package com.HealthCare.HealthyLife_Backend;
 
 
-import com.HealthCare.HealthyLife_Backend.repository.MedicineRepository;
+import com.HealthCare.HealthyLife_Backend.repository.ElasticsearchCrudRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
@@ -16,7 +16,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableElasticsearchRepositories
 @EnableJpaRepositories(excludeFilters = @ComponentScan.Filter(
 		type = FilterType.ASSIGNABLE_TYPE,
-		classes = MedicineRepository.class))
+		classes = ElasticsearchCrudRepository.class))
 
 //@EnableJpaRepositories
 

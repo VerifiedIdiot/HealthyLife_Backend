@@ -1,25 +1,23 @@
 {
-  "properties": {
-    "id": {
-      "type": "keyword"
-    },
-    "name": {
-      "type": "keyword"
-    },
-    "age": {
-      "type": "long"
-    },
-    "korean": {
-      "type": "text",
-      "analyzer": "ksb_custom_korean_analyzer"
-    },
-    "english": {
-      "type": "text",
-      "search_analyzer": "ksb_custom_english_analyzer"
-    },
-    "created": {
-      "type": "date",
-      "format": "uuuu-MM-dd'T'HH:mm:ss"
+  "settings": {
+    "index": {
+      "analysis": {
+        "tokenizer": {
+          "my_nori_tokenizer": {
+            "type": "nori_tokenizer",
+            "decompound_mode": "mixed",
+            "discard_punctuation": "false"
+          }
+        },
+        "analyzer": {
+          "my_nori_analyzer": {
+            "type": "custom",
+            "tokenizer": "my_nori_tokenizer",
+            "filter": ["lowercase", "stop"],
+            "char_filter": ["html_strip"]
+          }
+        }
+      }
     }
   }
 }

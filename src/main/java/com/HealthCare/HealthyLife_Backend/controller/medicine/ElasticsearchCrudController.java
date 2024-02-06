@@ -3,7 +3,7 @@ package com.HealthCare.HealthyLife_Backend.controller.medicine;
 import com.HealthCare.HealthyLife_Backend.document.MedicineDocument;
 import com.HealthCare.HealthyLife_Backend.dto.medicine.ElasticsearchDto;
 
-import com.HealthCare.HealthyLife_Backend.repository.MedicineRepository;
+import com.HealthCare.HealthyLife_Backend.repository.ElasticsearchCrudRepository;
 import com.HealthCare.HealthyLife_Backend.service.medicine.ElasticsearchCrudService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -18,12 +18,12 @@ import java.util.Optional;
 @RequestMapping("/api/elastic-search")
 @ConditionalOnProperty(name = "spring.elasticsearch.enabled", havingValue = "true")
 public class ElasticsearchCrudController {
-    private final MedicineRepository medicineRepository;
+    private final ElasticsearchCrudRepository elasticsearchCrudRepository;
 
     private final ElasticsearchCrudService elasticsearchCrudService;
 
-    public ElasticsearchCrudController(MedicineRepository medicineRepository, ElasticsearchCrudService elasticsearchCrudService) {
-        this.medicineRepository = medicineRepository;
+    public ElasticsearchCrudController(ElasticsearchCrudRepository elasticsearchCrudRepository, ElasticsearchCrudService elasticsearchCrudService) {
+        this.elasticsearchCrudRepository = elasticsearchCrudRepository;
         this.elasticsearchCrudService = elasticsearchCrudService;
     }
 

@@ -42,7 +42,7 @@ public class MedicineDto {
     public MedicineDocument toDocument() {
         return MedicineDocument.builder()
                 .type(this.getType())
-                .reportNo(Long.parseLong(this.getReportNo()))
+                .reportNo(this.getReportNo())
                 .productName(this.getName())
                 .company(this.getCompany())
                 .functionalities(this.getFunctionalities())

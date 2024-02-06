@@ -4,7 +4,7 @@ import com.HealthCare.HealthyLife_Backend.dto.medicine.MedicineCodeDto;
 import com.HealthCare.HealthyLife_Backend.dto.medicine.MedicineDto;
 import com.HealthCare.HealthyLife_Backend.entity.MedicineCode;
 import com.HealthCare.HealthyLife_Backend.repository.MedicineCodeRepository;
-import com.HealthCare.HealthyLife_Backend.repository.MedicineRepository;
+import com.HealthCare.HealthyLife_Backend.repository.ElasticsearchCrudRepository;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 @ConditionalOnProperty(name = "spring.elasticsearch.enabled", havingValue = "true")
 public class MedicineService extends AbstractMedicineService {
 
-    private final MedicineRepository medicineRepository;
+    private final ElasticsearchCrudRepository elasticsearchCrudRepository;
 
     private final MedicineCodeRepository medicineCodeRepository;
     private final RestTemplate restTemplate;
@@ -35,8 +35,8 @@ public class MedicineService extends AbstractMedicineService {
     @Value("${get.medicineList.url}")
     private String medicineListUrl;
 
-    public MedicineService(MedicineRepository medicineRepository, MedicineCodeRepository medicineCodeRepository, RestTemplate restTemplate) {
-        this.medicineRepository = medicineRepository;
+    public MedicineService(ElasticsearchCrudRepository elasticsearchCrudRepository, MedicineCodeRepository medicineCodeRepository, RestTemplate restTemplate) {
+        this.elasticsearchCrudRepository = elasticsearchCrudRepository;
         this.medicineCodeRepository = medicineCodeRepository;
         this.restTemplate = restTemplate;
     }

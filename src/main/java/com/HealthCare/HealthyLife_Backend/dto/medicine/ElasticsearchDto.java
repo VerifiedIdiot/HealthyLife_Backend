@@ -19,7 +19,7 @@ public class ElasticsearchDto {
     private String type;
 
 
-    private Long reportNo;
+    private String reportNo;
 
 
     private String name;
@@ -28,6 +28,8 @@ public class ElasticsearchDto {
     private String company;
 
     private List<String> functionalities;
+
+    private Long viewCount;
 
 
 
@@ -40,6 +42,7 @@ public class ElasticsearchDto {
                 .productName(this.getName())
                 .functionalities(this.getFunctionalities())
                 .company(this.getCompany())
+                .viewCount(this.getViewCount())
                 .build();
     }
 
