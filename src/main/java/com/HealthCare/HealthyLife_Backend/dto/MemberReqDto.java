@@ -24,6 +24,7 @@ public class MemberReqDto {
     private String phone;
     private String addr;
     private String image;
+    private Boolean isKakao;
     private LocalDate birth;
     private LocalDateTime regDate;
 
@@ -38,6 +39,7 @@ public class MemberReqDto {
                 .phone(phone)
                 .addr(addr)
                 .image(image)
+                .isKakao(isKakao)
                 .birth(birth)
                 .regDate(regDate)  // 기본값 설정
                 .isAuthDelete(false)

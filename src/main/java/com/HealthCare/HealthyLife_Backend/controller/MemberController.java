@@ -15,7 +15,7 @@ import static com.HealthCare.HealthyLife_Backend.utils.Common.CORS_ORIGIN;
 @Slf4j
 @RestController
 @RequestMapping("/member")
-//@CrossOrigin(origins = CORS_ORIGIN)
+@CrossOrigin(origins = CORS_ORIGIN)
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
@@ -51,11 +51,12 @@ public class MemberController {
     }
 
     //비밀번호 체크
-    @PostMapping("/ispassword")
+    @PostMapping("/isPassword")
     public ResponseEntity<Boolean> checkPw(@RequestBody Map<String, String> data){
+        log.info("연결완료 ? " + data);
         Long id = SecurityUtil.getCurrentMemberId();
         String password = data.get("password");
-        log.info("password : {}", password);
+        log.info("비밀번호 체크 맞니? : {}", password);
         return ResponseEntity.ok(memberService.isPassword(password, id));
     }
 }

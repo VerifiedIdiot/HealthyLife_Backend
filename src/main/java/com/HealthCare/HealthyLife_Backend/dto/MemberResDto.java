@@ -19,6 +19,7 @@ public class MemberResDto {
     private String phone;
     private String addr;
     private String image;
+    private Boolean isKakao;
     private LocalDate birth;
     private LocalDateTime regDate;
 
@@ -32,6 +33,7 @@ public class MemberResDto {
                 .phone(member.getPhone())
                 .addr(member.getAddr())
                 .image(member.getImage())
+                .isKakao(member.isKakao())
                 .birth(member.getBirth())
                 .build();
     }

@@ -19,7 +19,7 @@ public class MemberService {
     // 회원 상세 조회
     public MemberResDto getMemberDetail(Long id) {
         Member member = memberRepository.findById(id).orElseThrow(()-> new RuntimeException("해당 회원이 존재하지 않습니다."));
-        return converEntityToDto(member);
+        return MemberResDto.of(member);
     }
     // 비밀번호 일치 체크
     public boolean isPassword(String password, Long id) {
@@ -71,18 +71,4 @@ public class MemberService {
         return member.getEmail();
     }
 
-    // 회원 엔티티를 회원 DTO로 변환
-    private MemberResDto converEntityToDto(Member member) {
-        return MemberResDto.builder()
-                .email(member.getEmail())
-                .name(member.getName())
-                .nickName(member.getNickName())
-                .gender(member.getGender())
-                .phone(member.getPhone())
-                .addr(member.getAddr())
-                .image(member.getImage())
-                .birth(member.getBirth())
-                .regDate(member.getRegDate())
-                .build();
-    }
 }

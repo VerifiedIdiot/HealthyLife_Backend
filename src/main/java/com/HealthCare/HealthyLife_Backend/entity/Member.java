@@ -39,6 +39,8 @@ public class Member implements Serializable {
     @Column(name = "addr", nullable = false)
     private String addr;
     private String image;
+    @Column(name = "isKakao", columnDefinition = "TINYINT(1)")
+    private boolean isKakao;
     @Column(name = "isAuthDelete", columnDefinition = "TINYINT(1)")
     private boolean isAuthDelete;
     private LocalDate birth;
@@ -73,7 +75,7 @@ public class Member implements Serializable {
 
     @Builder
     public Member(String email, String password, String name, String nickName, String gender, String phone
-            , String addr, String image, LocalDate birth, boolean isAuthDelete, Authority authority, ExercisePurpose exercisePurpose) {
+            , String addr, String image, boolean isKakao, LocalDate birth, boolean isAuthDelete, Authority authority, ExercisePurpose exercisePurpose) {
         this.email = email;
         this.password = password;
         this.name = name;
@@ -82,6 +84,7 @@ public class Member implements Serializable {
         this.phone = phone;
         this.addr = addr;
         this.image = image;
+        this.isKakao = isKakao;
         this.birth = birth;
         this.regDate = LocalDateTime.now();
         this.isAuthDelete = isAuthDelete;

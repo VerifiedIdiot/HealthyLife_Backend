@@ -46,6 +46,7 @@ public class AuthService {
     }
     // member 회원 가입
     public MemberResDto signup(MemberReqDto memberReqDto) {
+        log.info("join isKakao : {}", memberReqDto.getIsKakao());
         if (memberRepository.existsByEmail(memberReqDto.getEmail())) {
             throw new RuntimeException("이미 가입되어 있는 유저입니다.");
         }
