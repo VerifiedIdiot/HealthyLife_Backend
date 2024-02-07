@@ -1,5 +1,6 @@
 package com.HealthCare.HealthyLife_Backend.service.calendar;
 
+import com.HealthCare.HealthyLife_Backend.document.MedicineDocument;
 import com.HealthCare.HealthyLife_Backend.dto.FoodDto;
 import com.HealthCare.HealthyLife_Backend.dto.calendar.MealDto;
 
@@ -15,6 +16,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class MealService {
@@ -100,4 +102,9 @@ public class MealService {
     }
 
 
+    public List<MealDto> findAll() {
+        return mealRepository.findAll().stream()
+                .map(Meal::toMealDto)
+                .collect(Collectors.toList());
+    }
 }

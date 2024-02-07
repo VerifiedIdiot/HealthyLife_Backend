@@ -2,6 +2,7 @@ package com.HealthCare.HealthyLife_Backend.controller.calendar;
 
 import com.HealthCare.HealthyLife_Backend.dto.FoodDto;
 import com.HealthCare.HealthyLife_Backend.dto.calendar.MealDto;
+import com.HealthCare.HealthyLife_Backend.dto.medicine.ElasticsearchDto;
 import com.HealthCare.HealthyLife_Backend.service.calendar.MealService;
 import com.HealthCare.HealthyLife_Backend.utils.Views;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -50,6 +51,17 @@ public class MealController {
         } catch (Exception e) {
             log.error("음식 검색 중 오류 발생: {}", e.getMessage());
             return ResponseEntity.notFound().build();
+        }
+    }
+
+
+    @GetMapping("/findAll")
+    public ResponseEntity<?> findAllData() {
+        try {
+            List<MealDto> results = mealService.findAll();
+            return ResponseEntity.ok(results);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("데이터 조회 실패: " + e.getMessage());
         }
     }
 

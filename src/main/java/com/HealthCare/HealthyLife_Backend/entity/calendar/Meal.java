@@ -26,10 +26,12 @@ public class Meal {
     private Long id;
     @Column(name = "meal_type")
     private String mealType; // 식사유형 (아침,점심,저녁)
+
     @Column(name = "meal_name")
     private String mealName;
 
     private String email;
+
     @Column(name = "reg_date")
     private String regDate;
 
@@ -46,7 +48,7 @@ public class Meal {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         this.regDate = LocalDateTime.now().format(formatter);
     }
-    public MealDto toMealDto(Meal meal) {
+    public MealDto toMealDto() {
         return MealDto.builder()
                 .mealType(this.getMealType())
                 .mealName(this.getMealName())
