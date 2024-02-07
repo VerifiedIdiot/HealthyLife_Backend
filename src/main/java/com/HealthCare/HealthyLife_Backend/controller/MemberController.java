@@ -1,5 +1,6 @@
 package com.HealthCare.HealthyLife_Backend.controller;
 
+import com.HealthCare.HealthyLife_Backend.dto.MemberReqDto;
 import com.HealthCare.HealthyLife_Backend.dto.MemberResDto;
 import com.HealthCare.HealthyLife_Backend.security.SecurityUtil;
 import com.HealthCare.HealthyLife_Backend.service.MemberService;
@@ -15,7 +16,7 @@ import static com.HealthCare.HealthyLife_Backend.utils.Common.CORS_ORIGIN;
 @Slf4j
 @RestController
 @RequestMapping("/member")
-@CrossOrigin(origins = CORS_ORIGIN)
+//@CrossOrigin(origins = CORS_ORIGIN)
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
@@ -56,7 +57,14 @@ public class MemberController {
         log.info("연결완료 ? " + data);
         Long id = SecurityUtil.getCurrentMemberId();
         String password = data.get("password");
-        log.info("비밀번호 체크 맞니? : {}", password);
-        return ResponseEntity.ok(memberService.isPassword(password, id));
+        Boolean isTrue = memberService.isPassword(password, id);
+        return ResponseEntity.ok(isTrue);
+    }
+
+    //회원 정보 수정
+    @PostMapping("/update")
+    public ResponseEntity<Boolean> updateMember(@RequestBody MemberReqDto memberReqDto){
+        log.info("memberReqDto : {}", memberReqDto);
+        return ResponseEntity.ok(memberService.modifyMember(memberReqDto));
     }
 }

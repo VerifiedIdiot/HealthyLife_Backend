@@ -37,18 +37,16 @@ public class MemberService {
         try {
             Member member = memberRepository.findByEmail(memberReqDto.getEmail())
                     .orElseThrow(() -> new RuntimeException("해당 회원이 존재하지 않습니다."));
-
-            memberRepository.save(Member.builder()
-                    .nickName(memberReqDto.getNickName())
-                    .password(memberReqDto.getPassword().isEmpty()
-                            ? member.getPassword()
-                            : passwordEncoder.encode(memberReqDto.getPassword()))
-                    .phone(memberReqDto.getPhone())
-                    .addr(memberReqDto.getAddr())
-                    .image(memberReqDto.getImage())
-                    .build());
+            if(!member.isKakao() && !memberReqDto.getPassword().isEmpty()) {
+                member.setPassword(passwordEncoder.encode(memberReqDto.getPassword()));
+            }
+            member.setNickName(memberReqDto.getNickName());
+            member.setPhone(memberReqDto.getPhone());
+            member.setAddr(memberReqDto.getAddr());
+            member.setImage(memberReqDto.getImage());
+            memberRepository.save(member);
             return true;
-        } catch (Exception e) {
+        }catch(Exception e){
             e.printStackTrace();
             return false;
         }
