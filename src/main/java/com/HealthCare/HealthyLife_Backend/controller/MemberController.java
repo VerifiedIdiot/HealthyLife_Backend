@@ -2,6 +2,7 @@ package com.HealthCare.HealthyLife_Backend.controller;
 
 import com.HealthCare.HealthyLife_Backend.dto.MemberReqDto;
 import com.HealthCare.HealthyLife_Backend.dto.MemberResDto;
+import com.HealthCare.HealthyLife_Backend.jwt.TokenProvider;
 import com.HealthCare.HealthyLife_Backend.security.SecurityUtil;
 import com.HealthCare.HealthyLife_Backend.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import static com.HealthCare.HealthyLife_Backend.utils.Common.CORS_ORIGIN;
 public class MemberController {
     private final MemberService memberService;
     private final SecurityUtil securityUtil;
+    private final TokenProvider tokenProvider;
 
     // 회원 상세 조회
     @GetMapping("/detail")
@@ -67,4 +69,13 @@ public class MemberController {
         log.info("memberReqDto : {}", memberReqDto);
         return ResponseEntity.ok(memberService.modifyMember(memberReqDto));
     }
+
+    //로그인 여부 확인
+    @GetMapping("/isLogin/{token}")
+    public ResponseEntity<Boolean> isLogin(@PathVariable String token) {
+        log.warn("token: {}", token);
+        boolean isTrue = tokenProvider.validateToken(token);
+        return ResponseEntity.ok(isTrue);
+    }
+
 }
