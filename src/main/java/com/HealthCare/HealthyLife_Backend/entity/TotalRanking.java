@@ -19,10 +19,13 @@ import java.util.List;
 public class TotalRanking {
 
     @Id
-
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "total_ranking_id")
     private Long id;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "email")
+    private Member member;
 
     @OneToMany(mappedBy = "totalRanking" , cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST})
     private List<SeasonRanking> seasonRankings;

@@ -3,10 +3,11 @@ package com.HealthCare.HealthyLife_Backend.service.medicine;
 import com.HealthCare.HealthyLife_Backend.dto.medicine.ElasticsearchDto;
 import com.HealthCare.HealthyLife_Backend.document.MedicineDocument;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.lucene.search.TotalHits;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.MultiMatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -27,6 +28,12 @@ public class ElasticsearchFilterService {
 
     public ElasticsearchFilterService(ElasticsearchOperations elasticsearchOperations) {
         this.elasticsearchOperations = elasticsearchOperations;
+    }
+
+    public long getTotalCount() {
+        return elasticsearchOperations.count(new NativeSearchQueryBuilder()
+                .withQuery(QueryBuilders.matchAllQuery())
+                .build(), MedicineDocument.class);
     }
 
     public List<ElasticsearchDto> findBySize(int page, int size) {
@@ -88,10 +95,10 @@ public class ElasticsearchFilterService {
             queryBuilder.withSorts(SortBuilders.fieldSort(sortField).order(sortAscending ? SortOrder.ASC : SortOrder.DESC));
         }
 
-        queryBuilder.withPageable(PageRequest.of(page - 1, size));
+//        queryBuilder.withPageable(PageRequest.of(page - 1, size));
 
-        NativeSearchQuery searchQuery = queryBuilder.build();
-        var searchHits = elasticsearchOperations.search(searchQuery, MedicineDocument.class);
+        PageRequest pageRequest = PageRequest.of(page - 1, size);
+        var searchHits = elasticsearchOperations.search(new NativeSearchQueryBuilder().withPageable(pageRequest).build(), MedicineDocument.class);
 
         return searchHits.getSearchHits()
                 .stream()

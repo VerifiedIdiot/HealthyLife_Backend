@@ -36,6 +36,17 @@ public class ElasticsearchFilterController {
             return ResponseEntity.badRequest().body("데이터 조회 실패: " + e.getMessage());
         }
     }
+
+    @GetMapping("/total-count")
+    public ResponseEntity<?> getTotalCount() {
+        try {
+            Long totalCount = elasticsearchFilterService.getTotalCount();
+            return ResponseEntity.ok(totalCount);
+        } catch (Exception e) {
+            log.error("Error during getTotalCount: ", e);
+            return ResponseEntity.badRequest().body("총 문서수 조회 실패" + e.getMessage());
+        }
+    }
     // 검색조건 다중 적용된것 , 현재 테스트 중
     @GetMapping("/search")
     public ResponseEntity<?> search(

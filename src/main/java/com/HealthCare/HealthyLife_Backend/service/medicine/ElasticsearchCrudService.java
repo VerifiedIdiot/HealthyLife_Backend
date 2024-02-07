@@ -83,6 +83,16 @@ public class ElasticsearchCrudService {
                 .map(MedicineDocument::toDto)
                 .collect(Collectors.toList());
     }
+
+    public List<ElasticsearchDto> finddAll() {
+        List<ElasticsearchDto> dtos = new ArrayList<>();
+        Iterable<MedicineDocument> documents = elasticsearchCrudRepository.findAll();
+        for (MedicineDocument document : documents) {
+            ElasticsearchDto dto = document.toDto();
+            dtos.add(dto);
+        }
+        return dtos;
+    }
     // 개별 지우기
     public boolean delete(String id) {
         if (elasticsearchCrudRepository.existsById(id)) {
