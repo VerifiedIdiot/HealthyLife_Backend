@@ -16,6 +16,7 @@ public class ChatMessageDto {
     private Long sender;
     private String message;
     private LocalDateTime messageTime;
+    private String messageStatus; // 메세지 읽음, 안읽음
 
 
     public ChatMessageDto(Chatting chatting) {
@@ -24,5 +25,6 @@ public class ChatMessageDto {
         this.sender = chatting.getMember().getId();
         this.message = chatting.getMessage();
         this.messageTime = chatting.getMessageTime();
+        this.messageStatus = chatting.getMessageStatus(); // 이 줄을 추가하세요
     }
 }

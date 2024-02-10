@@ -57,5 +57,31 @@ public class ChatController {
         return ResponseEntity.ok(chatService.getRecentMessages(roomId)); // 특정 채팅방의 정보를 응답으로 반환
     }
 
+    @PostMapping("/updateMessageStatus")
+    public ResponseEntity<String> updateMessageStatus(@RequestParam String roomId, @RequestParam Long memberId, @RequestParam String status) {
+        try {
+            chatService.updateMessageStatus(roomId, memberId, status);
+            return ResponseEntity.ok("메시지 읽음 상태 업데이트 성공");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("메시지 읽음 상태 업데이트 실패");
+        }
 
+    }
+    @GetMapping("/unreadMessages/{roomId}/{memberId}")
+    public ResponseEntity<Integer> getUnreadMessageCount(@PathVariable String roomId, @PathVariable Long memberId) {
+        int unreadMessageCount = chatService.getUnreadMessageCount(roomId, memberId);
+        return ResponseEntity.ok(unreadMessageCount);
+    }
+
+    @GetMapping("/latestMessage/{roomId}")
+    public ResponseEntity<ChatMessageDto> getLatestMessage(@PathVariable String roomId) {
+        ChatMessageDto latestMessage = chatService.getLatestMessage(roomId);
+
+        // 최신 메시지가 존재하는 경우에만 반환
+        if (latestMessage != null) {
+            return ResponseEntity.ok(latestMessage);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

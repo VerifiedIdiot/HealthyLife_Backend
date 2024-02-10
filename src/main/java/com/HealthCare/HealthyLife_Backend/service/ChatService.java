@@ -99,8 +99,29 @@ public class ChatService {
                 .member(memberRepository.findById(senderId).orElseThrow())
                 .message(message)
                 .messageTime(LocalDateTime.now())
+                .messageStatus("안읽음") // 기본값으로 unread로 설정
                 .build();
         chattingRepository.save(chatMessage);
+
+    }
+    // 메시지 읽음 상태 업데이트
+    public void updateMessageStatus(String roomId, Long memberId, String status) {
+        List<Chatting> messages = chattingRepository.findUnreadMessages(roomId, memberId);
+        for (Chatting message : messages) {
+            message.setMessageStatus("읽음");
+            chattingRepository.save(message);
+        }
+    }
+
+    public int getUnreadMessageCount(String roomId, Long memberId) {
+        // 특정 멤버에 대한 지정된 채팅방의 모든 메시지를 가져옵니다.
+        List<Chatting> messages = chattingRepository.findByChatRoom_RoomIdAndMemberIdOrderByMessageTimeDesc(roomId, memberId);
+        // 읽지 않은 메시지만 필터링합니다.
+        long unreadMessageCount = messages.stream()
+                .filter(message -> "안읽음".equals(message.getMessageStatus())) // "안읽음"이 읽지 않은 메시지 상태를 가정합니다.
+                .count();
+
+        return (int) unreadMessageCount;
     }
 
 // 전의 메세지 가져오기
@@ -127,12 +148,18 @@ public class ChatService {
         ChatRoomResDto room = findRoomById(roomId);
         if (room != null) {
             room.getSessions().add(session); // 채팅방에 입장한 세션 추가
-            if (chatMessage.getSender() != null) { // 채팅방에 입장한 사용자가 있으면
-                chatMessage.setMessage(chatMessage.getSender() + "님이 입장했습니다.");
-                sendMessageToAll(roomId, chatMessage); // 채팅방에 입장 메시지 전송
-            }
             log.debug("New session added: " + session);
         }
+    }
+
+    public ChatMessageDto getLatestMessage(String roomId) {
+        List<Chatting> latestMessages = chattingRepository.findLatestMessages(roomId);
+
+        // Chatting entities to ChatMessageDto
+        return latestMessages.stream()
+                .findFirst()
+                .map(ChatMessageDto::new)
+                .orElse(null);
     }
 
     // 채팅방에서 퇴장한 세션 제거하는 메서드
@@ -140,10 +167,6 @@ public class ChatService {
         ChatRoomResDto room = findRoomById(roomId); // 채팅방 정보 가져오기
         if (room != null) {
             room.getSessions().remove(session); // 채팅방에서 퇴장한 세션 제거
-            if (chatMessage.getSender() != null) { // 채팅방에서 퇴장한 사용자가 있으면
-                chatMessage.setMessage(chatMessage.getSender() + "님이 퇴장했습니다.");
-                sendMessageToAll(roomId, chatMessage); // 채팅방에 퇴장 메시지 전송
-            }
             log.debug("Session removed: " + session);
             if (room.isSessionEmpty()) {
                 removeRoom(roomId);
@@ -164,6 +187,11 @@ public class ChatService {
     // 특정 세션에 메시지를 전송하는 메서드
     // T는 제네릭 객체라 어떤 것도 보낼수있음
     public <T> void sendMessage(WebSocketSession session, T message) {
+        if (message instanceof ChatMessageDto) {
+            ChatMessageDto chatMessage = (ChatMessageDto) message;
+            chatMessage.setMessageTime(LocalDateTime.now());
+            chatMessage.setMessageStatus("안읽음"); // 새로운 메시지를 보낼 때는 항상 안읽음 상태로 설정
+        }
         try {
             session.sendMessage(new TextMessage(objectMapper.writeValueAsString(message)));
         } catch (IOException e) {
