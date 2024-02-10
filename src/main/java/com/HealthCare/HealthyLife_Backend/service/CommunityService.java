@@ -76,6 +76,17 @@ public class CommunityService {
         return convertEntityToDto(community);
     }
 
+    // 조회수
+    public void increaseViewCount(Long id) {
+        Optional<Community> communityOptional = communityRepository.findById(id);
+        if (communityOptional.isPresent()) {
+            Community community = communityOptional.get();
+            community.setViewCount(community.getViewCount() + 1); // 조회수 증가
+            communityRepository.save(community); // 변경 사항 저장
+        } else {
+            throw new RuntimeException("해당 ID에 해당하는 게시글이 존재하지 않습니다.");
+        }
+    }
     // 게시글 수정
     public boolean modifyCommunity(Long id, CommunityDto communityDto) {
         try {
