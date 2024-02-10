@@ -40,7 +40,13 @@ public class CommunityController {
     // 게시글 방 조회
     @GetMapping("/detail/{id}")
     public ResponseEntity<CommunityDto> getCommunityDetail(@PathVariable Long id) throws IOException {
-        return ResponseEntity.ok(communityService.getCommunityDetail(id));
+        // 게시글 상세 정보 가져오기
+        CommunityDto communityDto = communityService.getCommunityDetail(id);
+
+        // 조회수 증가
+        communityService.increaseViewCount(id);
+
+        return ResponseEntity.ok(communityDto);
     }
 
     // 게시글 수정
