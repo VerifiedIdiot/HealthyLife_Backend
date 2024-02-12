@@ -74,7 +74,11 @@ public class MealService {
 
     // 출력
     public List<MealDto> getMealByEmail(String email, String regDate) {
+        System.out.println(email);
+        System.out.println(regDate);
         List<Meal> meals = mealRepository.findByEmailAndRegDate(email, regDate);
+
+        System.out.println(meals);
         return meals.stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());

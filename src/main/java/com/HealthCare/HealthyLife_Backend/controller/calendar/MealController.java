@@ -72,6 +72,8 @@ public class MealController {
             @RequestParam String regDate
             ){
         List<MealDto> list = mealService.getMealByEmail(email, regDate);
+//        System.out.println("이메일 : " + email + " 날짜 :" + regDate );
+        System.out.println(list);
         return ResponseEntity.ok(list);
     }
 

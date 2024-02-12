@@ -43,11 +43,6 @@ public class Meal {
     @JoinColumn(name = "food_id")
     private Food food;
 
-    @PrePersist
-    public void prePersist() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        this.regDate = LocalDateTime.now().format(formatter);
-    }
     public MealDto toMealDto() {
         return MealDto.builder()
                 .mealType(this.getMealType())
