@@ -84,6 +84,14 @@ public class MealService {
                 .collect(Collectors.toList());
     }
 
+//    public List<MealDto> findByEmailAndRegDateAndMealNameAndMealType(
+//            String email, String mealType, String mealName, String regDate) {
+//        List<Meal> meals = mealRepository.findByEmailAndRegDate(email, regDate);
+//        return meals.stream()
+//                .map(this::convertToDto)
+//                .collect(Collectors.toList());
+//    }
+
     private MealDto convertToDto(Meal meal) {
         MealDto mealDto = new MealDto();
         mealDto.setId(meal.getId());
@@ -104,7 +112,6 @@ public class MealService {
             return false;
         }
     }
-
 
     public List<MealDto> findAll() {
         return mealRepository.findAll().stream()
