@@ -22,7 +22,7 @@ public class Food {
     @Column(name = "image")
     private String image;
 
-    @Column(name = "name")
+    @Column(name = "name" , unique = false)
     private String name;
 
     @Column(name = "brand")

@@ -2,6 +2,7 @@ package com.HealthCare.HealthyLife_Backend.entity.calendar;
 
 import com.HealthCare.HealthyLife_Backend.dto.calendar.MealDto;
 import com.HealthCare.HealthyLife_Backend.entity.Food;
+import com.HealthCare.HealthyLife_Backend.entity.Member;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -30,7 +31,9 @@ public class Meal {
     @Column(name = "meal_name")
     private String mealName;
 
-    private String email;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "email", referencedColumnName = "email")
+    private Member member;
 
     @Column(name = "reg_date")
     private String regDate;
@@ -40,14 +43,15 @@ public class Meal {
     private Calendar calendar;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "food_id")
+    @JoinColumn(name = "name", referencedColumnName = "name")
     private Food food;
+
 
     public MealDto toMealDto() {
         return MealDto.builder()
                 .mealType(this.getMealType())
                 .mealName(this.getMealName())
-                .email(this.getEmail())
+                .member(this.getMember())
                 .regDate(this.getRegDate())
                 .build();
     }

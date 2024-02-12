@@ -76,7 +76,7 @@ public class MealService {
     public List<MealDto> getMealByEmail(String email, String regDate) {
         System.out.println(email);
         System.out.println(regDate);
-        List<Meal> meals = mealRepository.findByEmailAndRegDate(email, regDate);
+        List<Meal> meals = mealRepository.findByMember_EmailAndRegDate(email, regDate);
 
         System.out.println(meals);
         return meals.stream()
@@ -97,7 +97,7 @@ public class MealService {
         mealDto.setId(meal.getId());
         mealDto.setMealName(meal.getMealName());
         mealDto.setMealType(meal.getMealType());
-        mealDto.setEmail(meal.getEmail());
+        mealDto.setMember(meal.getMember());
         mealDto.setRegDate(meal.getRegDate());
         return mealDto;
     }

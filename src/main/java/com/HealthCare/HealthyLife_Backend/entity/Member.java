@@ -1,5 +1,6 @@
 package com.HealthCare.HealthyLife_Backend.entity;
 
+import com.HealthCare.HealthyLife_Backend.entity.calendar.Calendar;
 import com.HealthCare.HealthyLife_Backend.enums.Authority;
 import com.HealthCare.HealthyLife_Backend.enums.ExercisePurpose;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -25,6 +26,7 @@ public class Member implements Serializable {
     @Column(name = "member_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     @Column(name = "email", nullable = false, unique = true)
     private String email;
     private String password;
@@ -66,6 +68,9 @@ public class Member implements Serializable {
     private List<Community> communities;
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Comment> comments;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Calendar> calendars;
 
 
     @PrePersist

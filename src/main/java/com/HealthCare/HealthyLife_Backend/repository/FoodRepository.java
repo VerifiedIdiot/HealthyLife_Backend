@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface FoodRepository extends JpaRepository<Food, Long> {
     Page<Food> findAll(Pageable pageable);
@@ -23,7 +24,7 @@ public interface FoodRepository extends JpaRepository<Food, Long> {
                                 @Param("class2") String class2,
                                 Pageable pageable);
 
-    FoodDto findByName(String keyword);
+//    FoodDto findByName(String keyword);
 
     // 문지예 캘린더 측 검색을 위해 추가 24/02/12
     @JsonView(Views.Internal.class)
@@ -33,4 +34,7 @@ public interface FoodRepository extends JpaRepository<Food, Long> {
             "f.cholesterol, f.saturatedFat, f.transFat) " +
             "FROM Food f WHERE f.name LIKE %:keyword%")
     List<FoodDto> findAllByName(@Param("keyword") String keyword);
+
+
+    Optional<Food> findByName(String name);
 }

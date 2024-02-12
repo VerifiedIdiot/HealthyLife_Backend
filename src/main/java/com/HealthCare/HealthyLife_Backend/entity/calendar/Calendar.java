@@ -33,7 +33,7 @@ public class Calendar {
     private Integer points; // 포인트
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "email")
+    @JoinColumn(name = "email" ,referencedColumnName = "email")
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
