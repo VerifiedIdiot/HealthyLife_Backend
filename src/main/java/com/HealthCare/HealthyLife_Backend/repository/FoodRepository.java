@@ -25,8 +25,12 @@ public interface FoodRepository extends JpaRepository<Food, Long> {
 
     FoodDto findByName(String keyword);
 
-    // 문지예 캘린더 측 검색을 위해 추가 24/02/03
+    // 문지예 캘린더 측 검색을 위해 추가 24/02/12
     @JsonView(Views.Internal.class)
-    @Query("SELECT DISTINCT new com.HealthCare.HealthyLife_Backend.dto.FoodDto(f.name, f.image, f.kcal) FROM Food f WHERE f.name LIKE %:keyword%")
+    @Query("SELECT DISTINCT new com.HealthCare.HealthyLife_Backend.dto.FoodDto(" +
+            "f.name, f.image, f.servingSize, f.kcal, f.protein, f.fat, f.carbohydrate, " +
+            "f.sugar, f.dietaryFiber, f.calcium, f.vitaB1, f.vitaB2, f.vitaC, " +
+            "f.cholesterol, f.saturatedFat, f.transFat) " +
+            "FROM Food f WHERE f.name LIKE %:keyword%")
     List<FoodDto> findAllByName(@Param("keyword") String keyword);
 }

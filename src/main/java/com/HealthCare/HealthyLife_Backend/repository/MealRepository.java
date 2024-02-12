@@ -1,5 +1,6 @@
 package com.HealthCare.HealthyLife_Backend.repository;
 
+import com.HealthCare.HealthyLife_Backend.dto.calendar.MealDto;
 import com.HealthCare.HealthyLife_Backend.entity.calendar.Meal;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -10,4 +11,7 @@ import java.util.List;
 
 public interface MealRepository extends JpaRepository<Meal, Long> {
     List<Meal> findByEmailAndRegDate(String email, String regDate);
+
+
+//    List<MealDto> findByEmailAndRegDateAndMealNameAndMealType(String email, String mealType, String mealName, String regDate);
 }
