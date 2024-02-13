@@ -3,6 +3,7 @@ package com.HealthCare.HealthyLife_Backend.controller;
 import com.HealthCare.HealthyLife_Backend.dto.MemberReqDto;
 import com.HealthCare.HealthyLife_Backend.dto.MemberResDto;
 import com.HealthCare.HealthyLife_Backend.jwt.TokenProvider;
+import com.HealthCare.HealthyLife_Backend.repository.MemberRepository;
 import com.HealthCare.HealthyLife_Backend.security.SecurityUtil;
 import com.HealthCare.HealthyLife_Backend.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ public class MemberController {
     private final MemberService memberService;
     private final SecurityUtil securityUtil;
     private final TokenProvider tokenProvider;
+    private final MemberRepository memberRepository;
 
     // 회원 상세 조회
     @GetMapping("/detail")
@@ -77,5 +79,14 @@ public class MemberController {
         boolean isTrue = tokenProvider.validateToken(token);
         return ResponseEntity.ok(isTrue);
     }
-
+    // 정벼리 , 테스트용으로 추가 .
+    @PostMapping("/delete-member")
+    public ResponseEntity<?> deleteMemberByEmail(@RequestParam Long id) {
+        try {
+            memberRepository.deleteById(id);
+            return ResponseEntity.ok("삭제함");
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
