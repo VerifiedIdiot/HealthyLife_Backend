@@ -63,6 +63,8 @@ public class ExerciseService {
 
         boolean moreData = true;
 
+        exerciseRepository.deleteAll();
+
         while (moreData) {
             ResponseEntity<ExerciseDto[]> responseEntity = restTemplate.exchange(apiUrl + "?offset=" + offset, HttpMethod.GET, entity, ExerciseDto[].class);
 

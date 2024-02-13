@@ -37,9 +37,6 @@ public class Exercise {
     @Column(name = "instructions", length = 5000)
     private String instructions;
 
-    @Column(name = "image")
-    private String image;
-
     public ExerciseDto toExerciseDto() {
         return ExerciseDto.builder()
                 .name(this.getName())
@@ -48,7 +45,6 @@ public class Exercise {
                 .equipment(this.getEquipment())
                 .difficulty(this.getDifficulty())
                 .instructions(this.getInstructions())
-                .image(this.getImage())
                 .build();
     }
 

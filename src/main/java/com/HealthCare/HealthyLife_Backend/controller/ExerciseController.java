@@ -46,7 +46,7 @@ public class ExerciseController {
                                                                    @RequestParam(required = false) String muscle,
                                                                    @RequestParam(required = false) String difficulty,
                                                                    @RequestParam(defaultValue = "0") int page,
-                                                                   @RequestParam(defaultValue = "10") int size) {
+                                                                   @RequestParam(defaultValue = "27") int size) {
         try {
             List<ExerciseDto> exercisePage = exerciseService.getExerciseSortedByKeywordAndMuscleAndDifficulty(keyword, muscle, difficulty, page, size);
             return ResponseEntity.ok(exercisePage);
