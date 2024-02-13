@@ -17,13 +17,13 @@ import java.time.LocalDateTime;
 public class WorkoutDto {
     private Long id;
     private String workoutName;
-    private String memberId;
-    private LocalDateTime regDate;
+    private String email;
+    private String regDate;
 
     public Workout toWorkoutEntity() {
         return Workout.builder()
-                .workout(this.getWorkoutName())
-                .memberId(this.getMemberId())
+                .workoutName(this.getWorkoutName())
+                .email(this.getEmail())
                 .regDate(this.getRegDate())
                 .build();
     }

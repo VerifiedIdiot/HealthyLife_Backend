@@ -69,8 +69,9 @@ public class Member implements Serializable {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Comment> comments;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Calendar> calendars;
+
 
 
     @PrePersist

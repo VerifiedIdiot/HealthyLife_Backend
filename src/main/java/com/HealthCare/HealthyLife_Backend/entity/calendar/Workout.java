@@ -28,13 +28,21 @@ public class Workout {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="exercise_id")
     private Exercise exercise;
+    @Column(name = "workout_name")
+    private String workoutName;
 
-    private String workout;
-    private String memberId;
-    private LocalDateTime regDate;
+    @Column(name = "email")
+    private String email;
+    private String regDate;
 
-    @PrePersist
-    public void prePersist() {
-        regDate = LocalDateTime.now();
+    public Workout toWorkoutEntity() {
+        return Workout.builder()
+                .workoutName(this.getWorkoutName())
+                .email(this.getEmail())
+                .regDate(this.getRegDate())
+                .build();
     }
+
+
+
 }

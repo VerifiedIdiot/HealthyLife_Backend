@@ -1,38 +1,52 @@
 package com.HealthCare.HealthyLife_Backend.service.calendar;
 
-import com.HealthCare.HealthyLife_Backend.document.MedicineDocument;
 import com.HealthCare.HealthyLife_Backend.dto.FoodDto;
 import com.HealthCare.HealthyLife_Backend.dto.calendar.MealDto;
 
+import com.HealthCare.HealthyLife_Backend.entity.calendar.Calendar;
 import com.HealthCare.HealthyLife_Backend.entity.calendar.Meal;
+import com.HealthCare.HealthyLife_Backend.repository.CalendarRepository;
 import com.HealthCare.HealthyLife_Backend.repository.FoodRepository;
 import com.HealthCare.HealthyLife_Backend.repository.MealRepository;
 import com.HealthCare.HealthyLife_Backend.repository.MemberRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Date;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Service
 public class MealService {
-    private final MealRepository mealRepository;
-    private final FoodRepository foodRepository;
-    private final MemberRepository memberRepository;
+    private MealRepository mealRepository;
+    private FoodRepository foodRepository;
+    private MemberRepository memberRepository;
+
+    private CalendarRepository calendarRepository;
 
 
-    public MealService(MealRepository mealRepository, FoodRepository foodRepository, MemberRepository memberRepository) {
-        this.mealRepository = mealRepository;
-        this.foodRepository = foodRepository;
-        this.memberRepository = memberRepository;
-    }
 
-    public void addMealWithFood(MealDto mealDto) {
-        Meal meal = mealDto.toMealEntity();
+    @Transactional
+    public void addAndUpdateCalendar(MealDto mealDto) {
+        // MealDto로부터 Meal 엔티티 변환 (mealDto.toMealEntity() 같은 메서드 필요)
+        Meal meal = mealDto.toMealEntity(); // 이 메서드는 MealDto를 Meal 엔티티로 변환
+
+        // Meal의 regDate를 기반으로 Calendar 엔티티 찾기
+        String regDate = meal.getRegDate();
+        Calendar calendar = calendarRepository.findByRegDateAndMemberEmail(regDate, meal.getMember().getEmail())
+                .orElseGet(() -> {
+                    // 새 Calendar 엔티티 생성 및 초기화
+                    Calendar newCalendar = new Calendar();
+                    newCalendar.setRegDate(regDate);
+                    newCalendar.setMember(meal.getMember()); // Meal과 같은 Member 할당
+                    // 필요한 경우 추가적인 Calendar 초기화
+                    return calendarRepository.save(newCalendar); // 새 Calendar 저장
+                });
+
+        // Meal에 Calendar 설정
+        meal.setCalendar(calendar);
+
+        // Meal 저장
         mealRepository.save(meal);
     }
 

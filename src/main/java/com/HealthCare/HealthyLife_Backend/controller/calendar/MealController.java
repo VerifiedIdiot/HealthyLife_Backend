@@ -32,7 +32,7 @@ public class MealController {
     public ResponseEntity<?> add(
             @RequestBody(required = true) MealDto mealDto) {
         try {
-            mealService.addMealWithFood(mealDto);
+            mealService.addAndUpdateCalendar(mealDto);
             return ResponseEntity.ok("음식추가");
         } catch (Exception e) {
             log.error("음식 추가 중 오류 발생: {}", e.getMessage());

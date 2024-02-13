@@ -27,7 +27,7 @@ public class CalendarDto {
     private int month;
     private String title; //제목
     private String detail; // 내용
-    private LocalDateTime regDate; // 작성일자
+    private String regDate; // 작성일자
 
     private Integer carbohydrate; // 탄수화물
     private Integer protein; // 단백질

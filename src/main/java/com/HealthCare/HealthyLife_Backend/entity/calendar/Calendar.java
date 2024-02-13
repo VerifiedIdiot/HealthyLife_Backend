@@ -43,17 +43,14 @@ public class Calendar {
     @OneToMany(mappedBy = "calendar", cascade = CascadeType.ALL)
     private List<SeasonRanking> seasonRankings;
 
-    @OneToMany(mappedBy = "calendar", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "calendar", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Meal> meals;
 
-    @OneToMany(mappedBy = "calendar", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "calendar", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Workout> workout;
 
-    private LocalDateTime regDate;
-    @PrePersist
-    public void prePersist() {
-        regDate = LocalDateTime.now();
-    }
+    private String regDate;
+
 
     public CalendarDto toCalendarDto() {
         return CalendarDto.builder()
