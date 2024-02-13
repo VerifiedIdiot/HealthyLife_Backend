@@ -13,6 +13,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
     Page<Exercise> findAll(Pageable pageable);
@@ -26,5 +27,8 @@ public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
                                  Pageable pageable);
 
     ExerciseDto findByName(String keyword);
+
+    Optional<Exercise> findExerciseByName(String name);
+
 
 }

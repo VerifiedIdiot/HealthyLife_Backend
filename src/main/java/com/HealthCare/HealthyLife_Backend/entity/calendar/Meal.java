@@ -25,30 +25,35 @@ public class Meal {
     @Column(name = "meal_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "calendar_id")
+    private Calendar calendar;
+
+    @Column(name = "email")
+    private String email;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "food_id", referencedColumnName = "food_id")
+    private Food food;
+
     @Column(name = "meal_type")
     private String mealType; // 식사유형 (아침,점심,저녁)
 
     @Column(name = "meal_name")
     private String mealName;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "email", referencedColumnName = "email")
-    private Member member;
-
     @Column(name = "reg_date")
     private String regDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "calendar_id")
-    private Calendar calendar;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "name", referencedColumnName = "name")
-    private Food food;
+
+
 
 
     public MealDto toMealDto() {
         return MealDto.builder()
+                .email(this.getEmail())
                 .mealType(this.getMealType())
                 .mealName(this.getMealName())
                 .regDate(this.getRegDate())

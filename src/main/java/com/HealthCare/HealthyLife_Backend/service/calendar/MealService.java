@@ -3,6 +3,7 @@ package com.HealthCare.HealthyLife_Backend.service.calendar;
 import com.HealthCare.HealthyLife_Backend.dto.FoodDto;
 import com.HealthCare.HealthyLife_Backend.dto.calendar.MealDto;
 
+import com.HealthCare.HealthyLife_Backend.entity.Food;
 import com.HealthCare.HealthyLife_Backend.entity.Member;
 import com.HealthCare.HealthyLife_Backend.entity.calendar.Calendar;
 import com.HealthCare.HealthyLife_Backend.entity.calendar.Meal;
@@ -20,27 +21,36 @@ import java.util.stream.Collectors;
 
 @Service
 public class MealService {
-    private MealRepository mealRepository;
-    private FoodRepository foodRepository;
-    private MemberRepository memberRepository;
+    private final MealRepository mealRepository;
+    private final FoodRepository foodRepository;
+    private final MemberRepository memberRepository;
 
-    private CalendarRepository calendarRepository;
+    private final CalendarRepository calendarRepository;
 
+    public MealService(MealRepository mealRepository, FoodRepository foodRepository, MemberRepository memberRepository, CalendarRepository calendarRepository) {
+        this.mealRepository = mealRepository;
+        this.foodRepository = foodRepository;
+        this.memberRepository = memberRepository;
+        this.calendarRepository = calendarRepository;
+    }
 
 
     @Transactional
     public void addAndUpdateCalendar(MealDto mealDto) {
-        // 이메일을 사용하여 Member 엔티티 조회
+
         Member member = memberRepository.findByEmail(mealDto.getEmail())
                 .orElseThrow(() -> new EntityNotFoundException("Member not found with email: " + mealDto.getEmail()));
-        System.out.println(member);
         // MealDto로부터 Meal 엔티티 변환
         Meal meal = mealDto.toMealEntity();
-        meal.setMember(member); // Member 엔티티 설정
+
+
+        // 음식명을 사용하여 Food 엔티티 조회
+        Food food = foodRepository.findByName(mealDto.getMealName())
+                .orElseThrow(() -> new EntityNotFoundException("Food not found with name: " + mealDto.getMealName()));
+        meal.setFood(food);
 
         // Meal의 regDate를 기반으로 Calendar 엔티티 찾기 또는 생성
         String regDate = meal.getRegDate();
-        System.out.println(regDate);
         Calendar calendar = calendarRepository.findByRegDateAndMemberEmail(regDate, mealDto.getEmail())
                 .orElseGet(() -> {
                     Calendar newCalendar = new Calendar();
@@ -95,7 +105,7 @@ public class MealService {
     public List<MealDto> getMealByEmail(String email, String regDate) {
         System.out.println(email);
         System.out.println(regDate);
-        List<Meal> meals = mealRepository.findByMember_EmailAndRegDate(email, regDate);
+        List<Meal> meals = mealRepository.findByEmailAndRegDate(email, regDate);
 
         System.out.println(meals);
         return meals.stream()

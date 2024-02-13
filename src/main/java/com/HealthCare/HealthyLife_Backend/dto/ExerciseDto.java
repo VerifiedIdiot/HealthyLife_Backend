@@ -33,4 +33,6 @@ public class ExerciseDto {
                 .image(this.image)
                 .build();
     }
+
+
 }

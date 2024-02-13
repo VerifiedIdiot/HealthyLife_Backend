@@ -23,8 +23,6 @@ public class Calendar {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private int month;
-
     private Integer carbohydrate; // 탄수화물
     private Integer protein; // 단백질
     private Integer fat; // 지방
