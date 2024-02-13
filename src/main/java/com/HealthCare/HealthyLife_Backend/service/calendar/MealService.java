@@ -11,6 +11,7 @@ import com.HealthCare.HealthyLife_Backend.repository.CalendarRepository;
 import com.HealthCare.HealthyLife_Backend.repository.FoodRepository;
 import com.HealthCare.HealthyLife_Backend.repository.MealRepository;
 import com.HealthCare.HealthyLife_Backend.repository.MemberRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,26 +21,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class MealService {
     private final MealRepository mealRepository;
     private final FoodRepository foodRepository;
     private final MemberRepository memberRepository;
-
     private final CalendarRepository calendarRepository;
-
-    public MealService(MealRepository mealRepository, FoodRepository foodRepository, MemberRepository memberRepository, CalendarRepository calendarRepository) {
-        this.mealRepository = mealRepository;
-        this.foodRepository = foodRepository;
-        this.memberRepository = memberRepository;
-        this.calendarRepository = calendarRepository;
-    }
 
 
     @Transactional
     public void addAndUpdateCalendar(MealDto mealDto) {
-
+        // 이메일을 통해서 member 엔티티 조회
         Member member = memberRepository.findByEmail(mealDto.getEmail())
                 .orElseThrow(() -> new EntityNotFoundException("Member not found with email: " + mealDto.getEmail()));
+
         // MealDto로부터 Meal 엔티티 변환
         Meal meal = mealDto.toMealEntity();
 
@@ -51,18 +46,64 @@ public class MealService {
 
         // Meal의 regDate를 기반으로 Calendar 엔티티 찾기 또는 생성
         String regDate = meal.getRegDate();
+
         Calendar calendar = calendarRepository.findByRegDateAndMemberEmail(regDate, mealDto.getEmail())
                 .orElseGet(() -> {
                     Calendar newCalendar = new Calendar();
                     newCalendar.setRegDate(regDate);
-                    newCalendar.setMember(member); // Calendar에 Member 설정
-                    return calendarRepository.save(newCalendar); // 새 Calendar 저장
+                    newCalendar.setMember(member);
+                    newCalendar.setCarbohydrate(0);
+                    newCalendar.setProtein(0);
+                    newCalendar.setFat(0);
+                    newCalendar.setCalorie(0);
+                    newCalendar.setPoints(0); // 초기 점수 설정
+                    return newCalendar;
                 });
 
-        meal.setCalendar(calendar); // Meal에 Calendar 설정
+        // 영양소 정보와 점수 업데이트
+        updateNutritionalInfoAndPoints(calendar, meal, food);
 
-        // Meal 저장
+        // Calendar 엔티티 업데이트
+        calendarRepository.save(calendar);
+
+        // Meal에 Calendar 설정 및 저장
+        meal.setCalendar(calendar);
         mealRepository.save(meal);
+    }
+
+    private void updateNutritionalInfoAndPoints(Calendar calendar, Meal meal, Food food) {
+        // 영양소 정보 업데이트
+        calendar.setCarbohydrate(calendar.getCarbohydrate() + Integer.parseInt(food.getCarbohydrate()));
+        calendar.setProtein(calendar.getProtein() + Integer.parseInt(food.getProtein()));
+        calendar.setFat(calendar.getFat() + Integer.parseInt(food.getFat()));
+        calendar.setCalorie(calendar.getCalorie() + Integer.parseInt(food.getKcal()));
+
+        // 식사 타입별 달성 여부 확인 및 점수 업데이트
+        updateMealAchievement(calendar, meal);
+    }
+
+    private void updateMealAchievement(Calendar calendar, Meal meal) {
+        // 식사 타입에 따른 달성 여부 업데이트
+        switch (meal.getMealType()) {
+            case "아침":
+                if (!calendar.getMorningMealAchieved()) {
+                    calendar.setMorningMealAchieved(true);
+                    calendar.setPoints(calendar.getPoints() + 25);
+                }
+                break;
+            case "점심":
+                if (!calendar.getLunchMealAchieved()) {
+                    calendar.setLunchMealAchieved(true);
+                    calendar.setPoints(calendar.getPoints() + 25);
+                }
+                break;
+            case "저녁":
+                if (!calendar.getDinnerMealAchieved()) {
+                    calendar.setDinnerMealAchieved(true);
+                    calendar.setPoints(calendar.getPoints() + 25);
+                }
+                break;
+        }
     }
 
     // 키워드, 멤버ID, 유형, 날짜

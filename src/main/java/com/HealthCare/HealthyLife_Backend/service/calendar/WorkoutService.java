@@ -2,17 +2,21 @@ package com.HealthCare.HealthyLife_Backend.service.calendar;
 
 import com.HealthCare.HealthyLife_Backend.dto.calendar.WorkoutDto;
 import com.HealthCare.HealthyLife_Backend.entity.Exercise;
-import com.HealthCare.HealthyLife_Backend.entity.Food;
 import com.HealthCare.HealthyLife_Backend.entity.Member;
 import com.HealthCare.HealthyLife_Backend.entity.calendar.Calendar;
 import com.HealthCare.HealthyLife_Backend.entity.calendar.Workout;
-import com.HealthCare.HealthyLife_Backend.repository.*;
+import com.HealthCare.HealthyLife_Backend.repository.CalendarRepository;
+import com.HealthCare.HealthyLife_Backend.repository.ExerciseRepository;
+import com.HealthCare.HealthyLife_Backend.repository.MemberRepository;
+import com.HealthCare.HealthyLife_Backend.repository.WorkoutRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 
 @Service
+@RequiredArgsConstructor
 public class WorkoutService {
 
     private final CalendarRepository calendarRepository;
@@ -20,41 +24,42 @@ public class WorkoutService {
     private final ExerciseRepository exerciseRepository;
     private final WorkoutRepository workoutRepository;
 
-    public WorkoutService(CalendarRepository calendarRepository, MemberRepository memberRepository, ExerciseRepository exerciseRepository, WorkoutRepository workoutRepository) {
-        this.calendarRepository = calendarRepository;
-
-        this.memberRepository = memberRepository;
-        this.exerciseRepository = exerciseRepository;
-        this.workoutRepository = workoutRepository;
-    }
-
 
     @Transactional
     public void addAndUpdateCalendar(WorkoutDto workoutDto) {
         // 이메일을 사용하여 Member 엔티티 조회
         Member member = memberRepository.findByEmail(workoutDto.getEmail())
                 .orElseThrow(() -> new EntityNotFoundException("Member not found with email: " + workoutDto.getEmail()));
-        // WorkoutDto로부터 Workout 엔티티 변환
-        Workout workout = workoutDto.toWorkoutEntity();
 
-        // 운동명을 사용하여 Exerice 엔티티 조회 ㅎㅎ
+        // 운동명을 사용하여 Exercise 엔티티 조회
         Exercise exercise = exerciseRepository.findExerciseByName(workoutDto.getWorkoutName())
-                .orElseThrow(() -> new EntityNotFoundException("Exercise not found with name: " + workout.getWorkoutName()));
+                .orElseThrow(() -> new EntityNotFoundException("Exercise not found with name: " + workoutDto.getWorkoutName()));
+
+        // Workout 엔티티 생성 및 Exercise 설정
+        Workout workout = workoutDto.toWorkoutEntity();
         workout.setExercise(exercise);
 
-        // 이메일을 통해 조회된 Member와 연관된 Calendar 엔티티 찾기 또는 생성
-        String regDate = workout.getRegDate();
+        // 이메일과 날짜를 통해 Calendar 엔티티 찾기 또는 생성
+        String regDate = workoutDto.getRegDate();
         Calendar calendar = calendarRepository.findByRegDateAndMemberEmail(regDate, workoutDto.getEmail())
                 .orElseGet(() -> {
                     Calendar newCalendar = new Calendar();
                     newCalendar.setRegDate(regDate);
-                    newCalendar.setMember(member); // Calendar에 Member 설정
+                    newCalendar.setMember(member);
                     return calendarRepository.save(newCalendar); // 새 Calendar 저장
                 });
 
-        workout.setCalendar(calendar); // Workout에 Calendar 설정
+        // 운동 수행 여부에 따른 점수 할당 로직
+        if (!calendar.getWorkoutAchieved()) {
+            calendar.setWorkoutAchieved(true); // 운동 수행 표시
+            int currentPoints = (calendar.getPoints() == null) ? 0 : calendar.getPoints();
+            calendar.setPoints(currentPoints + 25); // 운동 수행으로 인한 추가 점수
+            calendarRepository.save(calendar); // 변경된 Calendar 저장
+        }
 
-        // Workout 저장
-        workoutRepository.save(workout);
+        workout.setCalendar(calendar); // Workout에 Calendar 설정
+        workoutRepository.save(workout); // 새로운 Workout 저장
     }
+
+
 }

@@ -2,6 +2,7 @@ package com.HealthCare.HealthyLife_Backend.service.medicine;
 
 import com.HealthCare.HealthyLife_Backend.dto.medicine.ElasticsearchDto;
 import com.HealthCare.HealthyLife_Backend.document.MedicineDocument;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.lucene.search.TotalHits;
 import org.elasticsearch.index.query.*;
@@ -20,13 +21,10 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 @ConditionalOnProperty(name = "spring.elasticsearch.enabled", havingValue = "true")
 public class ElasticsearchFilterService {
     private final ElasticsearchOperations elasticsearchOperations;
-
-    public ElasticsearchFilterService(ElasticsearchOperations elasticsearchOperations) {
-        this.elasticsearchOperations = elasticsearchOperations;
-    }
 
     public long getTotalCount() {
         return elasticsearchOperations.count(new NativeSearchQueryBuilder()

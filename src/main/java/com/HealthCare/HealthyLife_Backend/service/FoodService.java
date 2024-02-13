@@ -44,10 +44,17 @@ public class FoodService {
             while (rowIterator.hasNext()) {
                 Row row = rowIterator.next();
                 FoodDto foodDto = fromExcelRow(row);
-                foodDtoList.add(foodDto);
+                if (foodDtoIsValid(foodDto)) { // 하단 스태틱 메서드 참조
+                    foodDtoList.add(foodDto);
+                }
             }
         }
         return foodDtoList;
+    }
+    // 정벼리 엑셀에서 dto 변환 로직중 , 마지막에 무조건 빈값의 레코드가 한 건 생성되는것 발견 , 그래서 간단하게 매 dto 변환때마다
+    // 필수적으로 있어야할 음식이름을 기준(있으면 추가) 으로 foodDtoList에 add
+    private static boolean foodDtoIsValid(FoodDto foodDto) {
+       return foodDto.getName() != null && !foodDto.getName().isEmpty();
     }
 
     public List<FoodDto> getFoodList(int page, int size) {

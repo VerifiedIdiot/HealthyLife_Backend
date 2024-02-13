@@ -28,6 +28,23 @@ public class Calendar {
     private Integer fat; // 지방
     private Integer calorie; // 칼로리
 
+    @Builder.Default
+    @Column(name = "morning_meal_achieved", nullable = false)
+    private Boolean morningMealAchieved = false;
+
+    @Builder.Default
+    @Column(name = "lunch_meal_achieved", nullable = false)
+    private Boolean lunchMealAchieved = false;
+
+    @Builder.Default
+    @Column(name = "dinner_meal_achieved", nullable = false)
+    private Boolean dinnerMealAchieved = false;
+
+    @Builder.Default
+    @Column(name = "workout_achieved", nullable = false)
+    private Boolean workoutAchieved = false;
+
+
     private Integer points; // 포인트
 
     @ManyToOne(fetch = FetchType.LAZY)

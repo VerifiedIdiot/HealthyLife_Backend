@@ -4,6 +4,7 @@ import com.HealthCare.HealthyLife_Backend.document.MedicineDocument;
 import com.HealthCare.HealthyLife_Backend.dto.medicine.ElasticsearchDto;
 import com.HealthCare.HealthyLife_Backend.dto.medicine.MedicineDto;
 import com.HealthCare.HealthyLife_Backend.repository.ElasticsearchCrudRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import java.util.stream.StreamSupport;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 @ConditionalOnProperty(name = "spring.elasticsearch.enabled", havingValue = "true")
 
 
@@ -30,12 +32,7 @@ public class ElasticsearchCrudService {
     private final ElasticsearchCrudRepository elasticsearchCrudRepository;
     private final ElasticsearchOperations elasticsearchOperations;
     private final ElasticsearchRestTemplate elasticsearchRestTemplate;
-    @Autowired
-    public ElasticsearchCrudService(ElasticsearchCrudRepository elasticsearchCrudRepository, ElasticsearchOperations elasticsearchOperations, ElasticsearchRestTemplate elasticsearchRestTemplate) {
-        this.elasticsearchCrudRepository = elasticsearchCrudRepository;
-        this.elasticsearchOperations = elasticsearchOperations;
-        this.elasticsearchRestTemplate = elasticsearchRestTemplate;
-    }
+
     // 단건 insert
     public void insert(ElasticsearchDto elasticsearchDto) {
         MedicineDocument document = elasticsearchDto.toDocument();
