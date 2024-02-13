@@ -51,7 +51,6 @@ public class Meal {
         return MealDto.builder()
                 .mealType(this.getMealType())
                 .mealName(this.getMealName())
-                .member(this.getMember())
                 .regDate(this.getRegDate())
                 .build();
     }

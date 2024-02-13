@@ -17,14 +17,13 @@ public class MealDto {
     private Long id;
     private String mealType;
     private String mealName;
-    private Member member;
+    private String email;
     private String regDate;
 
     public Meal toMealEntity() {
         return Meal.builder()
                 .mealType(this.getMealType())
                 .mealName(this.getMealName())
-                .member(this.getMember())
                 .regDate(this.getRegDate())
                 .build();
     }
