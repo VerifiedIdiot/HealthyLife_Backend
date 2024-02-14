@@ -35,6 +35,7 @@ public class MemberResDto {
                 .image(member.getImage())
                 .isKakao(member.isKakao())
                 .birth(member.getBirth())
+                .regDate(member.getRegDate())
                 .build();
     }
 }

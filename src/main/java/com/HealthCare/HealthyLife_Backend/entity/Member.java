@@ -47,7 +47,7 @@ public class Member implements Serializable {
     @Column(name = "isAuthDelete", columnDefinition = "TINYINT(1)")
     private boolean isAuthDelete;
     private LocalDate birth;
-    private LocalDateTime regDate;
+
     @Enumerated(EnumType.STRING)
     private Authority authority;
     @Enumerated(EnumType.STRING)
@@ -74,9 +74,9 @@ public class Member implements Serializable {
     private List<Calendar> calendars;
 
 
-
+    private LocalDateTime regDate;
     @PrePersist
-    protected void prePersist() {
+    public void prePersist() {
         regDate = LocalDateTime.now();
     }
 
