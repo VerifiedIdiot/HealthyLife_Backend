@@ -47,11 +47,10 @@ public class CalendarController  {
     // 수정해야함 이 부분
     @JsonView(Views.Detail.class)
     @GetMapping("/get-date-details")
-    public ResponseEntity<?> getDateDetails(@RequestParam String date,
-                                             @RequestParam String email) {
+    public ResponseEntity<?> getDateDetails(@RequestParam Long calendarId) {
         try {
             // calendarService를 통해 해당 년도와 월에 해당하는 데이터 가져오기
-            CalendarDto calendarDto = calendarService.findByDate(email, date);
+            CalendarDto calendarDto = calendarService.findByDate(calendarId);
             return ResponseEntity.ok(calendarDto);
         } catch (Exception e) {
             return ResponseEntity.notFound().build();

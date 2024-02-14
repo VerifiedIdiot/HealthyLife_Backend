@@ -15,7 +15,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+
 @Builder
 public class Calendar {
     @Id
@@ -50,6 +50,7 @@ public class Calendar {
 
     private Integer points;
 
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "email" ,referencedColumnName = "email")
     private Member member;

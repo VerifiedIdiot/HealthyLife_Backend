@@ -144,12 +144,11 @@ public class MealService {
     }
 
     // 출력
-    public List<MealDto> getMealByEmail(String email, String regDate) {
-        System.out.println(email);
-        System.out.println(regDate);
-        List<Meal> meals = mealRepository.findByEmailAndRegDate(email, regDate);
+    public List<MealDto> getMealByCalendarId(Long calendarId) {
 
-        System.out.println(meals);
+        List<Meal> meals = mealRepository.findByCalendarId(calendarId);
+
+        System.out.println("나오라" + meals);
         return meals.stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());

@@ -30,9 +30,9 @@ public class CalendarService {
         return calendarRepository.findByRegDateLikeAndMemberEmail(regDate +"%", email);
     }
 
-    public CalendarDto findByDate(String email, String regDate) {
-        Optional<Calendar> calendar = calendarRepository.findByRegDateAndMemberEmail(regDate , email);
-        return calendar.map(Calendar::toDtoWithDetail).orElseThrow(() -> new EntityNotFoundException("Calendar not found with name: " + regDate));
+    public CalendarDto findByDate(Long calendarId) {
+        Optional<Calendar> calendar = calendarRepository.findById(calendarId);
+        return calendar.map(Calendar::toDtoWithDetail).orElseThrow(() -> new EntityNotFoundException("Calendar not found with name: " + calendarId));
     }
 
 

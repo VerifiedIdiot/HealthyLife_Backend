@@ -18,7 +18,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+
 @Builder
 public class Meal {
     @Id
@@ -30,8 +30,6 @@ public class Meal {
     @JoinColumn(name = "calendar_id")
     private Calendar calendar;
 
-    @Column(name = "email")
-    private String email;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "food_id", referencedColumnName = "food_id")
@@ -53,7 +51,6 @@ public class Meal {
 
     public MealDto toMealDto() {
         return MealDto.builder()
-                .email(this.getEmail())
                 .mealType(this.getMealType())
                 .mealName(this.getMealName())
                 .regDate(this.getRegDate())

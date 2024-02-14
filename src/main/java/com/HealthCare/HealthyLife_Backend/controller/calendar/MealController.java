@@ -61,11 +61,8 @@ public class MealController {
 
     // 출력
     @GetMapping("/detail")
-    public ResponseEntity<List<MealDto>> MealByEmail(
-            @RequestParam String email,
-            @RequestParam String regDate
-            ){
-        List<MealDto> list = mealService.getMealByEmail(email, regDate);
+    public ResponseEntity<List<MealDto>> MealByCalendarId(@RequestParam Long calendarId) {
+        List<MealDto> list = mealService.getMealByCalendarId(calendarId);
 //        System.out.println("이메일 : " + email + " 날짜 :" + regDate );
         System.out.println(list);
         return ResponseEntity.ok(list);
