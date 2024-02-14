@@ -3,6 +3,9 @@ package com.HealthCare.HealthyLife_Backend.controller.calendar;
 import com.HealthCare.HealthyLife_Backend.dto.calendar.CalendarDto;
 import com.HealthCare.HealthyLife_Backend.service.calendar.CalendarService;
 import com.HealthCare.HealthyLife_Backend.service.FoodService;
+import com.HealthCare.HealthyLife_Backend.utils.Views;
+import com.fasterxml.jackson.annotation.JsonView;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,14 +15,11 @@ import java.util.List;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/calendar")
 public class CalendarController  {
 
     private final CalendarService calendarService;
-
-    public CalendarController(CalendarService calendarService) {
-        this.calendarService = calendarService;
-    }
 
     @GetMapping("/test")
     public ResponseEntity<?> testController () {
@@ -30,6 +30,32 @@ public class CalendarController  {
             ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok("정상작동");
+    }
+
+    @JsonView(Views.List.class)
+    @GetMapping("/get-month-details")
+    public ResponseEntity<?> getMonthDetails(@RequestParam String month,
+                                             @RequestParam String email) {
+        try {
+            // calendarService를 통해 해당 년도와 월에 해당하는 데이터 가져오기
+            List<CalendarDto> calendarDtos = calendarService.findByYearAndMonth(email, month);
+            return ResponseEntity.ok(calendarDtos);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    // 수정해야함 이 부분
+    @JsonView(Views.Detail.class)
+    @GetMapping("/get-date-details")
+    public ResponseEntity<?> getDateDetails(@RequestParam String date,
+                                             @RequestParam String email) {
+        try {
+            // calendarService를 통해 해당 년도와 월에 해당하는 데이터 가져오기
+            CalendarDto calendarDto = calendarService.findByDate(email, date);
+            return ResponseEntity.ok(calendarDto);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 //    @PostMapping("/new")

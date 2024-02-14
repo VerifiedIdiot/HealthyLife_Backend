@@ -23,10 +23,10 @@ public class Calendar {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private Integer carbohydrate; // 탄수화물
-    private Integer protein; // 단백질
-    private Integer fat; // 지방
-    private Integer calorie; // 칼로리
+    private float carbohydrate; // 탄수화물
+    private float protein; // 단백질
+    private float fat; // 지방
+    private float calorie; // 칼로리
 
     @Builder.Default
     @Column(name = "morning_meal_achieved", nullable = false)
@@ -44,8 +44,11 @@ public class Calendar {
     @Column(name = "workout_achieved", nullable = false)
     private Boolean workoutAchieved = false;
 
+    @Builder.Default
+    @Column(name = "calorie_over", nullable = false)
+    private Boolean calorieOver = false;
 
-    private Integer points; // 포인트
+    private Integer points;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "email" ,referencedColumnName = "email")
@@ -65,12 +68,26 @@ public class Calendar {
     private List<Workout> workout;
 
     private String regDate;
-
-
+    // 리스트를 뿌리기 위한 간략한 정보
     public CalendarDto toCalendarDto() {
         return CalendarDto.builder()
+                .calendarId(this.getId())
                 .regDate(this.getRegDate())
-                .points(this.getPoints())
+                .morningMealAchieved(this.getMorningMealAchieved())
+                .lunchMealAchieved(this.getLunchMealAchieved())
+                .dinnerMealAchieved(this.getDinnerMealAchieved())
+                .workoutAchieved(this.getWorkoutAchieved())
+                .calorieOver(this.getCalorieOver())
+                .calorie(this.getCalorie())
+                .build();
+    }
+    // 리스트에서 하나의 항목을 선택시 상세 내용
+    public CalendarDto toDtoWithDetail() {
+        return CalendarDto.builder()
+                .calorie(this.getCalorie())
+                .carbohydrate(this.getCarbohydrate())
+                .protein(this.getProtein())
+                .fat(this.getFat())
                 .build();
     }
 }

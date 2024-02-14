@@ -1,6 +1,7 @@
 package com.HealthCare.HealthyLife_Backend.service.calendar;
 
 import com.HealthCare.HealthyLife_Backend.dto.calendar.CalendarDto;
+import com.HealthCare.HealthyLife_Backend.entity.calendar.Calendar;
 import com.HealthCare.HealthyLife_Backend.repository.CalendarRepository;
 import com.HealthCare.HealthyLife_Backend.repository.FoodRepository;
 import com.HealthCare.HealthyLife_Backend.repository.MealRepository;
@@ -11,30 +12,28 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Calendar;
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class CalendarService {
-    @Autowired
+
     private final MealService mealService;
     private final CalendarRepository calendarRepository;
 
-//    public boolean saveCalendar(CalendarDto calendarDto) {
-//        try {
-//            if(CalendarRepository.existByIdAndWriteDate(calendarDto.getMemberId(), calendarDto.getRegDate())){
-//                Calendar calendar = CalendarRepository.existByIdAndWriteDate(calendarDto.getMemberId(), calendarDto.getRegDate());
-//                return true;
-//            }
-//
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return false;
-//        }
-//        return false;
-//    }
+    public List<CalendarDto> findByYearAndMonth(String email, String regDate) {
+        // 202402% 와 , 이메일정보로 리스트 반환
+        System.out.println(regDate + email);
+        // regDate 형식 YYYYmm
+        return calendarRepository.findByRegDateLikeAndMemberEmail(regDate +"%", email);
+    }
+
+    public CalendarDto findByDate(String email, String regDate) {
+        Optional<Calendar> calendar = calendarRepository.findByRegDateAndMemberEmail(regDate , email);
+        return calendar.map(Calendar::toDtoWithDetail).orElseThrow(() -> new EntityNotFoundException("Calendar not found with name: " + regDate));
+    }
 
 
     public void insert(CalendarDto calendarDto) {

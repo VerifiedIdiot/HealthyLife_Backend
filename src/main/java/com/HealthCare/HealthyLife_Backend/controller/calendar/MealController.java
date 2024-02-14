@@ -2,31 +2,23 @@ package com.HealthCare.HealthyLife_Backend.controller.calendar;
 
 import com.HealthCare.HealthyLife_Backend.dto.FoodDto;
 import com.HealthCare.HealthyLife_Backend.dto.calendar.MealDto;
-import com.HealthCare.HealthyLife_Backend.dto.medicine.ElasticsearchDto;
 import com.HealthCare.HealthyLife_Backend.service.calendar.MealService;
 import com.HealthCare.HealthyLife_Backend.utils.Views;
 import com.fasterxml.jackson.annotation.JsonView;
-import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Date;
-import java.time.LocalDateTime;
 import java.util.List;
-
-import static org.springframework.data.elasticsearch.annotations.DateFormat.date;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/meal")
 public class MealController {
     private final MealService mealService;
-
-    public MealController(MealService mealService) {
-        this.mealService = mealService;
-    }
 
     // 식단 추가
     @PostMapping("/add")

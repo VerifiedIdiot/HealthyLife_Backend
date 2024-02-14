@@ -1,9 +1,13 @@
 package com.HealthCare.HealthyLife_Backend.dto.calendar;
 
+import com.HealthCare.HealthyLife_Backend.entity.Body;
 import com.HealthCare.HealthyLife_Backend.entity.Member;
+import com.HealthCare.HealthyLife_Backend.entity.SeasonRanking;
 import com.HealthCare.HealthyLife_Backend.entity.calendar.Calendar;
 import com.HealthCare.HealthyLife_Backend.entity.calendar.Meal;
 import com.HealthCare.HealthyLife_Backend.entity.calendar.Workout;
+import com.HealthCare.HealthyLife_Backend.utils.Views;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
@@ -23,28 +27,37 @@ import java.util.List;
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class CalendarDto {
 
+    @JsonView(Views.List.class)
     private Long calendarId;
-    private int month;
-    private String title; //제목
-    private String detail; // 내용
-    private String regDate; // 작성일자
 
-    private Integer carbohydrate; // 탄수화물
-    private Integer protein; // 단백질
-    private Integer fat; // 지방
-    private Integer calorie; // 칼로리
-    private Long memberId;
 
-    private Integer points; // 포인트
+    @JsonView({Views.List.class, Views.Detail.class})
+    private float calorie;
 
-    private Member member;
-    private Meal meals;
-    private Workout workout;
+    @JsonView(Views.List.class)
+    private Boolean morningMealAchieved;
 
-    public Calendar toCalendarEntity() {
-        return Calendar.builder()
-                .regDate(this.getRegDate())
-                .points(this.getPoints())
-                .build();
-    }
+    @JsonView(Views.List.class)
+    private Boolean lunchMealAchieved;
+
+    @JsonView(Views.List.class)
+    private Boolean dinnerMealAchieved;
+
+    @JsonView(Views.List.class)
+    private Boolean workoutAchieved;
+
+    @JsonView(Views.List.class)
+    private Boolean calorieOver;
+
+    @JsonView(Views.List.class)
+    private String regDate;
+
+    @JsonView(Views.Detail.class)
+    private float carbohydrate;
+
+    @JsonView(Views.Detail.class)
+    private float protein;
+
+    @JsonView(Views.Detail.class)
+    private float fat;
 }

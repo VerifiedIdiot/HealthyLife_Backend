@@ -73,10 +73,11 @@ public class MealService {
 
     private void updateNutritionalInfoAndPoints(Calendar calendar, Meal meal, Food food) {
         // 영양소 정보 업데이트
-        calendar.setCarbohydrate(calendar.getCarbohydrate() + Integer.parseInt(food.getCarbohydrate()));
-        calendar.setProtein(calendar.getProtein() + Integer.parseInt(food.getProtein()));
-        calendar.setFat(calendar.getFat() + Integer.parseInt(food.getFat()));
-        calendar.setCalorie(calendar.getCalorie() + Integer.parseInt(food.getKcal()));
+        calendar.setCarbohydrate(calendar.getCarbohydrate() + Float.parseFloat(food.getCarbohydrate()));
+        calendar.setProtein(calendar.getProtein() + Float.parseFloat(food.getProtein()));
+        calendar.setFat(calendar.getFat() + Float.parseFloat(food.getFat()));
+        calendar.setCalorie(calendar.getCalorie() + Float.parseFloat(food.getKcal()));
+
 
         // 식사 타입별 달성 여부 확인 및 점수 업데이트
         updateMealAchievement(calendar, meal);
