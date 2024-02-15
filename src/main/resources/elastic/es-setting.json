@@ -1,21 +1,70 @@
 {
-  "settings": {
-    "index": {
-      "analysis": {
-        "tokenizer": {
-          "nori_tokenizer_custom": {
-            "type": "nori_tokenizer"
+  "medicine_index" : {
+    "settings" : {
+      "index" : {
+        "routing" : {
+          "allocation" : {
+            "include" : {
+              "_tier_preference" : "data_content"
+            }
           }
         },
-        "analyzer": {
-          "nori_custom_analyzer": {
-            "type": "standard",
-            "tokenizer": "nori_tokenizer_custom",
-            "filter": [
-              "nori_reading_form",
-              "lowercase"
-            ]
+        "number_of_shards" : "1",
+        "provided_name" : "medicine_index",
+        "max_result_window" : "10000000",
+        "creation_date" : "1707288606200",
+        "analysis" : {
+          "filter" : {
+            "korean_stop" : {
+              "type" : "stop",
+              "stopwords" : [
+                "_korean_"
+              ]
+            },
+            "nori_pos_filter" : {
+              "type" : "nori_part_of_speech",
+              "stoptags" : [
+                "E",
+                "IC",
+                "J",
+                "MAG",
+                "MAJ",
+                "MM",
+                "SP",
+                "SSC",
+                "SSO",
+                "SC",
+                "SE",
+                "XPN",
+                "XSA",
+                "XSN",
+                "XSV"
+              ]
+            }
+          },
+          "analyzer" : {
+            "medicine_custom_analyzer" : {
+              "filter" : [
+                "lowercase",
+                "nori_readingform",
+                "nori_pos_filter",
+                "korean_stop"
+              ],
+              "type" : "custom",
+              "tokenizer" : "nori_user_dict_tokenizer"
+            }
+          },
+          "tokenizer" : {
+            "nori_user_dict_tokenizer" : {
+              "type" : "nori_tokenizer",
+              "decompound_mode" : "mixed"
+            }
           }
+        },
+        "number_of_replicas" : "1",
+        "uuid" : "53LQsayxSYe7DXWBARaSIA",
+        "version" : {
+          "created" : "7171299"
         }
       }
     }

@@ -30,8 +30,6 @@ public class TotalRanking {
     @OneToMany(mappedBy = "totalRanking" , cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST})
     private List<SeasonRanking> seasonRankings;
 
-
-
     @Column(nullable = false)
     private Long points;
 

@@ -1,14 +1,12 @@
 package com.HealthCare.HealthyLife_Backend.service.calendar;
 
 import com.HealthCare.HealthyLife_Backend.dto.calendar.WorkoutDto;
+import com.HealthCare.HealthyLife_Backend.entity.Body;
 import com.HealthCare.HealthyLife_Backend.entity.Exercise;
 import com.HealthCare.HealthyLife_Backend.entity.Member;
 import com.HealthCare.HealthyLife_Backend.entity.calendar.Calendar;
 import com.HealthCare.HealthyLife_Backend.entity.calendar.Workout;
-import com.HealthCare.HealthyLife_Backend.repository.CalendarRepository;
-import com.HealthCare.HealthyLife_Backend.repository.ExerciseRepository;
-import com.HealthCare.HealthyLife_Backend.repository.MemberRepository;
-import com.HealthCare.HealthyLife_Backend.repository.WorkoutRepository;
+import com.HealthCare.HealthyLife_Backend.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +21,7 @@ public class WorkoutService {
     private final MemberRepository memberRepository;
     private final ExerciseRepository exerciseRepository;
     private final WorkoutRepository workoutRepository;
+    private final BodyRepository bodyRepository;
 
 
     @Transactional
@@ -48,6 +47,12 @@ public class WorkoutService {
                     newCalendar.setMember(member);
                     return calendarRepository.save(newCalendar); // 새 Calendar 저장
                 });
+
+        Body latestBody = bodyRepository.findTopByMemberEmailOrderByDateDesc(workoutDto.getEmail())
+                .orElse(null); // 사용자의 최신 Body 정보 조회
+        if (latestBody != null) {
+            calendar.setBody(latestBody); // Calendar에 최신 Body 정보 설정
+        }
 
         // 운동 수행 여부에 따른 점수 할당 로직
         if (!calendar.getWorkoutAchieved()) {

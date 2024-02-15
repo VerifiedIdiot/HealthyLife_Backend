@@ -3,14 +3,12 @@ package com.HealthCare.HealthyLife_Backend.service.calendar;
 import com.HealthCare.HealthyLife_Backend.dto.FoodDto;
 import com.HealthCare.HealthyLife_Backend.dto.calendar.MealDto;
 
+import com.HealthCare.HealthyLife_Backend.entity.Body;
 import com.HealthCare.HealthyLife_Backend.entity.Food;
 import com.HealthCare.HealthyLife_Backend.entity.Member;
 import com.HealthCare.HealthyLife_Backend.entity.calendar.Calendar;
 import com.HealthCare.HealthyLife_Backend.entity.calendar.Meal;
-import com.HealthCare.HealthyLife_Backend.repository.CalendarRepository;
-import com.HealthCare.HealthyLife_Backend.repository.FoodRepository;
-import com.HealthCare.HealthyLife_Backend.repository.MealRepository;
-import com.HealthCare.HealthyLife_Backend.repository.MemberRepository;
+import com.HealthCare.HealthyLife_Backend.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -27,7 +25,7 @@ public class MealService {
     private final FoodRepository foodRepository;
     private final MemberRepository memberRepository;
     private final CalendarRepository calendarRepository;
-
+    private final BodyRepository bodyRepository;
 
     @Transactional
     public void addAndUpdateCalendar(MealDto mealDto) {
@@ -59,6 +57,13 @@ public class MealService {
                     newCalendar.setPoints(0); // 초기 점수 설정
                     return newCalendar;
                 });
+
+
+        Body latestBody = bodyRepository.findTopByMemberEmailOrderByDateDesc(mealDto.getEmail())
+                .orElse(null); // 사용자의 최신 Body 정보 조회
+        if (latestBody != null) {
+            calendar.setBody(latestBody); // Calendar에 최신 Body 정보 설정
+        }
 
         // 영양소 정보와 점수 업데이트
         updateNutritionalInfoAndPoints(calendar, meal, food);

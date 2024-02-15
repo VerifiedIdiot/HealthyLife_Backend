@@ -1,6 +1,7 @@
 package com.HealthCare.HealthyLife_Backend.repository;
 
 import com.HealthCare.HealthyLife_Backend.dto.calendar.CalendarDto;
+import com.HealthCare.HealthyLife_Backend.entity.Member;
 import com.HealthCare.HealthyLife_Backend.entity.calendar.Calendar;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,6 +20,7 @@ public interface CalendarRepository extends JpaRepository<Calendar, Long> {
     @Query("SELECT c FROM Calendar c WHERE c.id = :id")
     List<Calendar> findByCalendarId(@Param("id") Long id);
 
+    List<Calendar> findByMember(Member member);
 
 
     //    Boolean existByIdAndWriteDate(Long memberId, LocalDateTime regDate);
