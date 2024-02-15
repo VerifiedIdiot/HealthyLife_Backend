@@ -52,7 +52,7 @@ public class FoodController {
                                                            @RequestParam(required = false) String class1,
                                                            @RequestParam(required = false) String class2,
                                                            @RequestParam(defaultValue = "0") int page,
-                                                           @RequestParam(defaultValue = "9") int size) {
+                                                           @RequestParam(defaultValue = "24") int size) {
         try {
             List<FoodDto> foodPage = foodService.getFoodSortedByKeywordAndClass1AndClass2(keyword, class1, class2, page, size);
             return ResponseEntity.ok(foodPage);
