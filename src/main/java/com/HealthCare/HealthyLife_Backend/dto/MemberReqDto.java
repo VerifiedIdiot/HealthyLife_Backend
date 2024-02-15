@@ -25,7 +25,7 @@ public class MemberReqDto {
     private String addr;
     private String image;
     private Boolean isKakao;
-    private LocalDate birth;
+    private String birth;
     private LocalDateTime regDate;
 
     // MemberReqDto -> Member MemberReqDto를 Member Entity로 변환
@@ -42,7 +42,6 @@ public class MemberReqDto {
                 .isKakao(isKakao)
                 .birth(birth)
                 .regDate(regDate)  // 기본값 설정
-                .isAuthDelete(false)
                 .authority(Authority.ROLE_USER)
                 .build();
     }

@@ -44,9 +44,8 @@ public class Member implements Serializable {
     private String image;
     @Column(name = "isKakao", columnDefinition = "TINYINT(1)")
     private boolean isKakao;
-    @Column(name = "isAuthDelete", columnDefinition = "TINYINT(1)")
-    private boolean isAuthDelete;
-    private LocalDate birth;
+    @Column(name = "birth", nullable = false)
+    private String birth;
 
     @Enumerated(EnumType.STRING)
     private Authority authority;
@@ -82,7 +81,7 @@ public class Member implements Serializable {
 
     @Builder
     public Member(String email, String password, String name, String nickName, String gender, String phone
-            , String addr, String image, boolean isKakao, LocalDate birth, boolean isAuthDelete, Authority authority, ExercisePurpose exercisePurpose) {
+            , String addr, String image, boolean isKakao, String birth, Authority authority, ExercisePurpose exercisePurpose) {
         this.email = email;
         this.password = password;
         this.name = name;
@@ -94,7 +93,6 @@ public class Member implements Serializable {
         this.isKakao = isKakao;
         this.birth = birth;
         this.regDate = LocalDateTime.now();
-        this.isAuthDelete = isAuthDelete;
         this.authority = authority;
         this.exercisePurpose = exercisePurpose; // 새로운 운동 목적 추가
     }

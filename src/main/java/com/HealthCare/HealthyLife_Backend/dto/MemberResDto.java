@@ -20,7 +20,7 @@ public class MemberResDto {
     private String addr;
     private String image;
     private Boolean isKakao;
-    private LocalDate birth;
+    private String birth;
     private LocalDateTime regDate;
 
     // MemberResDto -> Member

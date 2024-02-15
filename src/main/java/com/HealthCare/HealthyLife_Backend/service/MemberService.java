@@ -55,14 +55,6 @@ public class MemberService {
         }
     }
 
-    // 회원 탈퇴
-//    public boolean deleteMember(Long id) {
-//        try {
-//            Member member = memberRepository.findById(id).orElseThrow(() -> new RuntimeException("해당 회원이 존재하지 않습니다."));
-//            member.setAuthDelete(true);
-//        }
-//    }
-
     // 이메일 출력
     public String getEmail(Long id) {
         Member member = memberRepository.findById(id).orElseThrow(
@@ -71,5 +63,4 @@ public class MemberService {
 
         return member.getEmail();
     }
-
 }
