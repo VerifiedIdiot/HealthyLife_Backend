@@ -1,10 +1,14 @@
 package com.HealthCare.HealthyLife_Backend.service.calendar;
 
+import com.HealthCare.HealthyLife_Backend.dto.ExerciseDto;
+import com.HealthCare.HealthyLife_Backend.dto.FoodDto;
+import com.HealthCare.HealthyLife_Backend.dto.calendar.MealDto;
 import com.HealthCare.HealthyLife_Backend.dto.calendar.WorkoutDto;
 import com.HealthCare.HealthyLife_Backend.entity.Body;
 import com.HealthCare.HealthyLife_Backend.entity.Exercise;
 import com.HealthCare.HealthyLife_Backend.entity.Member;
 import com.HealthCare.HealthyLife_Backend.entity.calendar.Calendar;
+import com.HealthCare.HealthyLife_Backend.entity.calendar.Meal;
 import com.HealthCare.HealthyLife_Backend.entity.calendar.Workout;
 import com.HealthCare.HealthyLife_Backend.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -66,5 +72,34 @@ public class WorkoutService {
         workoutRepository.save(workout); // 새로운 Workout 저장
     }
 
+    public List<ExerciseDto> getWorkoutKeyword(String keyword) {
+        List<ExerciseDto> exerciseDtos = exerciseRepository.findAllByName(keyword);
+        return exerciseDtos;
+    }
+
+    public List<WorkoutDto> getWorkoutByCalendarId(Long calendarId) {
+
+        List<Workout> workouts = workoutRepository.findByCalendarId(calendarId);
+
+        System.out.println("나오라" + workouts);
+        return workouts.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+
+    private WorkoutDto convertToDto(Workout workout) {
+        WorkoutDto workoutDto = new WorkoutDto();
+        workoutDto.setId(workout.getId());
+        workoutDto.setWorkoutName(workout.getWorkoutName());
+        workoutDto.setRegDate(workout.getRegDate());
+        return workoutDto;
+    }
+
+    public List<WorkoutDto> findAll() {
+        return workoutRepository.findAll().stream()
+                .map(Workout::toWorkoutDto)
+                .collect(Collectors.toList());
+    }
 
 }

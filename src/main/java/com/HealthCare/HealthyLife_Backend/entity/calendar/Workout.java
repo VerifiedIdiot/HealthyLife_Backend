@@ -1,5 +1,6 @@
 package com.HealthCare.HealthyLife_Backend.entity.calendar;
 
+import com.HealthCare.HealthyLife_Backend.dto.calendar.WorkoutDto;
 import com.HealthCare.HealthyLife_Backend.entity.Exercise;
 import com.HealthCare.HealthyLife_Backend.entity.Member;
 import lombok.*;
@@ -39,8 +40,8 @@ public class Workout {
     @Column(name = "reg_date")
     private String regDate;
 
-    public Workout toWorkoutDto() {
-        return Workout.builder()
+    public WorkoutDto toWorkoutDto() {
+        return WorkoutDto.builder()
                 .workoutName(this.getWorkoutName())
                 .email(this.getEmail())
                 .regDate(this.getRegDate())

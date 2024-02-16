@@ -31,4 +31,5 @@ public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
     Optional<Exercise> findExerciseByName(String name);
 
 
+    List<ExerciseDto> findAllByName(String keyword);
 }
