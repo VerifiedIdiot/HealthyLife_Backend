@@ -15,6 +15,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -77,7 +79,7 @@ public class CommunityService {
     }
 
     // 조회수
-    public void increaseViewCount(Long id) {
+    public void increaseViewCount(Long id, HttpServletRequest request, HttpServletResponse response) {
         Optional<Community> communityOptional = communityRepository.findById(id);
         if (communityOptional.isPresent()) {
             Community community = communityOptional.get();

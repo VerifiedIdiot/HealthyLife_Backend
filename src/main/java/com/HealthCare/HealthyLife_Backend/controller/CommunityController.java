@@ -1,6 +1,7 @@
 package com.HealthCare.HealthyLife_Backend.controller;
 
 import com.HealthCare.HealthyLife_Backend.dto.CommunityDto;
+import com.HealthCare.HealthyLife_Backend.entity.Community;
 import com.HealthCare.HealthyLife_Backend.service.CommunityService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,8 +11,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.security.Principal;
 import java.util.List;
 
 import static com.HealthCare.HealthyLife_Backend.utils.Common.CORS_ORIGIN;
@@ -42,9 +45,6 @@ public class CommunityController {
     public ResponseEntity<CommunityDto> getCommunityDetail(@PathVariable Long id) throws IOException {
         // 게시글 상세 정보 가져오기
         CommunityDto communityDto = communityService.getCommunityDetail(id);
-
-        // 조회수 증가
-        communityService.increaseViewCount(id);
 
         return ResponseEntity.ok(communityDto);
     }
@@ -123,6 +123,10 @@ public class CommunityController {
         Page<CommunityDto> list = communityService.searchByComment(keyword, pageable);
         return ResponseEntity.ok(list);
     }
+    // 조회수 증가
+    @PutMapping("/{id}/view")
+    public void communityCount(@PathVariable Long id, HttpServletRequest request, HttpServletResponse response) {
+       communityService.increaseViewCount(id, request, response);}
     // 좋아요
     @PutMapping("/like/{id}/{isLiked}")
     public ResponseEntity<String> likeIt(@PathVariable Long id, @PathVariable boolean isLiked, @RequestParam String email) {

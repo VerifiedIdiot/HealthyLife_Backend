@@ -26,6 +26,12 @@ public class CommentController {
     @PostMapping("/new")
     public ResponseEntity<Boolean> commentRegister(@RequestBody CommentDto commentDto) {
         log.info("commentDto: {}", commentDto);
+        // CommentDto 객체의 communityId 필드가 널(null)인지 확인
+        if (commentDto.getCommunityId() == null) {
+            // 널(null)일 경우, 적절한 에러 응답 반환
+            log.error("CommunityId must not be null!");
+            return ResponseEntity.badRequest().body(false); // 예시: HTTP 400 Bad Request 반환
+        }
         boolean result = commentService.commentRegister(commentDto);
         return ResponseEntity.ok(result);
     }
