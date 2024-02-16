@@ -38,7 +38,7 @@ public class WorkoutController {
 
 
 
-    // 음식 검색
+    // 운동 검색
     @JsonView(Views.Internal.class)
     @GetMapping("/view/search")
     public ResponseEntity<List<ExerciseDto>> getWorkoutKeyword(
@@ -47,8 +47,28 @@ public class WorkoutController {
             List<ExerciseDto> exerciseDtos = workoutService.getWorkoutKeyword(keyword);
             return ResponseEntity.ok(exerciseDtos);
         } catch (Exception e) {
-            log.error("음식 검색 중 오류 발생: {}", e.getMessage());
+            log.error("운동 검색 중 오류 발생: {}", e.getMessage());
             return ResponseEntity.notFound().build();
         }
+    }
+
+
+    @GetMapping("/findAll")
+    public ResponseEntity<?> findAllData() {
+        try {
+            List<WorkoutDto> results = workoutService.findAll();
+            return ResponseEntity.ok(results);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("데이터 조회 실패: " + e.getMessage());
+        }
+    }
+
+    // 출력
+    @GetMapping("/detail")
+    public ResponseEntity<List<WorkoutDto>> MealByCalendarId(@RequestParam Long calendarId) {
+        List<WorkoutDto> list = workoutService.getWorkoutByCalendarId(calendarId);
+//        System.out.println("이메일 : " + email + " 날짜 :" + regDate );
+        System.out.println(list);
+        return ResponseEntity.ok(list);
     }
 }
