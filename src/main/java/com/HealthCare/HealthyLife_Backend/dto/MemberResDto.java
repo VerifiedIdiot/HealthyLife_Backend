@@ -22,6 +22,7 @@ public class MemberResDto {
     private Boolean isKakao;
     private String birth;
     private LocalDateTime regDate;
+    private String exerciseInfo;
 
     // MemberResDto -> Member
     public static MemberResDto of(Member member) {
@@ -36,6 +37,7 @@ public class MemberResDto {
                 .isKakao(member.isKakao())
                 .birth(member.getBirth())
                 .regDate(member.getRegDate())
+                .exerciseInfo(member.getExerciseInfo())
                 .build();
     }
 }

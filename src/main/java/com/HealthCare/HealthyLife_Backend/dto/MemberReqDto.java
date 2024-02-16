@@ -27,6 +27,7 @@ public class MemberReqDto {
     private Boolean isKakao;
     private String birth;
     private LocalDateTime regDate;
+    private String exerciseInfo;
 
     // MemberReqDto -> Member MemberReqDto를 Member Entity로 변환
     public Member toEntity(PasswordEncoder passwordEncoder) {
@@ -42,6 +43,7 @@ public class MemberReqDto {
                 .isKakao(isKakao)
                 .birth(birth)
                 .regDate(regDate)  // 기본값 설정
+                .exerciseInfo(exerciseInfo)
                 .authority(Authority.ROLE_USER)
                 .build();
     }
