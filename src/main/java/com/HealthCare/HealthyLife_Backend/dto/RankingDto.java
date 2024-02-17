@@ -23,7 +23,6 @@ public class RankingDto {
     public  SeasonRanking toSeasonEntity() {
         return SeasonRanking.builder()
                 .id(this.getId())
-                .calendar(this.getCalendar())
                 .points(this.getPoints())
                 .build();
     }

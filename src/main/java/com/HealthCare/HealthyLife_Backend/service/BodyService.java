@@ -27,10 +27,10 @@ public class BodyService {
 
     public boolean saveBody(BodyDto bodyDto) {
         try {
-            System.out.println("응답값 : " + bodyDto.getMemberEmail());
+            System.out.println("응답값 : " + bodyDto.getEmail());
             Body body = Body.builder()
 
-                    .member(memberRepository.findByEmail(bodyDto.getMemberEmail())
+                    .member(memberRepository.findByEmail(bodyDto.getEmail())
                             .orElseThrow(() -> new RuntimeException("해당 회원이 존재하지 않습니다.")))
                     .height(bodyDto.getHeight())
                     .weight(bodyDto.getWeight())
@@ -43,7 +43,7 @@ public class BodyService {
 
             bodyRepository.save(body);
 
-            Member member = memberRepository.findByEmail(bodyDto.getMemberEmail())
+            Member member = memberRepository.findByEmail(bodyDto.getEmail())
                     .orElseThrow(() -> new RuntimeException("해당 회원이 존재하지 않습니다."));
             // 인바디정보가 insert 되는 순간 캘린더에도 생성이 되거나 update 되게 한다
             updateOrInsertCalendar(member, body);
@@ -100,4 +100,3 @@ public class BodyService {
         return bodyDtos;
     }
 }
-

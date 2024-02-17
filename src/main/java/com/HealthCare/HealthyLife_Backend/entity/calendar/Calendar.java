@@ -59,13 +59,6 @@ public class Calendar {
     @JoinColumn(name = "body_id")
     private Body body;
 
-    @OneToMany(mappedBy = "calendar", cascade = CascadeType.ALL)
-    private List<SeasonRanking> seasonRankings;
-
-    @OneToMany(mappedBy = "calendar", cascade = CascadeType.ALL)
-    private List<TotalRanking> totalRankings;
-
-
     @OneToMany(mappedBy = "calendar", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Meal> meals;
 

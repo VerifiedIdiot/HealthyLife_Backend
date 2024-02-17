@@ -2,6 +2,7 @@ package com.HealthCare.HealthyLife_Backend.entity;
 
 import com.HealthCare.HealthyLife_Backend.dto.RankingDto;
 import com.HealthCare.HealthyLife_Backend.entity.calendar.Calendar;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import javax.persistence.*;
@@ -21,13 +22,11 @@ public class SeasonRanking {
     @Column(name = "season_ranking_id")
     private Long id;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "calendar_id")
-    private Calendar calendar;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "total_ranking_id")
@@ -37,8 +36,6 @@ public class SeasonRanking {
     @Builder.Default
     private Integer points = 0;
 
-    @Column(nullable = true)
-    private Integer ranking; // 시즌 종료 시의 랭킹 순위
 
     private String regDate;
 

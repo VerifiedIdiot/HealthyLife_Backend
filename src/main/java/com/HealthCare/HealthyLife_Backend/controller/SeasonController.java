@@ -1,25 +1,27 @@
 package com.HealthCare.HealthyLife_Backend.controller;
 
-import com.HealthCare.HealthyLife_Backend.dto.RankingDto;
-import com.HealthCare.HealthyLife_Backend.dto.calendar.CalendarDto;
-import com.HealthCare.HealthyLife_Backend.service.RankingService;
+import com.HealthCare.HealthyLife_Backend.entity.SeasonRanking;
+import com.HealthCare.HealthyLife_Backend.repository.MemberRepository;
+import com.HealthCare.HealthyLife_Backend.repository.SeasonRankingRepository;
+import com.HealthCare.HealthyLife_Backend.service.calendar.MealService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/season")
+@RequestMapping("/seasonRanking")
 public class SeasonController {
 
-    private final RankingService rankingService;
+    private final SeasonRankingRepository seasonRankingRepository;
 
     @GetMapping("/test")
     public ResponseEntity<?> testController () {
@@ -31,6 +33,14 @@ public class SeasonController {
         return ResponseEntity.ok("정상작동");
     }
 
+    // 출력
+    @GetMapping("/detail")
+    public List<SeasonRanking> seasonByMemberEmail() {
+
+        return seasonRankingRepository.findAll();
+//                .map(seasonRanking -> ResponseEntity.ok(seasonRanking))
+//                .orElseGet(() -> ResponseEntity.noContent().build());
+    }
 
 
 

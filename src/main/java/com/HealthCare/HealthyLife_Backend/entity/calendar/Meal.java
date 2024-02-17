@@ -3,6 +3,8 @@ package com.HealthCare.HealthyLife_Backend.entity.calendar;
 import com.HealthCare.HealthyLife_Backend.dto.calendar.MealDto;
 import com.HealthCare.HealthyLife_Backend.entity.Food;
 import com.HealthCare.HealthyLife_Backend.entity.Member;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -18,6 +20,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 
 @Builder
 public class Meal {

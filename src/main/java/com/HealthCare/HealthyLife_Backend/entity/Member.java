@@ -56,8 +56,10 @@ public class Member implements Serializable {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Body> bodies;
-    @OneToMany(mappedBy = "member", cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST})
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL , orphanRemoval = true)
     private List<SeasonRanking> seasonRankings;
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "member", cascade = CascadeType.ALL)
+    private TotalRanking totalRanking;
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "member", cascade = CascadeType.ALL)
     private MemberStatus memberStatus;
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)

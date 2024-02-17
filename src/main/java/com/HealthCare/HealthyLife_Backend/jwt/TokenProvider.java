@@ -24,8 +24,10 @@ import java.util.stream.Collectors;
 public class TokenProvider {
     private static final String AUTHORITIES_KEY = "auth"; // 토큰에 저장되는 권한 정보의 key
     private static final String BEARER_TYPE = "Bearer"; // 토큰의 타입
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30000; // 30분
-    private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7L; // 1일
+
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24;  // 하루
+    private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7L; // 일주일
+
     private final Key key; // 토큰을 서명하기 위한 Key
 
     // 주의점 : @Value 어노테이션은 springframework의 어노테이션이다.
