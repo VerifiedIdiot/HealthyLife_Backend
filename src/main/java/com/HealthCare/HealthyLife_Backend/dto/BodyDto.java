@@ -18,7 +18,7 @@ import java.time.LocalDate;
 @Builder
 public class BodyDto {
     private LocalDate date;
-    private String memberEmail;
+    private String email;
     private String height;
     private String weight;
     private String muscle;

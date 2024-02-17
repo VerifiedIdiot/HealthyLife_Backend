@@ -7,6 +7,7 @@ import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -27,25 +28,24 @@ public class TotalRanking {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "calendar_id")
-    private Calendar calendar;
-
+    @Builder.Default
     @OneToMany(mappedBy = "totalRanking" , cascade = CascadeType.ALL)
-    private List<SeasonRanking> seasonRankings;
+    private List<SeasonRanking> seasonRankings = new ArrayList<>();
 
     @Column(nullable = false)
     @Builder.Default
     private Integer points = 0;
-
-    @Column(nullable = true)
-    private Integer ranking;
 
     public RankingDto toDto() {
         return RankingDto.builder()
                 .id(this.getId())
                 .points(this.getPoints())
                 .build();
+    }
+
+    public void addSeasonRanking(SeasonRanking seasonRanking) {
+        this.seasonRankings.add(seasonRanking);
+        seasonRanking.setTotalRanking(this);
     }
 
 }

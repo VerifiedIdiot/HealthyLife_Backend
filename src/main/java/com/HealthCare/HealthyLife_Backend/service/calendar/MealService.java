@@ -74,15 +74,6 @@ public class MealService {
             calendar.setBody(latestBody); // Calendar에 최신 Body 정보 설정
         }
 
-        SeasonRanking seasonRanking = seasonRankingRepository.findByRegDateAndMemberEmail(yearMonth, mealDto.getEmail())
-                .orElseGet(() -> {
-                    SeasonRanking newSeasonRanking = new SeasonRanking();
-                    newSeasonRanking.setRegDate(yearMonth);
-                    newSeasonRanking.setMember(member);
-                    newSeasonRanking.setPoints(0); // 초기 점수 설정
-                    return newSeasonRanking;
-                });
-
         TotalRanking totalRanking = totalRankingRepository.findByMemberEmail(mealDto.getEmail())
                 .orElseGet(() -> {
                     TotalRanking newTotalRanking = new TotalRanking();
@@ -90,6 +81,20 @@ public class MealService {
                     newTotalRanking.setPoints(0); // 초기 점수 설정
                     return newTotalRanking;
                 });
+
+        SeasonRanking seasonRanking = seasonRankingRepository.findByRegDateAndMemberEmail(yearMonth, mealDto.getEmail())
+                .orElseGet(() -> {
+                    SeasonRanking newSeasonRanking = new SeasonRanking();
+                    newSeasonRanking.setRegDate(yearMonth);
+                    newSeasonRanking.setMember(member);
+                    newSeasonRanking.setPoints(0); // 초기 점수 설정
+
+                    totalRanking.addSeasonRanking(newSeasonRanking);
+
+                    return newSeasonRanking;
+                });
+
+
 
 
 
