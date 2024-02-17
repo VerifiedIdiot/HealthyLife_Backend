@@ -1,5 +1,6 @@
 package com.HealthCare.HealthyLife_Backend.controller;
 
+import com.HealthCare.HealthyLife_Backend.dto.CommentDto;
 import com.HealthCare.HealthyLife_Backend.dto.CommunityDto;
 import com.HealthCare.HealthyLife_Backend.entity.Community;
 import com.HealthCare.HealthyLife_Backend.service.CommunityService;
@@ -126,7 +127,7 @@ public class CommunityController {
     // 조회수 증가
     @PutMapping("/{id}/view")
     public void communityCount(@PathVariable Long id, HttpServletRequest request, HttpServletResponse response) {
-       communityService.increaseViewCount(id, request, response);}
+        communityService.increaseViewCount(id, request, response);}
     // 좋아요
     @PutMapping("/like/{id}/{isLiked}")
     public ResponseEntity<String> likeIt(@PathVariable Long id, @PathVariable boolean isLiked, @RequestParam String email) {
