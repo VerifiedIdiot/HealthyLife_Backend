@@ -10,4 +10,6 @@ public class Views {
     public static class List extends Public { }
 
     public static class Detail extends Public { }
+
+    public static class Info extends Public { }
 }
