@@ -1,8 +1,6 @@
 package com.HealthCare.HealthyLife_Backend.controller.calendar;
 
 import com.HealthCare.HealthyLife_Backend.dto.ExerciseDto;
-import com.HealthCare.HealthyLife_Backend.dto.FoodDto;
-import com.HealthCare.HealthyLife_Backend.dto.calendar.MealDto;
 import com.HealthCare.HealthyLife_Backend.dto.calendar.WorkoutDto;
 import com.HealthCare.HealthyLife_Backend.service.calendar.WorkoutService;
 import com.HealthCare.HealthyLife_Backend.utils.Views;
