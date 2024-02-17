@@ -15,19 +15,16 @@ public class RankingDto {
 
     private Long id;
 
-    private Member member;
     private Calendar calendar;
-    private Long points;
-    private Integer ranking;
+    private Integer points;
+    private String regDate;
 
     // SeasonRanking을 위한 팩토리 메서드
     public  SeasonRanking toSeasonEntity() {
         return SeasonRanking.builder()
                 .id(this.getId())
-                .member(this.getMember())
                 .calendar(this.getCalendar())
                 .points(this.getPoints())
-                .ranking(this.getRanking())
                 .build();
     }
 }

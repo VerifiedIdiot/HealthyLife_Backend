@@ -1,7 +1,9 @@
 package com.HealthCare.HealthyLife_Backend.repository;
 
 import com.HealthCare.HealthyLife_Backend.dto.calendar.CalendarDto;
+
 import com.HealthCare.HealthyLife_Backend.entity.Member;
+
 import com.HealthCare.HealthyLife_Backend.entity.calendar.Calendar;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -22,8 +24,5 @@ public interface CalendarRepository extends JpaRepository<Calendar, Long> {
 
     List<Calendar> findByMember(Member member);
 
-
-    //    Boolean existByIdAndWriteDate(Long memberId, LocalDateTime regDate);
-//    List<Calendar> findByMemberIdEmail(String email);
 
 }

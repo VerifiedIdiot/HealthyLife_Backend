@@ -6,6 +6,8 @@ import com.HealthCare.HealthyLife_Backend.dto.calendar.MealDto;
 import com.HealthCare.HealthyLife_Backend.entity.Body;
 import com.HealthCare.HealthyLife_Backend.entity.Food;
 import com.HealthCare.HealthyLife_Backend.entity.Member;
+import com.HealthCare.HealthyLife_Backend.entity.SeasonRanking;
+import com.HealthCare.HealthyLife_Backend.entity.TotalRanking;
 import com.HealthCare.HealthyLife_Backend.entity.calendar.Calendar;
 import com.HealthCare.HealthyLife_Backend.entity.calendar.Meal;
 import com.HealthCare.HealthyLife_Backend.repository.*;
@@ -26,6 +28,10 @@ public class MealService {
     private final MemberRepository memberRepository;
     private final CalendarRepository calendarRepository;
     private final BodyRepository bodyRepository;
+    private final SeasonRankingRepository seasonRankingRepository;
+    private final TotalRankingRepository totalRankingRepository;
+
+
 
     @Transactional
     public void addAndUpdateCalendar(MealDto mealDto) {
@@ -44,6 +50,9 @@ public class MealService {
 
         // Meal의 regDate를 기반으로 Calendar 엔티티 찾기 또는 생성
         String regDate = meal.getRegDate();
+        String yearMonth = regDate.substring(0,6);
+
+
 
         Calendar calendar = calendarRepository.findByRegDateAndMemberEmail(regDate, mealDto.getEmail())
                 .orElseGet(() -> {
@@ -65,18 +74,44 @@ public class MealService {
             calendar.setBody(latestBody); // Calendar에 최신 Body 정보 설정
         }
 
+        SeasonRanking seasonRanking = seasonRankingRepository.findByRegDateAndMemberEmail(yearMonth, mealDto.getEmail())
+                .orElseGet(() -> {
+                    SeasonRanking newSeasonRanking = new SeasonRanking();
+                    newSeasonRanking.setRegDate(yearMonth);
+                    newSeasonRanking.setMember(member);
+                    newSeasonRanking.setPoints(0); // 초기 점수 설정
+                    return newSeasonRanking;
+                });
+
+        TotalRanking totalRanking = totalRankingRepository.findByMemberEmail(mealDto.getEmail())
+                .orElseGet(() -> {
+                    TotalRanking newTotalRanking = new TotalRanking();
+                    newTotalRanking.setMember(member);
+                    newTotalRanking.setPoints(0); // 초기 점수 설정
+                    return newTotalRanking;
+                });
+
+
+
         // 영양소 정보와 점수 업데이트
-        updateNutritionalInfoAndPoints(calendar, meal, food);
+        updateNutritionalInfoAndPoints(calendar, meal, food, seasonRanking, totalRanking);
+
 
         // Calendar 엔티티 업데이트
         calendarRepository.save(calendar);
+        seasonRankingRepository.save(seasonRanking);
+        totalRankingRepository.save(totalRanking);
+
 
         // Meal에 Calendar 설정 및 저장
         meal.setCalendar(calendar);
         mealRepository.save(meal);
+
+
     }
 
-    private void updateNutritionalInfoAndPoints(Calendar calendar, Meal meal, Food food) {
+    private void updateNutritionalInfoAndPoints(Calendar calendar, Meal meal, Food food,
+                                                SeasonRanking seasonRanking, TotalRanking totalRanking) {
         // 영양소 정보 업데이트
         calendar.setCarbohydrate(calendar.getCarbohydrate() + Float.parseFloat(food.getCarbohydrate()));
         calendar.setProtein(calendar.getProtein() + Float.parseFloat(food.getProtein()));
@@ -85,48 +120,39 @@ public class MealService {
 
 
         // 식사 타입별 달성 여부 확인 및 점수 업데이트
-        updateMealAchievement(calendar, meal);
+        updateMealAchievement(calendar, meal, seasonRanking, totalRanking);
     }
 
-    private void updateMealAchievement(Calendar calendar, Meal meal) {
+    private void updateMealAchievement(Calendar calendar, Meal meal, SeasonRanking seasonRanking, TotalRanking totalRanking) {
         // 식사 타입에 따른 달성 여부 업데이트
         switch (meal.getMealType()) {
             case "아침":
                 if (!calendar.getMorningMealAchieved()) {
                     calendar.setMorningMealAchieved(true);
                     calendar.setPoints(calendar.getPoints() + 25);
+                    seasonRanking.setPoints(seasonRanking.getPoints() + 25);
+                    totalRanking.setPoints(totalRanking.getPoints() + 25);
                 }
                 break;
             case "점심":
                 if (!calendar.getLunchMealAchieved()) {
                     calendar.setLunchMealAchieved(true);
                     calendar.setPoints(calendar.getPoints() + 25);
+                    seasonRanking.setPoints(seasonRanking.getPoints() + 25);
+                    totalRanking.setPoints(totalRanking.getPoints() + 25);
                 }
                 break;
             case "저녁":
                 if (!calendar.getDinnerMealAchieved()) {
                     calendar.setDinnerMealAchieved(true);
                     calendar.setPoints(calendar.getPoints() + 25);
+                    seasonRanking.setPoints(seasonRanking.getPoints() + 25);
+                    totalRanking.setPoints(totalRanking.getPoints() + 25);
                 }
                 break;
         }
     }
 
-    // 키워드, 멤버ID, 유형, 날짜
-//    public MealDto addMealWithFood(String keyword, String id, String type, String regDate) {
-//        MealDto mealDto = new MealDto();
-//
-//        FoodDto foodDto = foodRepository.findByName(keyword);
-//        System.out.println(foodDto);
-//        mealDto.setMealName(foodDto.getName());
-//        mealDto.setMemberId(id);
-//        mealDto.setMealType(type);
-//        mealDto.setRegDate(LocalDateTime.parse(regDate));
-//        Meal meal = mealDto.toMealEntity();
-//        mealRepository.save(meal);
-//
-//        return null;
-//    }
 
     public List<FoodDto> getFoodKeyword(String keyword) {
         List<FoodDto> foodDtos = foodRepository.findAllByName(keyword);
@@ -158,14 +184,6 @@ public class MealService {
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
-
-//    public List<MealDto> findByEmailAndRegDateAndMealNameAndMealType(
-//            String email, String mealType, String mealName, String regDate) {
-//        List<Meal> meals = mealRepository.findByEmailAndRegDate(email, regDate);
-//        return meals.stream()
-//                .map(this::convertToDto)
-//                .collect(Collectors.toList());
-//    }
 
     private MealDto convertToDto(Meal meal) {
         MealDto mealDto = new MealDto();

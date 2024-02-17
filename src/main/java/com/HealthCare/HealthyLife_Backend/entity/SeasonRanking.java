@@ -12,7 +12,6 @@ import java.time.LocalDate;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Builder
 @DynamicInsert
 public class SeasonRanking {
@@ -35,17 +34,19 @@ public class SeasonRanking {
     private TotalRanking totalRanking;
 
     @Column(nullable = false)
-    private Long points;
+    @Builder.Default
+    private Integer points = 0;
 
     @Column(nullable = true)
     private Integer ranking; // 시즌 종료 시의 랭킹 순위
 
+    private String regDate;
+
     public RankingDto toDto() {
         return RankingDto.builder()
                 .id(this.getId())
-                .member(this.getMember())
                 .points(this.getPoints())
-                .ranking(this.getRanking())
+                .regDate(this.getRegDate())
                 .build();
     }
 }

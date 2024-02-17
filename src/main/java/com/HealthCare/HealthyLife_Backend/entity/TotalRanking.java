@@ -2,6 +2,7 @@ package com.HealthCare.HealthyLife_Backend.entity;
 
 
 import com.HealthCare.HealthyLife_Backend.dto.RankingDto;
+import com.HealthCare.HealthyLife_Backend.entity.calendar.Calendar;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
@@ -13,7 +14,6 @@ import java.util.List;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Builder
 @DynamicInsert
 public class TotalRanking {
@@ -24,14 +24,19 @@ public class TotalRanking {
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "email")
+    @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "totalRanking" , cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST})
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "calendar_id")
+    private Calendar calendar;
+
+    @OneToMany(mappedBy = "totalRanking" , cascade = CascadeType.ALL)
     private List<SeasonRanking> seasonRankings;
 
     @Column(nullable = false)
-    private Long points;
+    @Builder.Default
+    private Integer points = 0;
 
     @Column(nullable = true)
     private Integer ranking;
@@ -40,7 +45,6 @@ public class TotalRanking {
         return RankingDto.builder()
                 .id(this.getId())
                 .points(this.getPoints())
-                .ranking(this.getRanking())
                 .build();
     }
 
