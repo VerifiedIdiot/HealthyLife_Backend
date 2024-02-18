@@ -1,8 +1,10 @@
 package com.HealthCare.HealthyLife_Backend.entity;
 
 
-import com.HealthCare.HealthyLife_Backend.dto.RankingDto;
-import com.HealthCare.HealthyLife_Backend.entity.calendar.Calendar;
+
+import com.HealthCare.HealthyLife_Backend.dto.TotalRankingDto;
+import com.HealthCare.HealthyLife_Backend.utils.Views;
+import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
@@ -24,21 +26,26 @@ public class TotalRanking {
     @Column(name = "total_ranking_id")
     private Long id;
 
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
     @Builder.Default
     @OneToMany(mappedBy = "totalRanking" , cascade = CascadeType.ALL)
+    @JsonView(Views.List.class)
     private List<SeasonRanking> seasonRankings = new ArrayList<>();
+
 
     @Column(nullable = false)
     @Builder.Default
     private Integer points = 0;
 
-    public RankingDto toDto() {
-        return RankingDto.builder()
+    public TotalRankingDto toDto() {
+        return TotalRankingDto.builder()
                 .id(this.getId())
+                .member(this.getMember())
+                .seasonRankings(this.getSeasonRankings())
                 .points(this.getPoints())
                 .build();
     }
@@ -47,5 +54,8 @@ public class TotalRanking {
         this.seasonRankings.add(seasonRanking);
         seasonRanking.setTotalRanking(this);
     }
+
+
+
 
 }

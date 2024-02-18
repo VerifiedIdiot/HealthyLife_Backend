@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface SeasonRankingRepository extends JpaRepository<SeasonRanking, Long> {
     Optional<SeasonRanking> findByRegDateAndMemberEmail(String regDate, String email);
     List<SeasonRanking> findByMemberEmail(String email);
+    List<SeasonRanking> findSeasonByOrderByPointsAsc();
 }

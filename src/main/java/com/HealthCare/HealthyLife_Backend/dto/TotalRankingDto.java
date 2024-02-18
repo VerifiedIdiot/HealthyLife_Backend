@@ -2,30 +2,35 @@ package com.HealthCare.HealthyLife_Backend.dto;
 
 import com.HealthCare.HealthyLife_Backend.entity.Member;
 import com.HealthCare.HealthyLife_Backend.entity.SeasonRanking;
-import com.HealthCare.HealthyLife_Backend.entity.calendar.Calendar;
+import com.HealthCare.HealthyLife_Backend.entity.TotalRanking;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Getter @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class RankingDto {
+public class TotalRankingDto {
 
     private Long id;
-
-    private Calendar calendar;
+    private Member member;
+    private List<SeasonRanking> seasonRankings;
     private Integer points;
-    private String regDate;
 
-    // SeasonRanking을 위한 팩토리 메서드
-    public  SeasonRanking toSeasonEntity() {
-        return SeasonRanking.builder()
+
+
+    public TotalRankingDto toEntity() {
+        return TotalRankingDto.builder()
                 .id(this.getId())
+                .member(this.getMember())
+                .seasonRankings(this.getSeasonRankings())
                 .points(this.getPoints())
                 .build();
     }
+
 }
 
 
