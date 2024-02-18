@@ -114,6 +114,12 @@ public class WorkoutService {
         workoutDto.setId(workout.getId());
         workoutDto.setWorkoutName(workout.getWorkoutName());
         workoutDto.setRegDate(workout.getRegDate());
+
+        if (workout.getExercise() != null) {
+            workoutDto.setMuscle(workout.getExercise().getMuscle());
+            workoutDto.setEquipment(workout.getExercise().getEquipment());
+        }
+
         return workoutDto;
     }
 

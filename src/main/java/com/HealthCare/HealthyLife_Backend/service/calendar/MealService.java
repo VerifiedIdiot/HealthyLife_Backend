@@ -196,6 +196,15 @@ public class MealService {
         mealDto.setMealName(meal.getMealName());
         mealDto.setMealType(meal.getMealType());
         mealDto.setRegDate(meal.getRegDate());
+
+        // Food 엔티티에서 정보 가져오기
+        if (meal.getFood() != null) {
+            mealDto.setKcal(meal.getFood().getKcal());
+            mealDto.setProtein(meal.getFood().getProtein());
+            mealDto.setFat(meal.getFood().getFat());
+            mealDto.setCarbohydrate(meal.getFood().getCarbohydrate());
+        }
+
         return mealDto;
     }
 

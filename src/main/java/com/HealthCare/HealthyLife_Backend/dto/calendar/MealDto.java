@@ -16,6 +16,8 @@ import lombok.*;
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class MealDto {
     private Long id;
+    // 건들지 마시오 이메일 중요함
+    private String email;
 
     @JsonView(Views.Internal.class)
     private String mealType;
@@ -23,9 +25,20 @@ public class MealDto {
     @JsonView(Views.Internal.class)
     private String mealName;
 
-    private String email;
     @JsonView(Views.Internal.class)
     private String regDate;
+
+    @JsonView(Views.Internal.class)
+    private String kcal;
+
+    @JsonView(Views.Internal.class)
+    private String protein;
+
+    @JsonView(Views.Internal.class)
+    private String fat;
+
+    @JsonView(Views.Internal.class)
+    private String carbohydrate;
 
     public Meal toMealEntity() {
         return Meal.builder()

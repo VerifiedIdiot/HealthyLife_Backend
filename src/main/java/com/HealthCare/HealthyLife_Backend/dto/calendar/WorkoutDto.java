@@ -18,18 +18,25 @@ import java.time.LocalDateTime;
 public class WorkoutDto {
     @JsonView(Views.Internal.class)
     private Long id;
-    @JsonView(Views.Internal.class)
-    private String workoutName;
 
     private String email;
 
     @JsonView(Views.Internal.class)
+    private String workoutName;
+
+    @JsonView(Views.Internal.class)
     private String regDate;
+    @JsonView(Views.Internal.class)
+    private String muscle;
+    @JsonView(Views.Internal.class)
+    private String equipment;
+
+
 
     public Workout toWorkoutEntity() {
         return Workout.builder()
                 .workoutName(this.getWorkoutName())
-                .email(this.getEmail())
+
                 .regDate(this.getRegDate())
                 .build();
     }
