@@ -1,5 +1,6 @@
 package com.HealthCare.HealthyLife_Backend.repository;
 
+import com.HealthCare.HealthyLife_Backend.entity.Comment;
 import com.HealthCare.HealthyLife_Backend.entity.Community;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,9 +22,9 @@ public interface CommunityRepository extends JpaRepository<Community, Long> {
     Page<Community> findByTitleContainingOrTextContaining(String title, String content, Pageable pageable);
 
     // 제목으로만 검색
-    Page<Community> findByTitleContaining(String title, Pageable pageable);
+    Page<Community> findByTitleContaining(String keyword, Pageable pageable);
 
-    // 글쓴이로 검색
-    Page<Community> findByNickNameContaining(String keyword, Pageable pageable);
+    // 작성자로 검색
+    Page<Community> findByMemberNickNameContaining(String keyword, Pageable pageable);
 }
 

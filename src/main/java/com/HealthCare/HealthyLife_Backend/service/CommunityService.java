@@ -107,7 +107,7 @@ public class CommunityService {
                     .likeCount(community.getLikeCount()) // likeCount도 그대로 유지
                     .viewCount(community.getViewCount()) // viewCount도 그대로 유지
                     .comments(community.getComments()) // Comments도 그대로 유지
-                    .nickName(community.getNickName()) // NickName도 그대로 유지
+//                    .nickName(community.getNickName()) // NickName도 그대로 유지
                     .build();
             communityRepository.save(modifiedCommunity);
             return true;
@@ -182,7 +182,7 @@ public class CommunityService {
     }
 
     public Page<CommunityDto> searchByNickName(String keyword, Pageable pageable) {
-        Page<Community> communities = communityRepository.findByNickNameContaining(keyword, pageable);
+        Page<Community> communities = communityRepository.findByMemberNickNameContaining(keyword, pageable);
         return communities.map(this::convertEntityToDto);
     }
 
