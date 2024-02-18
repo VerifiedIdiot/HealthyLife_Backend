@@ -73,8 +73,7 @@ public class WorkoutService {
     }
 
     public List<ExerciseDto> getWorkoutKeyword(String keyword) {
-        List<ExerciseDto> exerciseDtos = exerciseRepository.findAllByName(keyword);
-        return exerciseDtos;
+        return exerciseRepository.findAllByName(keyword);
     }
 
     public List<WorkoutDto> getWorkoutByCalendarId(Long calendarId) {

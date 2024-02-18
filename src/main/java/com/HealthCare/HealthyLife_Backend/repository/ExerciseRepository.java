@@ -30,6 +30,7 @@ public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
 
     Optional<Exercise> findExerciseByName(String name);
 
-
+    @JsonView(Views.Internal.class)
+    @Query("SELECT e FROM Exercise e WHERE e.name LIKE %:keyword%")
     List<ExerciseDto> findAllByName(String keyword);
 }

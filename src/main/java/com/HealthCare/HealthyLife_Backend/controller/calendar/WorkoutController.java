@@ -45,6 +45,7 @@ public class WorkoutController {
             @RequestParam(required = true) String keyword) {
         try {
             List<ExerciseDto> exerciseDtos = workoutService.getWorkoutKeyword(keyword);
+            System.out.println(exerciseDtos);
             return ResponseEntity.ok(exerciseDtos);
         } catch (Exception e) {
             log.error("운동 검색 중 오류 발생: {}", e.getMessage());
