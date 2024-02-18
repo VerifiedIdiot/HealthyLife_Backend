@@ -207,17 +207,60 @@ public class MealService {
 
         return mealDto;
     }
-
-    // 삭제
+    // 식사기록 삭제 & 점수차감
+    @Transactional
     public boolean deleteMeal(Long id) {
         try {
-            mealRepository.findById(id);
+            Meal meal = mealRepository.findById(id)
+                    .orElseThrow(() -> new EntityNotFoundException("Meal not found with id: " + id));
+
+            Calendar calendar = meal.getCalendar();
+            String mealType = meal.getMealType();
+            Long calendarId = calendar.getId();
+
+            mealRepository.delete(meal); // 식사 기록 삭제
+
+            // 남은 식사 기록 확인
+            long remainingMealsCount = mealRepository.countByCalendarIdAndMealType(calendarId, mealType);
+
+            if (remainingMealsCount == 0) { // 더 이상 해당 유형의 식사 기록이 없다면
+                updatePointsAndAchievement(calendar, mealType, false); // 점수 차감 및 달성 여부 업데이트
+            }
+
             return true;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
     }
+
+    private void updatePointsAndAchievement(Calendar calendar, String mealType, boolean achieved) {
+        // 식사 유형에 따른 달성 여부 및 점수 업데이트 로직
+        switch (mealType) {
+            case "아침":
+                if (calendar.getMorningMealAchieved() && !achieved) {
+                    calendar.setMorningMealAchieved(false);
+                    calendar.setPoints(calendar.getPoints() - 25);
+                }
+                break;
+            case "점심":
+                if (calendar.getLunchMealAchieved() && !achieved) {
+                    calendar.setLunchMealAchieved(false);
+                    calendar.setPoints(calendar.getPoints() - 25);
+                }
+                break;
+            case "저녁":
+                if (calendar.getDinnerMealAchieved() && !achieved) {
+                    calendar.setDinnerMealAchieved(false);
+                    calendar.setPoints(calendar.getPoints() - 25);
+                }
+                break;
+        }
+
+        // 엔티티 저장
+        calendarRepository.save(calendar);
+    }
+
 
     public List<MealDto> findAll() {
         return mealRepository.findAll().stream()

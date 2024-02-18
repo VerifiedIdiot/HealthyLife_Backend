@@ -12,7 +12,7 @@ import java.util.List;
 public interface MealRepository extends JpaRepository<Meal, Long> {
     List<Meal> findByCalendarId(long calendarId);
 
-
+    long countByCalendarIdAndMealType(Long calendarId, String mealType);
 
 //    List<MealDto> findByEmailAndRegDateAndMealNameAndMealType(String email, String mealType, String mealName, String regDate);
 }

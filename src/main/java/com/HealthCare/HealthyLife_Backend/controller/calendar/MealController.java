@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Slf4j
@@ -31,6 +32,25 @@ public class MealController {
         } catch (Exception e) {
             log.error("음식 추가 중 오류 발생: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteMeal(@PathVariable Long id) {
+        try {
+            boolean deleted = mealService.deleteMeal(id);
+            if (deleted) {
+                return ResponseEntity.ok().body("Meal deleted successfully.");
+            } else {
+                // 삭제 로직에서 false 반환 시, 예외는 발생하지 않았으나 삭제가 실패한 경우
+                return ResponseEntity.badRequest().body("Failed to delete meal.");
+            }
+        } catch (EntityNotFoundException e) {
+            // 식사 기록을 찾을 수 없는 경우
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            // 그 외 예외 처리
+            return ResponseEntity.internalServerError().body("An error occurred: " + e.getMessage());
         }
     }
 
@@ -83,16 +103,4 @@ public class MealController {
         }
     }
 
-    // 식단 삭제
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Boolean> delete(
-            @PathVariable Long id) {
-        try {
-            boolean isTrue = mealService.deleteMeal(id);
-            return ResponseEntity.ok(isTrue);
-        } catch (Exception e) {
-            log.error("음식 삭제 중 오류 발생 : {}", e.getMessage());
-            return ResponseEntity.notFound().build();
-        }
-    }
 }
