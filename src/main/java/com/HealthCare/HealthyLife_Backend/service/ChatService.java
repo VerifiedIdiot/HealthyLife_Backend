@@ -50,6 +50,7 @@ public class ChatService {
         if (chatRooms.containsKey(roomId)) {
             // 기존 방에 입장하는 메서드
             ChatRoomResDto existingRoom = chatRooms.get(roomId);
+
             return existingRoom;
         }
         // 방이 없는 경우, 새로 생성하여 저장
@@ -102,9 +103,8 @@ public class ChatService {
                 .messageStatus("안읽음") // 기본값으로 unread로 설정
                 .build();
         chattingRepository.save(chatMessage);
-
     }
-    // 메시지 읽음 상태 업데이트
+    // DB 메시지 읽음 상태 업데이트
     public void updateMessageStatus(String roomId, Long memberId, String status) {
         List<Chatting> messages = chattingRepository.findUnreadMessages(roomId, memberId);
         for (Chatting message : messages) {
@@ -125,13 +125,18 @@ public class ChatService {
     }
 
 // 전의 메세지 가져오기
-    public List<ChatMessageDto> getRecentMessages(String roomId) {
+    public List<ChatMessageDto> getRecentMessages(String roomId, Long memberId) {
         List<Chatting> recentMessages = chattingRepository.findRecentMessages(roomId);
-
-        // Chatting 엔터티를 ChatMessageDto로 변환
-        return recentMessages.stream()
-                .map(ChatMessageDto::new)
-                .collect(Collectors.toList());
+        List<ChatMessageDto> chatMessageDtos = new ArrayList<>();
+        for (Chatting chat : recentMessages) {
+            ChatMessageDto chatMessageDto = new ChatMessageDto(chat);
+            // 다른 사용자의 메시지인 경우에만 "읽음"으로 설정
+            if (!chatMessageDto.getSender().equals(memberId)) {
+                chatMessageDto.setMessageStatus("읽음");
+            }
+            chatMessageDtos.add(chatMessageDto);
+        }
+        return chatMessageDtos;
     }
 
     // 세션 삭제하는 메서드, 해당 방이 세션을 포함하지 않으면 삭제
@@ -179,18 +184,22 @@ public class ChatService {
         ChatRoomResDto room = findRoomById(roomId);
         if (room != null) {
             for (WebSocketSession session : room.getSessions()) {
-                sendMessage(session, message);
+                sendMessage(session, message, roomId);
             }
         }
     }
 
     // 특정 세션에 메시지를 전송하는 메서드
     // T는 제네릭 객체라 어떤 것도 보낼수있음
-    public <T> void sendMessage(WebSocketSession session, T message) {
+    public <T> void sendMessage(WebSocketSession session, T message,String roomId) {
         if (message instanceof ChatMessageDto) {
             ChatMessageDto chatMessage = (ChatMessageDto) message;
             chatMessage.setMessageTime(LocalDateTime.now());
-            chatMessage.setMessageStatus("안읽음"); // 새로운 메시지를 보낼 때는 항상 안읽음 상태로 설정
+            if (getCurrentSessionCount(roomId) == 1) {
+                chatMessage.setMessageStatus("안읽음");
+            } else {
+                chatMessage.setMessageStatus("읽음");
+            }
         }
         try {
             session.sendMessage(new TextMessage(objectMapper.writeValueAsString(message)));
@@ -198,4 +207,15 @@ public class ChatService {
             log.error(e.getMessage(), e);
         }
     }
+
+    // 룸아이디에대한 세션수
+    public int getCurrentSessionCount(String roomId) {
+        ChatRoomResDto room = findRoomById(roomId);
+        if (room != null) {
+            return room.getSessions().size();
+        }
+        return 0;
+    }
+
+
 }

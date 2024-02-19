@@ -27,4 +27,6 @@ public class ChatMessageDto {
         this.messageTime = chatting.getMessageTime();
         this.messageStatus = chatting.getMessageStatus(); // 이 줄을 추가하세요
     }
+
+
 }

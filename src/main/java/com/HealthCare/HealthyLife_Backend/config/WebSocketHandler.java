@@ -34,12 +34,12 @@ public class WebSocketHandler extends TextWebSocketHandler {
         sessionRoomIdMap.put(session, chatMessage.getRoomId()); // 세션과 채팅방 ID를 매핑
         if (chatMessage.getType() == ChatMessageDto.MessageType.ENTER) { // 메시지 타입이 ENTER이면
             chatService.addSessionAndHandleEnter(roomId, session, chatMessage); // 채팅방에 입장한 세션 추가
+
         } else if (chatMessage.getType() == ChatMessageDto.MessageType.CLOSE) {
             chatService.removeSessionAndHandleExit(roomId, session, chatMessage);
         } else {
             chatService.sendMessageToAll(roomId, chatMessage);
         }
-
     }
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
