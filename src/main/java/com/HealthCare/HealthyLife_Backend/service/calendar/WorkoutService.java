@@ -29,7 +29,7 @@ public class WorkoutService {
 
 
     @Transactional
-    public void addAndUpdateCalendar(WorkoutDto workoutDto) {
+    public Long addAndUpdateCalendar(WorkoutDto workoutDto) {
         // 이메일을 사용하여 Member 엔티티 조회
         Member member = memberRepository.findByEmail(workoutDto.getEmail())
                 .orElseThrow(() -> new EntityNotFoundException("Member not found with email: " + workoutDto.getEmail()));
@@ -92,6 +92,8 @@ public class WorkoutService {
 
         workout.setCalendar(calendar); // Workout에 Calendar 설정
         workoutRepository.save(workout); // 새로운 Workout 저장
+
+        return calendar.getId();
     }
 
     public List<ExerciseDto> getWorkoutKeyword(String keyword) {

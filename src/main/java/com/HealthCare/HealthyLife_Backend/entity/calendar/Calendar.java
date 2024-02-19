@@ -52,7 +52,6 @@ public class Calendar {
     private Integer points;
 
 
-    @JsonIgnore
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "email" ,referencedColumnName = "email")

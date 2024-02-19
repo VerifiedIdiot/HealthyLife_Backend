@@ -27,8 +27,8 @@ public class MealController {
             @RequestBody(required = true) MealDto mealDto) {
         try {
             System.out.println(mealDto);
-            mealService.addAndUpdateCalendar(mealDto);
-            return ResponseEntity.ok("음식추가");
+            Long calendarId = mealService.addAndUpdateCalendar(mealDto);
+            return ResponseEntity.ok(calendarId);
         } catch (Exception e) {
             log.error("음식 추가 중 오류 발생: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());

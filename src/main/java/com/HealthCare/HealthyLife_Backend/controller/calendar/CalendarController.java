@@ -57,15 +57,6 @@ public class CalendarController  {
         }
     }
 
-//    @PostMapping("/new")
-//    public ResponseEntity<Boolean> insert(@RequestBody CalendarDto calendarDto) {
-//        try {
-//            boolean isTrue = calendarService.saveCalendar(calendarDto);
-//            return ResponseEntity.ok(isTrue);
-//        } catch (Exception e) {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
 
     @GetMapping("/findAll")
     public ResponseEntity<List<CalendarDto>> findAll() {

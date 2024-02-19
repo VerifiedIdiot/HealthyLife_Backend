@@ -26,8 +26,8 @@ public class WorkoutController {
             @RequestBody(required = true) WorkoutDto workoutDto) {
         try {
             System.out.println(workoutDto);
-            workoutService.addAndUpdateCalendar(workoutDto);
-            return ResponseEntity.ok("운동추가");
+            Long calendarId = workoutService.addAndUpdateCalendar(workoutDto);
+            return ResponseEntity.ok(calendarId);
         } catch (Exception e) {
             log.error("운동 추가 중 오류 발생: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());

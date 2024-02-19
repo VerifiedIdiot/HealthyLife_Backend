@@ -34,7 +34,7 @@ public class MealService {
 
 
     @Transactional
-    public void addAndUpdateCalendar(MealDto mealDto) {
+    public Long addAndUpdateCalendar(MealDto mealDto) {
         // 이메일을 통해서 member 엔티티 조회
         Member member = memberRepository.findByEmail(mealDto.getEmail())
                 .orElseThrow(() -> new EntityNotFoundException("Member not found with email: " + mealDto.getEmail()));
@@ -112,7 +112,7 @@ public class MealService {
         meal.setCalendar(calendar);
         mealRepository.save(meal);
 
-
+        return calendar.getId();
     }
 
     private void updateNutritionalInfoAndPoints(Calendar calendar, Meal meal, Food food,

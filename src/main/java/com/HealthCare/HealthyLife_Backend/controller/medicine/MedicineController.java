@@ -7,6 +7,7 @@ import com.HealthCare.HealthyLife_Backend.dto.medicine.MedicineDto;
 
 import com.HealthCare.HealthyLife_Backend.service.medicine.ElasticsearchCrudService;
 import com.HealthCare.HealthyLife_Backend.service.medicine.MedicineService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
@@ -23,21 +24,12 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping("/api/medicines")
+@RequiredArgsConstructor
 @ConditionalOnProperty(name = "spring.elasticsearch.enabled", havingValue = "true")
 public class MedicineController {
 
     private final MedicineService medicineService;
-    private final ElasticsearchOperations elasticsearchOperations;
     private final ElasticsearchCrudService elasticsearchCrudService;
-
-
-
-    public MedicineController(MedicineService medicineService, ElasticsearchOperations elasticsearchOperations, ElasticsearchCrudService elasticsearchCrudService) {
-        this.medicineService = medicineService;
-        this.elasticsearchOperations = elasticsearchOperations;
-        this.elasticsearchCrudService = elasticsearchCrudService;
-
-    }
 
 
     @GetMapping("/parse-codes")
