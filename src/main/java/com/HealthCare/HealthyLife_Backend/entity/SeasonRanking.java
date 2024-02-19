@@ -31,23 +31,22 @@ public class SeasonRanking {
     @JoinColumn(name = "member_id")
     private Member member;
 
-
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "total_ranking_id")
-    @JsonView(Views.List.class)
     private TotalRanking totalRanking;
 
     @Column(nullable = false)
     @Builder.Default
     private Integer points = 0;
 
-
     private String regDate;
 
     public SeasonRankingDto toDto() {
         return SeasonRankingDto.builder()
                 .id(this.getId())
-                .member(this.getMember())
+                .memberId(this.getMember().getId())
+                .regDate(this.getRegDate())
                 .points(this.getPoints())
                 .build();
     }

@@ -15,7 +15,7 @@ import java.util.List;
 public class SeasonRankingDto {
 
     private Long id;
-    private Member member;
+    private Long memberId;
     private List<TotalRanking> totalRankings;
     private Integer points;
     private String regDate;
@@ -23,8 +23,9 @@ public class SeasonRankingDto {
     public TotalRankingDto toEntity() {
         return TotalRankingDto.builder()
                 .id(this.getId())
-                .member(this.getMember())
+                .memberId(this.getMemberId())
                 .points(this.getPoints())
+
                 .build();
     }
 }

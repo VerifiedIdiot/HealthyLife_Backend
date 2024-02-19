@@ -27,7 +27,6 @@ public class TotalRankingService {
 
     public List<TotalRankingDto> getTotalRankingList() {
         List<TotalRanking> totalRankings = totalRankingRepository.findTotalByOrderByPointsAsc();
-
         // TotalRanking 엔티티를 TotalRankingDto로 변환하여 리스트 생성
         List<TotalRankingDto> totalRankingDtos = new ArrayList<>();
 

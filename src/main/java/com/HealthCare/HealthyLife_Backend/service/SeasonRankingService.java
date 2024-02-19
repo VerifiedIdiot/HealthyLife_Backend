@@ -22,7 +22,6 @@ public class SeasonRankingService {
 
     public List<SeasonRankingDto> getSeasonRankingList(){
         List<SeasonRanking> seasonRankings = seasonRankingRepository.findSeasonByOrderByPointsAsc();
-
         List<SeasonRankingDto> seasonRankingDtos = new ArrayList<>();
 
         for (SeasonRanking seasonRanking : seasonRankings) {

@@ -33,9 +33,8 @@ public class TotalRankingController {
 
     @GetMapping("/detail")
     public ResponseEntity<?> totalByMemberEmail() {
-        List<TotalRankingDto> totalRankingDtos;
         try {
-            totalRankingDtos = totalRankingService.getTotalRankingList();
+            List<TotalRankingDto> totalRankingDtos = totalRankingService.getTotalRankingList();
             return ResponseEntity.ok(totalRankingDtos);
         } catch (Exception e) {
             return ResponseEntity.notFound().build();

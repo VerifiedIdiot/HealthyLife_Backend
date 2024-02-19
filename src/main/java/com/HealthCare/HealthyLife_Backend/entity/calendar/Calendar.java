@@ -2,6 +2,7 @@ package com.HealthCare.HealthyLife_Backend.entity.calendar;
 
 import com.HealthCare.HealthyLife_Backend.dto.calendar.CalendarDto;
 import com.HealthCare.HealthyLife_Backend.entity.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -50,6 +51,8 @@ public class Calendar {
 
     private Integer points;
 
+
+    @JsonIgnore
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "email" ,referencedColumnName = "email")

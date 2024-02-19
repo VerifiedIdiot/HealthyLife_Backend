@@ -26,10 +26,11 @@ public class TotalRanking {
     @Column(name = "total_ranking_id")
     private Long id;
 
-
-    @OneToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "member_id")
     private Member member;
+
 
     @Builder.Default
     @OneToMany(mappedBy = "totalRanking" , cascade = CascadeType.ALL)
@@ -44,8 +45,7 @@ public class TotalRanking {
     public TotalRankingDto toDto() {
         return TotalRankingDto.builder()
                 .id(this.getId())
-                .member(this.getMember())
-                .seasonRankings(this.getSeasonRankings())
+                .memberId(this.getMember().getId())
                 .points(this.getPoints())
                 .build();
     }
