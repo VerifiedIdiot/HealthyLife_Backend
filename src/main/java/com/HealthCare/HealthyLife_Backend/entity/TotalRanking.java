@@ -31,6 +31,9 @@ public class TotalRanking {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @Builder.Default
+    @Column(nullable = false)
+    private Integer ranks = 1;
 
     @Builder.Default
     @OneToMany(mappedBy = "totalRanking" , cascade = CascadeType.ALL)
@@ -42,10 +45,14 @@ public class TotalRanking {
     @Builder.Default
     private Integer points = 0;
 
+
     public TotalRankingDto toDto() {
         return TotalRankingDto.builder()
                 .id(this.getId())
                 .memberId(this.getMember().getId())
+                .ranks(this.getRanks())
+                .nickname(this.getMember().getNickName())
+                .gender(this.getMember().getGender())
                 .points(this.getPoints())
                 .build();
     }

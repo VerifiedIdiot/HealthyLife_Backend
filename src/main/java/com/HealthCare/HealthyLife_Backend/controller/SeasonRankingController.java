@@ -2,14 +2,16 @@ package com.HealthCare.HealthyLife_Backend.controller;
 
 import com.HealthCare.HealthyLife_Backend.dto.SeasonRankingDto;
 import com.HealthCare.HealthyLife_Backend.entity.SeasonRanking;
-import com.HealthCare.HealthyLife_Backend.repository.SeasonRankingRepository;
 import com.HealthCare.HealthyLife_Backend.service.SeasonRankingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -29,15 +31,13 @@ public class SeasonRankingController {
         return ResponseEntity.ok("정상작동");
     }
 
-    // 출력
+
+
     @GetMapping("/detail")
-    public ResponseEntity<?> seasonByMemberEmail() {
-        try {
-            List<SeasonRankingDto> seasonRankingDtos = seasonRankingService.getSeasonRankingList();
-            return ResponseEntity.ok(seasonRankingDtos);
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
+    public List<SeasonRankingDto> getMemberPointsForCurrentMonth() {
+        return seasonRankingService.getMemberPointsForCurrentMonth();
     }
+
+
 
 }

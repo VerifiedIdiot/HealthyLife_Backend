@@ -1,6 +1,7 @@
 package com.HealthCare.HealthyLife_Backend.dto;
 
 import com.HealthCare.HealthyLife_Backend.entity.SeasonRanking;
+import com.HealthCare.HealthyLife_Backend.entity.TotalRanking;
 import lombok.*;
 
 import java.util.List;
@@ -14,19 +15,12 @@ public class TotalRankingDto {
 
     private Long id;
     private Long memberId;
+    private Integer ranks;
+    private String nickname;
+    private String gender;
     private List<SeasonRanking> seasonRankings;
     private Integer points;
 
-
-
-    public TotalRankingDto toEntity() {
-        return TotalRankingDto.builder()
-                .id(this.getId())
-                .memberId(this.getMemberId())
-                .seasonRankings(this.getSeasonRankings())
-                .points(this.getPoints())
-                .build();
-    }
 
 }
 

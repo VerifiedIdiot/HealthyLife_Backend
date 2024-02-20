@@ -16,18 +16,14 @@ public class SeasonRankingDto {
 
     private Long id;
     private Long memberId;
+    private Integer ranks;
+    private String nickname;
+    private String gender;
     private List<TotalRanking> totalRankings;
     private Integer points;
     private String regDate;
 
-    public TotalRankingDto toEntity() {
-        return TotalRankingDto.builder()
-                .id(this.getId())
-                .memberId(this.getMemberId())
-                .points(this.getPoints())
 
-                .build();
-    }
 }
 
 
