@@ -27,7 +27,7 @@ public class BodyService {
 
     public boolean saveBody(BodyDto bodyDto) {
         try {
-            System.out.println("응답값 : " + bodyDto.getEmail());
+            System.out.println("응답값!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! : " + bodyDto.getEmail());
             Body body = Body.builder()
 
                     .member(memberRepository.findByEmail(bodyDto.getEmail())
@@ -39,6 +39,7 @@ public class BodyService {
                     .fatPercent(bodyDto.getFatPercent())
                     .bmr(bodyDto.getBmr())
                     .bmi(bodyDto.getBmi())
+                    .DCI(bodyDto.getDCI())
                     .build();
 
             bodyRepository.save(body);
