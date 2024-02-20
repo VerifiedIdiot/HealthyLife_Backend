@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class WorkoutService {
 
-    private final MealRepository mealRepository;
     private final CalendarRepository calendarRepository;
     private final MemberRepository memberRepository;
     private final ExerciseRepository exerciseRepository;

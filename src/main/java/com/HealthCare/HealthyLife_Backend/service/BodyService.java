@@ -79,13 +79,13 @@ public class BodyService {
         });
 
         // Calendar 레코드가 없는 경우 새로 생성하는 로직은 변경 없음
-        if (calendars.isEmpty()) {
-            Calendar calendar = new Calendar();
-            calendar.setMember(member);
-            calendar.setBody(body);
-            calendar.setRegDate(formattedDate); // 여기도 형식 맞춰서 설정
-            calendarRepository.save(calendar);
-        }
+//        if (calendars.isEmpty()) {
+//            Calendar calendar = new Calendar();
+//            calendar.setMember(member);
+//            calendar.setBody(body);
+//            calendar.setRegDate(formattedDate); // 여기도 형식 맞춰서 설정
+//            calendarRepository.save(calendar);
+//        }
     }
 
 
