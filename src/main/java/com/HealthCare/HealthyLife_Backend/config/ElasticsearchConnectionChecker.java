@@ -14,7 +14,7 @@ import java.io.IOException;
 // AWS의 헬시책을 생각하면 되겠다
 // ConditionalOnProperty는 프로퍼티에 elasticsearch.enabled의 값이 true 일때만 실행하라고 스프링에 명시
 @Component
-@ConditionalOnProperty(name = "spring.elasticsearch.enabled", havingValue = "true")
+//@ConditionalOnProperty(name = "spring.elasticsearch.enabled", havingValue = "true")
 public class ElasticsearchConnectionChecker implements ApplicationRunner {
 
     private final RestHighLevelClient client;

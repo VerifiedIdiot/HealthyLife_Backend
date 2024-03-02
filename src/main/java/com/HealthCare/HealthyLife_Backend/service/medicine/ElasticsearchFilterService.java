@@ -48,27 +48,54 @@ public class ElasticsearchFilterService {
             int page, int size) {
 
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        // 쿼리 전처리: "(주)" 제거
+
 
         // "통합" 검색 모드일 때
         if (query != null && !query.isEmpty()) {
             if ("통합".equals(filter)) {
-                // "통합" 검색 시, 각 필드에 대해 명시적으로 우선순위를 지정합니다.
                 BoolQueryBuilder combinedQuery = QueryBuilders.boolQuery();
-                combinedQuery.should(QueryBuilders.matchQuery("functionalities", query).boost(4)); // 가장 높은 우선순위
-                combinedQuery.should(QueryBuilders.matchQuery("product_name", query).boost(3));
-                combinedQuery.should(QueryBuilders.matchQuery("company", query).boost(2));
-                combinedQuery.should(QueryBuilders.matchQuery("report_no", query).boost(1)); // 가장 낮은 우선순위
-
+                if (query.contains("주")) {
+                    // "주"를 검색할 때 특정 단어를 포함하지 않는 문서를 찾습니다.
+                    combinedQuery.should(QueryBuilders.matchQuery("functionalities", query).boost(4));
+                    combinedQuery.should(QueryBuilders.matchQuery("product_name", query).boost(3));
+                    combinedQuery.should(QueryBuilders.matchQuery("company", query).boost(2));
+                    combinedQuery.should(QueryBuilders.matchQuery("report_no", query).boost(1));
+                    // 제외할 단어들에 대한 mustNot 쿼리 추가
+                    combinedQuery.mustNot(QueryBuilders.matchQuery("company", "(주)"));
+                    combinedQuery.mustNot(QueryBuilders.matchQuery("company", "주식회사"));
+                    combinedQuery.mustNot(QueryBuilders.matchQuery("company", "회사"));
+                    combinedQuery.mustNot(QueryBuilders.matchQuery("company", "주식"));
+                } else {
+                    // 일반적인 "통합" 검색 쿼리
+                    combinedQuery.should(QueryBuilders.matchQuery("functionalities", query).boost(4));
+                    combinedQuery.should(QueryBuilders.matchQuery("product_name", query).boost(3));
+                    combinedQuery.should(QueryBuilders.matchQuery("company", query).boost(2));
+                    combinedQuery.should(QueryBuilders.matchQuery("report_no", query).boost(1));
+                }
                 boolQueryBuilder.must(combinedQuery);
             } else {
                 // 특정 필드에 대한 검색
                 switch (filter) {
                     case "제품명":
-                        boolQueryBuilder.must(QueryBuilders.matchPhraseQuery("product_name", query.trim().replace("\"", "")));
+                        boolQueryBuilder.should(QueryBuilders.matchPhraseQuery("product_name", query.trim().replace("\"", "")));
                         break;
                     case "제조사":
-                        boolQueryBuilder.must(QueryBuilders.matchPhraseQuery("company", query.trim().replace("\"", "")));
+                        BoolQueryBuilder excludeJuQuery = QueryBuilders.boolQuery();
+                        String processedQuery = query.trim().replace("\"", "")
+                                .replace("(주)", "")
+                                .replace("주식회사", "")
+                                .replace("회사", "")
+                                .replace("주식", "");
+                        excludeJuQuery.should(QueryBuilders.matchPhrasePrefixQuery("company", processedQuery));
+                        // 제외할 단어들에 대한 mustNot 쿼리 추가
+                        excludeJuQuery.mustNot(QueryBuilders.matchPhraseQuery("company", "(주)"));
+                        excludeJuQuery.mustNot(QueryBuilders.matchPhraseQuery("company", "주식회사"));
+                        excludeJuQuery.mustNot(QueryBuilders.matchPhraseQuery("company", "회사"));
+                        excludeJuQuery.mustNot(QueryBuilders.matchPhraseQuery("company", "주식"));
+                        boolQueryBuilder.must(excludeJuQuery);
                         break;
+
                     case "신고번호":
                         // 사용자 입력이 연도만 포함하는 경우 (예: 2012)
                         if (query.trim().length() == 4) {
