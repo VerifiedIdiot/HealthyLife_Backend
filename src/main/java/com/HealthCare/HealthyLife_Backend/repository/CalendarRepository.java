@@ -17,7 +17,7 @@ import java.util.Optional;
 public interface CalendarRepository extends JpaRepository<Calendar, Long> {
     Optional<Calendar> findByRegDateAndMemberEmail(String regDate, String email);
 
-    List<CalendarDto> findByRegDateLikeAndMemberEmail(String regDate, String email);
+    List<Calendar> findByRegDateLikeAndMemberEmail(String regDate, String email);
 
     @Query("SELECT c FROM Calendar c WHERE c.id = :id")
     List<Calendar> findByCalendarId(@Param("id") Long id);

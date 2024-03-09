@@ -3,31 +3,39 @@ package com.HealthCare.HealthyLife_Backend.service.calendar;
 import com.HealthCare.HealthyLife_Backend.dto.calendar.CalendarDto;
 import com.HealthCare.HealthyLife_Backend.entity.calendar.Calendar;
 import com.HealthCare.HealthyLife_Backend.repository.CalendarRepository;
-import com.HealthCare.HealthyLife_Backend.repository.FoodRepository;
-import com.HealthCare.HealthyLife_Backend.repository.MealRepository;
-import com.HealthCare.HealthyLife_Backend.repository.WorkoutRepository;
-import com.HealthCare.HealthyLife_Backend.service.FoodService;
-import com.HealthCare.HealthyLife_Backend.service.MemberService;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
+
 public class CalendarService {
 
     private final MealService mealService;
     private final CalendarRepository calendarRepository;
 
+    private final Logger log = LoggerFactory.getLogger(CalendarService.class);
+
+
     public List<CalendarDto> findByYearAndMonth(String email, String regDate) {
-        // 202402% 와 , 이메일정보로 리스트 반환
-        System.out.println(regDate + email);
-        // regDate 형식 YYYYmm
-        return calendarRepository.findByRegDateLikeAndMemberEmail(regDate +"%", email);
+        List<Calendar> calendars = calendarRepository.findByRegDateLikeAndMemberEmail(regDate + "%", email);
+        List<CalendarDto> results = calendars.stream()
+                .map(Calendar::toCalendarDto) // 여기서 상세 변환 메서드를 사용합니다.
+                .collect(Collectors.toList());
+        log.info("findByYearAndMonth results: {}", results);
+        return results;
     }
 
     public CalendarDto findByDate(Long calendarId) {

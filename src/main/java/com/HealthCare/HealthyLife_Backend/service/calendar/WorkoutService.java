@@ -103,7 +103,7 @@ public class WorkoutService {
 
         List<Workout> workouts = workoutRepository.findByCalendarId(calendarId);
 
-        System.out.println("나오라" + workouts);
+//        System.out.println("나오라" + workouts);
         return workouts.stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());

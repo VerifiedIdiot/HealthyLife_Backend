@@ -26,37 +26,51 @@ import java.util.List;
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class CalendarDto {
 
-    @JsonView(Views.List.class)
+
     private Long calendarId;
 
 
-    @JsonView({Views.List.class, Views.Detail.class})
+
     private float calorie;
 
-    @JsonView(Views.List.class)
-    private Boolean morningMealAchieved;
 
-    @JsonView(Views.List.class)
-    private Boolean lunchMealAchieved;
-
-    @JsonView(Views.List.class)
-    private Boolean dinnerMealAchieved;
-
-    @JsonView(Views.List.class)
-    private Boolean workoutAchieved;
-
-    @JsonView(Views.List.class)
-    private Boolean calorieOver;
-
-    @JsonView(Views.List.class)
-    private String regDate;
-
-    @JsonView(Views.Detail.class)
     private float carbohydrate;
 
-    @JsonView(Views.Detail.class)
+
     private float protein;
 
-    @JsonView(Views.Detail.class)
+
     private float fat;
+
+
+    private Boolean morningMealAchieved;
+
+
+    private Boolean lunchMealAchieved;
+
+
+    private Boolean dinnerMealAchieved;
+
+
+    private Boolean workoutAchieved;
+
+
+    private Boolean calorieOver;
+
+
+    private String regDate;
+
+
+    @Override
+    public String toString() {
+        return "CalendarDto{" +
+                "calendarId=" + calendarId +
+                ", calorie=" + calorie +
+                ", carbohydrate=" + carbohydrate +
+                ", protein=" + protein +
+                ", fat=" + fat +
+                // 나머지 필드도 문자열에 추가
+                '}';
+    }
+
 }

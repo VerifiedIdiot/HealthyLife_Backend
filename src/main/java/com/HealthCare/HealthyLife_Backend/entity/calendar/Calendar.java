@@ -79,8 +79,12 @@ public class Calendar {
                 .workoutAchieved(this.getWorkoutAchieved())
                 .calorieOver(this.getCalorieOver())
                 .calorie(this.getCalorie())
+                .carbohydrate(this.getCarbohydrate()) // 탄수화물 추가
+                .protein(this.getProtein()) // 단백질 추가
+                .fat(this.getFat()) // 지방 추가
                 .build();
     }
+
     // 리스트에서 하나의 항목을 선택시 상세 내용
     public CalendarDto toDtoWithDetail() {
         return CalendarDto.builder()

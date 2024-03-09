@@ -184,7 +184,7 @@ public class MealService {
 
         List<Meal> meals = mealRepository.findByCalendarId(calendarId);
 
-        System.out.println("나오라" + meals);
+//        System.out.println("나오라" + meals);
         return meals.stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());

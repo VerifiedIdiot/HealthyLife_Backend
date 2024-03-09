@@ -32,13 +32,13 @@ public class CalendarController  {
         return ResponseEntity.ok("정상작동");
     }
 
-    @JsonView(Views.List.class)
     @GetMapping("/get-month-details")
     public ResponseEntity<?> getMonthDetails(@RequestParam String month,
                                              @RequestParam String email) {
         try {
             // calendarService를 통해 해당 년도와 월에 해당하는 데이터 가져오기
             List<CalendarDto> calendarDtos = calendarService.findByYearAndMonth(email, month);
+            System.out.println(calendarDtos);
             return ResponseEntity.ok(calendarDtos);
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
