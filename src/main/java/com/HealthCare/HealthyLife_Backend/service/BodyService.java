@@ -39,7 +39,7 @@ public class BodyService {
                     .fatPercent(bodyDto.getFatPercent())
                     .bmr(bodyDto.getBmr())
                     .bmi(bodyDto.getBmi())
-                    .DCI(bodyDto.getDCI())
+                    .dci(bodyDto.getDci())
                     .build();
 
             bodyRepository.save(body);

@@ -54,8 +54,8 @@ public class Body {
     @Column(name = "bmi")
     private String bmi;
 
-    @Column(name = "DCI")
-    private String DCI;
+    @Column(name = "dci")
+    private String dci;
 
     public BodyDto toBodyDto() {
         return BodyDto.builder()
@@ -67,7 +67,7 @@ public class Body {
                 .fatPercent(this.getFatPercent())
                 .bmr(this.getBmr())
                 .bmi(this.getBmi())
-                .DCI(this.getDCI())
+                .dci(this.getDci())
                 .build();
     }
 }

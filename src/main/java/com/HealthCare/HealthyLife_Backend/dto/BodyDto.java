@@ -26,5 +26,5 @@ public class BodyDto {
     private String fatPercent;
     private String bmr;
     private String bmi;
-    private String DCI;
+    private String dci;
 }
