@@ -1,7 +1,9 @@
 package com.HealthCare.HealthyLife_Backend.service.calendar;
 
 import com.HealthCare.HealthyLife_Backend.dto.calendar.CalendarDto;
+import com.HealthCare.HealthyLife_Backend.entity.Body;
 import com.HealthCare.HealthyLife_Backend.entity.calendar.Calendar;
+import com.HealthCare.HealthyLife_Backend.repository.BodyRepository;
 import com.HealthCare.HealthyLife_Backend.repository.CalendarRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -11,8 +13,11 @@ import org.slf4j.LoggerFactory;
 
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,8 +28,9 @@ import java.util.stream.Collectors;
 
 public class CalendarService {
 
-    private final MealService mealService;
     private final CalendarRepository calendarRepository;
+    private final BodyRepository bodyRepository;
+
 
     private final Logger log = LoggerFactory.getLogger(CalendarService.class);
 
@@ -32,7 +38,11 @@ public class CalendarService {
     public List<CalendarDto> findByYearAndMonth(String email, String regDate) {
         List<Calendar> calendars = calendarRepository.findByRegDateLikeAndMemberEmail(regDate + "%", email);
         List<CalendarDto> results = calendars.stream()
-                .map(Calendar::toCalendarDto) // 여기서 상세 변환 메서드를 사용합니다.
+                .map(calendar -> {
+                    LocalDate calendarDate = convertStringToLocalDate(calendar.getRegDate());
+                    Body latestBody = findLatestBodyBeforeDate(email, calendarDate).orElse(null);
+                    return calendar.toCalendarDto(latestBody);
+                })
                 .collect(Collectors.toList());
         log.info("findByYearAndMonth results: {}", results);
         return results;
@@ -44,30 +54,33 @@ public class CalendarService {
     }
 
 
-    public void insert(CalendarDto calendarDto) {
-
+    public LocalDate convertStringToLocalDate(String dateStr) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd"); // Ensure this matches your regDate format.
+        return LocalDate.parse(dateStr, formatter);
     }
 
-    public CalendarDto create(CalendarDto calendarDto) {
-        return null;
+    public Optional<Body> findLatestBodyBeforeDate(String email, LocalDate date) {
+        return bodyRepository.findTopByMemberEmailAndDateBeforeOrderByDateDesc(email, date);
     }
 
-    public CalendarDto findById(Long id) {
-        return null;
-    }
 
-    public CalendarDto update(Long id, CalendarDto calendarDto) {
-        return null;
-    }
+    // 기존의 dci(권장섭취량)을 바탕으로 true or false 업데이트 되지않은 데이터들을 조회하여 업데이트
+    @Transactional
+    public void updateCalorieOverForAllCalendars() {
+        List<Calendar> calendars = calendarRepository.findAll(); // 모든 Calendar 레코드 조회
 
-    public void delete(Long id) {
-    }
-
-    public boolean saveCalendar() {
-        return true;
-    }
-
-    public List<CalendarDto> findAll() {
-        return null;
+        for (Calendar calendar : calendars) {
+            Body latestBody = calendar.getBody();
+            if (latestBody != null && latestBody.getDci() != null) {
+                try {
+                    float dciValue = Float.parseFloat(latestBody.getDci()); // dci 값을 float로 변환
+                    calendar.setCalorieOver(calendar.getCalorie() > dciValue); // calorieOver 재계산
+                } catch (NumberFormatException e) {
+                    // dci 값이 숫자로 변환될 수 없는 경우, 에러 처리 (예: 로깅)
+                    e.printStackTrace();
+                }
+                calendarRepository.save(calendar); // 각 Calendar 레코드 업데이트
+            }
+        }
     }
 }

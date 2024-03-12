@@ -69,7 +69,8 @@ public class Calendar {
 
     private String regDate;
     // 리스트를 뿌리기 위한 간략한 정보
-    public CalendarDto toCalendarDto() {
+    public CalendarDto toCalendarDto(Body latestBody) {
+        String dciValue = (latestBody != null) ? latestBody.getDci() : null;
         return CalendarDto.builder()
                 .calendarId(this.getId())
                 .regDate(this.getRegDate())
@@ -79,9 +80,11 @@ public class Calendar {
                 .workoutAchieved(this.getWorkoutAchieved())
                 .calorieOver(this.getCalorieOver())
                 .calorie(this.getCalorie())
+                .dci(this.body.getDci())
                 .carbohydrate(this.getCarbohydrate()) // 탄수화물 추가
                 .protein(this.getProtein()) // 단백질 추가
                 .fat(this.getFat()) // 지방 추가
+                .dci(dciValue)
                 .build();
     }
 

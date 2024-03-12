@@ -42,6 +42,8 @@ public class CalendarDto {
 
     private float fat;
 
+    private String dci;
+
 
     private Boolean morningMealAchieved;
 
@@ -59,18 +61,5 @@ public class CalendarDto {
 
 
     private String regDate;
-
-
-    @Override
-    public String toString() {
-        return "CalendarDto{" +
-                "calendarId=" + calendarId +
-                ", calorie=" + calorie +
-                ", carbohydrate=" + carbohydrate +
-                ", protein=" + protein +
-                ", fat=" + fat +
-                // 나머지 필드도 문자열에 추가
-                '}';
-    }
 
 }

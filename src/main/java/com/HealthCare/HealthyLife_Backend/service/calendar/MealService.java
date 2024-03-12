@@ -101,6 +101,14 @@ public class MealService {
         // 영양소 정보와 점수 업데이트
         updateNutritionalInfoAndPoints(calendar, meal, food, seasonRanking, totalRanking);
 
+        if (latestBody != null) {
+            calendar.setBody(latestBody); // Calendar에 최신 Body 정보 설정
+            // Body의 dci 값을 float로 변환 (dci가 문자열로 저장된 경우)
+            float dciValue = Float.parseFloat(latestBody.getDci());
+            // 칼로리가 dci를 초과하는지 여부 확인 및 calorieOver 설정
+            calendar.setCalorieOver(calendar.getCalorie() > dciValue);
+        }
+
 
         // Calendar 엔티티 업데이트
         calendarRepository.save(calendar);
@@ -183,8 +191,6 @@ public class MealService {
     public List<MealDto> getMealByCalendarId(Long calendarId) {
 
         List<Meal> meals = mealRepository.findByCalendarId(calendarId);
-
-//        System.out.println("나오라" + meals);
         return meals.stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
@@ -207,6 +213,9 @@ public class MealService {
 
         return mealDto;
     }
+
+
+
     // 식사기록 삭제 & 점수차감
     @Transactional
     public boolean deleteMeal(Long id) {

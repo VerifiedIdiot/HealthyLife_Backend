@@ -27,7 +27,15 @@ public class BodyService {
 
     public boolean saveBody(BodyDto bodyDto) {
         try {
-            System.out.println("응답값!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! : " + bodyDto.getEmail());
+
+            // 소수점 이하의 정보를 버리기 위해서 실수형으로 전환
+            double dciValue = Double.parseDouble(bodyDto.getDci());
+            // 그리고 정수형으로 변환하면 알아서 소수점 이하의 정보는 버려진다.
+            int dciIntValue = (int) dciValue;
+            // 정수를 문자열로 변환
+            String dciStringValue = String.valueOf(dciIntValue);
+
+
             Body body = Body.builder()
 
                     .member(memberRepository.findByEmail(bodyDto.getEmail())
@@ -39,7 +47,7 @@ public class BodyService {
                     .fatPercent(bodyDto.getFatPercent())
                     .bmr(bodyDto.getBmr())
                     .bmi(bodyDto.getBmi())
-                    .dci(bodyDto.getDci())
+                    .dci(dciStringValue)
                     .build();
 
             bodyRepository.save(body);

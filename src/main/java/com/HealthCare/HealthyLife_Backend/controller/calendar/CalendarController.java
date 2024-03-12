@@ -58,44 +58,55 @@ public class CalendarController  {
     }
 
 
-    @GetMapping("/findAll")
-    public ResponseEntity<List<CalendarDto>> findAll() {
-
+    @PutMapping("/updateCalorieOver")
+    public ResponseEntity<String> updateCalorieOver() {
         try {
-            List<CalendarDto> calendars = calendarService.findAll();
-            return ResponseEntity.ok(calendars);
+            calendarService.updateCalorieOverForAllCalendars();
+            return ResponseEntity.ok("Calorie over information updated successfully.");
         } catch (Exception e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.internalServerError().body("An error occurred while updating calorie over information: " + e.getMessage());
         }
     }
 
-    @GetMapping("/search/{id}")
-    public ResponseEntity<CalendarDto> findById(Long id) {
-        try {
-            CalendarDto calendar = calendarService.findById(id);
-            return calendar != null ? ResponseEntity.ok(calendar) : ResponseEntity.notFound().build();
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
-        try {
-            calendarService.delete(id);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @PutMapping("/update/{id}")
-    public ResponseEntity<CalendarDto> update(@PathVariable Long id, @RequestBody CalendarDto calendarDto) {
-        try {
-            CalendarDto updatedCalendar = calendarService.update(id, calendarDto);
-            return ResponseEntity.ok(updatedCalendar);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
+//    @GetMapping("/findAll")
+//    public ResponseEntity<List<CalendarDto>> findAll() {
+//
+//        try {
+//            List<CalendarDto> calendars = calendarService.findAll();
+//            return ResponseEntity.ok(calendars);
+//        } catch (Exception e) {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
+//
+//    @GetMapping("/search/{id}")
+//    public ResponseEntity<CalendarDto> findById(Long id) {
+//        try {
+//            CalendarDto calendar = calendarService.findById(id);
+//            return calendar != null ? ResponseEntity.ok(calendar) : ResponseEntity.notFound().build();
+//        } catch (Exception e) {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
+//
+//    @DeleteMapping("/delete/{id}")
+//    public ResponseEntity<?> delete(@PathVariable Long id) {
+//        try {
+//            calendarService.delete(id);
+//            return ResponseEntity.ok().build();
+//        } catch (Exception e) {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
+//
+//    @PutMapping("/update/{id}")
+//    public ResponseEntity<CalendarDto> update(@PathVariable Long id, @RequestBody CalendarDto calendarDto) {
+//        try {
+//            CalendarDto updatedCalendar = calendarService.update(id, calendarDto);
+//            return ResponseEntity.ok(updatedCalendar);
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//        }
+//    }
 }
