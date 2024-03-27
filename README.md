@@ -1,3 +1,4 @@
+![notion용3](https://github.com/sonincheon/Doggo-frontend/assets/142462485/5a439b87-be96-4fa8-966b-2ddca0c18a91)
 ## 손인천 담당 기능 요약 ##
 
 1. ML을 이용한 기대 수명 예측(파이썬)
